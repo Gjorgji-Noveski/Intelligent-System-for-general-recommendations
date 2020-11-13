@@ -1,0 +1,25 @@
+The experimental results suggest that artificial neural networks constitute a promising alternative to deal with hierarchical multilabel classification problems.
+The proposed method, named here HMC-LMLP (Hierarchical Multilabel Classification with Local Multi-Layer Perceptron), incrementally trains a local MLP network for each hierarchical level, using the back-propagation algorithm.
+First, a MLP network is trained for the first hierarchical level.
+This network uses one input layer, one hidden layer and one output layer (classes).
+After training this network, a new network with one hidden layer and one output layer is created for the second hierarchical level.
+The network is fully connected.
+When the network is being trained for a hierarchical level, the synaptic weights of the layers corresponding to the previous levels are not adjusted, because their adjustment have already occurred in the earlier training phases of the network, corresponding to the shallower levels.
+In conventional networks the output layer (Figure 1A) consists of sigmoidal activities for H, E and C only for position i.
+Network training data was prepared from the PDB version of August 1999.
+Independent network predictions arise from 10-fold cross validated training and testing of 1032 protein sequences at both primary and secondary network layers.
+This may be done with a rather simple feedforward architecture that uses 2k + 1 groups of 20 input neurons to encode 2k + 1 amino acids (each of the 20 amino acids is encoded by 20 neurons in a unary manner), a hidden layer of suitably many neurons, and three output neurons that encode in unary manner the three classes ‘alpha-helix’, ‘beta-sheet’ and ‘loop’.
+Both networks have 4000 hidden nodes and 3 output neurons corresponding to α-helix, β-strand, and coil of the middle residue in the sliding window, respectively.
+This N-to-1 network has 150 hidden nodes and predicts three output values as well.
+The experimental results showed that S2D predicted the SS populations assigned to the X-ray structures with a Q3 score above 79% and identified disordered regions with an accuracy about 85–88% [325].
+As the first trial of automatic recognition of protein subcellular location patterns in fluorescence microscope images, a back-propagation neural network with one hidden layer and 20 hidden nodes was trained using Zernike moment features computed from the 2D CHO set [44, 45].
+The neural network was trained on the training set and the training was stopped when the sum of squared error on the stop set reached a minimum.
+The test set was then used to evaluate the network. Table 8.5 shows the confusion matrix averaged over eight trials.
+The average classification accuracy is 87% on eight random trials and the corresponding training accuracy is 94%. Data from reference [45].
+Principal component analysis (PCA), probably the first feature recombination method adapted for data mining, captures the linear relationships among the original features.
+The average recall across 11 classes after 50 cross-validation trials was 91%, which is as good as the 2D classification result.
+The same neural network classifier was trained on SLF10 and the average performance is shown in Table 8.12 after 50 cross-validation trials.
+Englehart et al. [26] extracted upper limb EMG signals from four channels and then, by extracting wavelet coefficients, reduced their dimensions by PCA transform, and finally misclassification rate was decreased.
+Traditionally, the feed-forward NN is trained using a gradient descent algorithm such as back-propagation (BPNN). BPNN optimizes NNs by randomly initializing the weights and adjusting the values with each run in order to minimize an error function [11].
+This is different from linear or logistic regression which only search for the coefficients in a pre-specified model [14].
+To adapt the weight parameters in the MLPs ℵη,ℵφ and ℵβ the recurrent NN is unfolded in time and the backpropagation algorithm [16] is used to calculate the gradient for all weights.
