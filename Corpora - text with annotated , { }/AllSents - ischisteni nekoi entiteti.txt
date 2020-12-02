@@ -3,25 +3,25 @@ Deep Voice 3 is a fully [convolutional] architecture for speech synthesis.
 Its character-to-spectrogram architecture enables fully parallel computation and the training is much faster than at the [RNN] architectures.
 Those features are in a (key, value) form and they are fed into the [attention-based decoder].
 The [hidden layers] of the [decoder] are fed into the third converter layer, which is capable of predicting the acoustic features for waveform synthesis.
-The [training of the model] is followed by [validation], which means that each [10K steps] are evaluated before the [training] process proceeds.
-The evaluation is done on external, unknown sentences that provide insight into the advancement of the learnt dependencies between the dataset and the [hidden layer] [weights].
-Deep Voice 3 suggested that [parameters] worked perfectly for our model, thus we used the same [hyperparameters] without increasing the demand due to our resource limitations.
-The model started to produce an intelligible, understandable, and partially human-like speech after [50 K steps], as observed from the figure.
+The [training of the model] is followed by validation, which means that each [10K steps] are evaluated before the training process proceeds.
+The evaluation is done on external, unknown sentences that provide insight into the advancement of the learnt dependencies between the [dataset] and the [hidden layer] [weights].
+Deep Voice 3 suggested that [parameters] worked perfectly for our [model], thus we used the same [hyperparameters] without increasing the demand due to our resource limitations.
+The [model] started to produce an intelligible, understandable, and partially human-like speech after [50 K steps], as observed from the figure.
 [Loss function] is a metric that refers to the [accuracy] of the prediction.
 The main objective is to minimize the [model] errors or minimize the [loss function].
-In our case, the [loss functions] behaves in a desired manner, it gradually decreases, [converging] to a value of 0.1731 after [162.2 K steps] in four days and 11 h of [training].
+In our case, the [loss functions] behaves in a desired manner, it gradually decreases, [converging] to a value of 0.1731 after [162.2 K steps] in four days and 11 h of training.
 [Learning rate] plays a vital role in minimizing the [loss function].
-The [gradient norm] that is presented in the same figure calculates the [L2] norm of the [gradients] of the [last layer] of the [Deep learning network].
+The [gradient norm] that is presented in the same figure calculates the [L2 norm] of the [gradients] of the [last layer] of the [Deep learning network].
 It is an indicator showing whether the [weights] of the [Deep learning network] are properly updated.
-This problem affects the upper [layers] of the [Deep learning network], making it really hard for the network to learn and [tune the parameters].
-In such case, the model is unstable and it is not able to learn from data, since the accumulation of large [error gradients] during the [training process] result in very large updates in the [Deep learning model weights].
-By principles of [transfer learning] ,we tried to [fine-tune] the Russian [TTS model].
+This problem affects the upper layers of the [Deep learning network], making it really hard for the network to learn and [tune the parameters].
+In such case, the [model] is unstable and it is not able to learn from data, since the accumulation of large [error gradients] during the training process result in very large updates in the [Deep learning model weights].
+By principles of [transfer learning] ,we tried to fine-tune the Russian [TTS model].
 So as to automatically and accurately classify the FCGR encoded data, we experimentally compared [Multilayer Perceptron] [Artificial Neural Network] ([MLP-ANN]), Support Vector Machine (SVM) and Naïve Bayes (NB), which are frontline pattern recognition tools in [machine learning].
 The [MLP-ANN] contains [64 neurons] in the [input layer] (64 element FCGR), [6 neurons] in the [output layer] (5 mutation classes and 1 normal class) and two [hidden layers] with the neurons experimentally varied from 10 to 100.
 The result obtained by varying the neurons in the [hidden layer] is reported in Sect 3.
 [Deep neural networks] ([DNN]) or [deep learning models], were proved to be able to extract automatically useful features from input patterns.
 Under this framework, [Long Short-Term Memory] ([LSTM]) is a [recurrent unit] that reads a sequence one step at a time and can exploit long range relations.
-In this work, we propose a [DNN] model for nucleosome identification on sequences from three different species.
+In this work, we propose a [DNN model] for nucleosome identification on sequences from three different species.
 Recently [deep neural networks] or [deep learning models], were proved to be able to automatically extract useful features from input patterns with no a priori information.
 The two main categories of [deep neural models] are [Convolutional Neural Networks] ([CNN]) and [Recurrent Neural Networks] ([RNN]).
 [CNNs] are characterized by an [initial layer] of [convolutional filters], followed by a non Linearity, a sub-sampling, and a [fully connected layer] which realized the final classification.
@@ -31,7 +31,7 @@ The [dropout layer] randomly sets to zero the output from the preceding layer du
 When p = 0.5, it is equivalent to training 2|W| networks with shared [parameters], where |W| is the number of neurons subject to [dropout].
 This results in a strong [regularization] effect, which helps in preventing [overfitting].
 We propose three kind of architectures, obtained by the composition of six kinds of [neural layers]: a [convolutional layer], a [max pooling layer], a [dropout layer], a [long short-term memory] ([LSTM]) layer, a [fully connected layer] and a [softmax] layer.
-The [Max Pooling] operation with width and [stride] 2 helps to capture the most salient features extracted by the previous layer and reduces the output size from 145 to [72 vectors].
+The [Max Pooling] operation with width and [stride] 2 helps to capture the most salient features extracted by the previous layer and reduces the output size from 145 to 72 [vectors].
 The [Dropout] operation with probability p = 0.5 is used to prevent [overfitting] during the [training phase].
 We notice that the best architecture is the [CONV]-[LSTM]-FCX2.
 We have proposed a novel [model parameter] training scheme based on the concepts of quantum computing.
@@ -39,25 +39,25 @@ We apply [deep learning methods] in this paper, namely we use [convolutional neu
 [Training and testing sets] used for [neural network] are extracted from simulations which differ only in initial [seeding] of the cells.
 Besides using [convolution] or [fully connected layers], we also used a relatively new type of layers, the [dense convolution layers], introduced in.
 Used [neural network] architecture [hyperparameters] are these: [Weights] are initialized in the range xavier, [bias] is set to 0. [Learning rate] is 0.0002, λ1 = λ2 = 0.000001, [dropout = 0.02] and [minibatch size] is 32.
-The [training phase] lasts about 6 hours for more complicated network architectures.
+The [training phase] lasts about 6 hours for more complicated [network architectures].
 The [convolution region] of the [CNNs] includes the [convolution], the [activation] and the [pooling layers].
 Different techniques were used to improve the [accuracy]: [Learning rate] tuning, which controls the update of the [CNNs] weights.
 The [neural networks] are updated via the [stochastic gradient].
-[Data Augmentation], that consists in the realization of different random operations of rotation, translation and zoom on the images to avoid [overfitting] and improve [generalization].
-[Fine-Tuning], that is based on [defrosting the weights of the convolutional layers], allowing the network to train in its integrity.
+[Data Augmentation], that consists in the realization of different random operations of rotation, translation and zoom on the [images] to avoid [overfitting] and improve [generalization].
+[Fine-Tuning], that is based on defrosting the [weights] of the [convolutional layers], allowing the network to train in its integrity.
 It is applied using a “differential [learning rate]”, that is, introducing three different and successively higher values of the [learning rate], thus taking into account the differential knowledge of the layers.
-Therefore, although [Resnet50] provided the highest [accuracy] is less stable than [Resnet 34] (1.09% vs 0.63%).
-Table 2 provides the corresponding [confusion matrices] in [validation].
-With respect to the tune of models’ [hyper-parameters], the R package mlrMBO was used to perform a Bayesian optimization within the [train set].
+Therefore, although [Resnet50] provided the highest [accuracy] is less stable than [Resnet] 34 (1.09% vs 0.63%).
+Table 2 provides the corresponding [confusion matrices] in validation.
+With respect to the tune of [models’] [hyper-parameters], the R package mlrMBO was used to perform a Bayesian optimization within the [train set].
 This package implements a Bayesian optimization of black-box functions which allows to find faster an optimal [hyper-parameters] setting in contrast to traditional [hyperparameters] search strategies such as [grid search] (highly time consuming when more than 3 [hyper-parameters] are tuned) or [random search] (not efficient enough since similar or non-sense [hyper-parameters] settings might be tested).
-Table 1 shows the average [AUC] performance, standard deviation and number of genes retained by the different models tested over the test sets of the [cross-validation] setting.
-The proposed [Convolutional Neural Network] ([CNN]) is consisting of two parallel [convolutional layers] taking as inputs transversal, coronal and axial slices acquired before and after chemotherapy for each patient.
+Table 1 shows the average [AUC] performance, standard deviation and number of genes retained by the different [models] tested over the test sets of the [cross-validation] setting.
+The proposed [Convolutional Neural Network] ([CNN]) is consisting of two parallel [convolutional layers] taking as inputs transversal, coronal and axial slices acquired before and after chemotherapy for each [patient].
 As illustrated in Fig. 2, this architecture contains two similar branches, each one contains 4 blocks of [2D convolution] followed by an [activation function] ([ReLU]) and a [Max pooling] layer.
-In the first and second blocks, [32 kernels] were used for each [convolutional layer].
+In the first and second blocks, 32 [kernels] were used for each [convolutional layer].
 The parallel [Deep learning] architecture was applied for each view using corresponding slices before and after the first chemotherapy.
 Consequently, we used the [Stochastic Gradient Descent] ([SGD]) with a [learning rate] of 0.0052.
 A [learning rate] decay of 3.46e−5 was used to schedule a best [accuracy].
-To compile the model, a categorical [cross entropy] was used as [loss function] and standard accuracy was used as a metric.
+To compile the [model], a categorical [cross entropy] was used as [loss function] and standard accuracy was used as a metric.
 To avoid results’ [bias], a 5-Fold stratified [cross validation] with [AUC] as metric was used.
 Within 150 [epochs] with 5-fold stratified [cross validation], an [accuracy] of 90.03 was obtained using 20% of 3D [validation data].
 An [overfitting] was observed during training when using only one of the views without [data augmentation].
@@ -86,7 +86,7 @@ After the parent of a terminal is chosen it is used by the [SSN] to estimate the
 We also [bias] the [network training] by providing a new-nonterminal input unit.
 To test the ability of [Simple Synchrony Networks] to handle [sparse data] we train the [SSN] parser described in the previous section on a relatively small set of sentences and then test how well it generalizes to a set of previously unseen sentences.
 This process can be continued until no more changes are made, but to avoid [over-fitting] it is better to check the performance of the network on a [validation set] and stop training when the performance on the [validation set] reaches a maximum.
-This is why we have split the corpus into three datasets, one for [training], one for [validation], and one for [testing].
+This is why we have split the corpus into three [datasets], one for training, one for validation, and one for testing.
 This technique also allows multiple versions of the network to be trained and then evaluated using the [validation set], without ever using the [testing set] until a single network has been chosen.
 A variety of [hidden layer] sizes and random initial [weight seeds] were used in the different networks.
 Larger [hidden layers] result in the network being able to fit the training data more precisely, but can lead to [over-fitting] and therefore bad performance on the [validation set].
@@ -120,7 +120,7 @@ Recently there has been a renewed interest in applying [neural networks] ([ANNs]
 It treats the network as a [deep belief network] ([DBN]) built out of [restricted Bolztmann machines] ([RBMs]), and optimizes an energy-based target function using the contrastive divergence (CD) algorithm.
 As for the third method, it is different from the two above in the sense that in this case it is not the [training algorithm] that is slightly modified, but the neurons themselves.
 Namely, the usual [sigmoid] [activation function] is replaced with the [rectifier function] max(0, x).
-These kinds of [neural units] have been proposed by Glorot et al., and were successfully applied to image recognition and NLP tasks.
+These kinds of [neural units] have been proposed by Glorot et al., and were successfully applied to [image] recognition and NLP tasks.
 [Rectified linear units] were also found to improve [restricted Boltzmann machines].
 It has been shown recently that a [deep rectifier network] can attain the same phone recognition performance as that for the [pre-trained nets] of Mohamed et al. [4], but without the need for any [pre-training].
 This efficient unsupervised algorithm, first described in, can be used for learning the [connection weights] of a [deep belief network] ([DBN]) consisting of several layers of [restricted Boltzmann machines] ([RBMs]).
@@ -130,7 +130,7 @@ They have an [input layer], representing the features of the given task, a [hidd
 It is a simple algorithm where first we train a network with one [hidden layer] to [full convergence] using [backpropagation].
 Then we replace the [softmax] layer by another randomly initialized [hidden layer] and a new [softmax] layer on top, and we train the network again.
 This process is repeated until we reach the desired number of [hidden layers].
-Seide et al. found that this method gives the best results if one performs only a few iterations of [backpropagation] in the [pre-training] phase (instead of training to full [convergence]) with an unusually large [learn rate].
+Seide et al. found that this method gives the best results if one performs only a few [iterations] of [backpropagation] in the [pre-training] phase (instead of training to full [convergence]) with an unusually large [learn rate].
 In their paper, they concluded that this simple training strategy performs just as well as the much more complicated [DBN] [pre-training] method described above.
 In the case of the third method it is not the [training algorithm], but the neurons that are slightly modified.
 Instead of the usual [sigmoid] activation, here we apply the [rectifier function max](0, x) for all [hidden neurons].
@@ -138,21 +138,20 @@ There are two fundamental differences between the [sigmoid] and the [rectifier f
 One is that the output of [rectifier neurons] does not saturate as their activity gets higher.
 Glorot et al. conjecture that this is very important in explaining their good performance in [deep nets]: because of this linearity, there is no [gradient vanishing] effect.
 One might suppose that this could harm optimization by blocking [gradient backpropagation], but the experimental results do not support this hypothesis.
-It seems that the hard nonlinearities do no harm as long as the gradient can propagate along some paths.
 The main advantage of [deep rectifier nets] is that they can be trained with the standard [backpropagation] algorithm, without any [pre-training].
-A random 10% of the [training set] was held out for [validation] purposes, and this block of data will be referred to as the ’[development set]’.
-It contains about 28 hours of recordings, from which 22 hours were selected for the training set, 2 hours for the development set and 4 hours for the test set.
+A random 10% of the [training set] was held out for validation purposes, and this block of data will be referred to as the ’[development set]’.
+It contains about 28 hours of recordings, from which 22 hours were selected for the [training set], 2 hours for the development set and 4 hours for the [test set].
 In the case of the DBN-based [pre-training] method (see Section 2.1), we applied [stochastic gradient descent] (i.e. [backpropagation]) training with a [mini-batch] size of 128.
 For Gaussian-binary [RBMs], we ran 50 [epochs] with a fixed [learning rate] of 0.002, while for binary-binary [RBMs] we used 30 [epochs] with a [learning rate] of 0.02.
 Then, to fine-tune the [pre-trained] nets, again [backpropagation] was applied with the same [mini-batch] size as that used for [pre-training].
 The initial [learn rate] was set to 0.01, and it was halved after each [epoch] when the error on the [development set] increased.
-During both the [pretraining] and fine-tuning phases, the learning was accelerated by using a [momentum] of 0.9 (except for the first [epoch] of fine-tuning, which did not use the [momentum] method).
+During both the [pretraining] and [fine-tuning] phases, the learning was accelerated by using a [momentum] of 0.9 (except for the first [epoch] of [fine-tuning], which did not use the [momentum] method).
 Turning to the discriminative [pre-training] method (see Section 2.2), the initial [learn rate] was set to 0.01, and it was halved after each [epoch] when the error on the [development set] increased.
 The [learn rate] was restored to its initial value of 0.01 after the addition of each layer.
 Furthermore, we found that using 5 [epochs] of [backpropagation] after the introduction of each layer gave the best results.
-For both the pre-training and fine-tuning phases we used a [batch size] of 128 and [momentum] of 0.8 (except for the first [epoch]).
-The initial [learn rate] for the fine-tuning of the full network was again set to 0.01.
-The training of [deep rectifier nets] (see Section 2.3) did not require any pre-training at all.
+For both the [pre-training] and [fine-tuning] phases we used a [batch size] of 128 and [momentum] of 0.8 (except for the first [epoch]).
+The initial [learn rate] for the [fine-tuning] of the full network was again set to 0.01.
+The training of [deep rectifier nets] (see Section 2.3) did not require any [pre-training] at all.
 The training of the network was performed using [backpropagation] with an initial [learn rate] of 0.001 and a [batch size] of 128.
 As can be seen, the three training methods performed very similarly on the test set, the only exception being the case of five [hidden layers], where the [rectifier net] performed slightly better.
 It also significantly outperformed the other two methods on the [development set].
@@ -160,13 +159,13 @@ We mention that a single [hidden layer] net with the same amount of [weights] as
 Similar to the TIMIT tests, [2048 neurons] were used for each [hidden layer], with a varying number of [hidden layers].
 The error rates seem to saturate at 4-5 [hidden layers], and the curves for the three methods run parallel and have only slightly different values.
 The lowest error rate is attained with the five-layer [rectifier network], both on the development and the [test sets].
-The iteration count we applied here (50 for Gaussian [RBMs] and 30 for binary [RBMs]) is an average value, and follows the work of Seide et al.
-Discriminative pre-training is also much faster than the DBN-based method, but is still slower than [rectifier nets].
+The [iteration] count we applied here (50 for Gaussian [RBMs] and 30 for binary [RBMs]) is an average value, and follows the work of Seide et al.
+Discriminative [pre-training] is also much faster than the DBN-based method, but is still slower than [rectifier nets].
 [Tuning the parameters] so that the two systems had a similar real-time factor was also out of the question, as the hybrid model was implemented on a GPU, while the HMM used a normal CPU.
 Here, we compared two training methods and a new type of [activation function] for [deep neural nets], and evaluated them on a large vocabulary recognition task.
 The three algorithms yielded quite similar recognition performances, but based on the training times [deep rectifier networks] seem to be the preferred choice.
 While the resulting speech sound likelihood estimates are demonstrated to be better that the earlier used likelihoods derived by generative Gaussian Mixture Models, unexpected signal distortions that were not seen in the [training data] can still make the acoustic likelihoods unacceptably low.
-Here, we compare three methods; namely, the unsupervised pre-training algorithm of Hinton et al., a [supervised pre-training] method that constructs the network layer-by-layer, and [deep rectifier networks], which differ from standard nets in their [activation function].
+Here, we compare three methods; namely, the unsupervised [pre-training] algorithm of Hinton et al., a supervised [pre-training] method that constructs the network layer-by-layer, and [deep rectifier networks], which differ from standard nets in their [activation function].
 Overall, for the large vocabulary speech recognition task we study here, [deep rectifier networks] offer the best tradeoff between accuracy and [training time].
 In this new proposed approach, a [multi-layer neural network] ([multi-layer perceptron]) is used to learn the [decision function] that will then be used to select the words.
 For training the [neural network parameters] we have to associate a target value to each word.
@@ -174,27 +173,26 @@ The scores produced by the [neural network] module will then be used to sort the
 [Feature vectors] and associated target values are used for training the [neural network]: the [input-feature vector] is the [input layer] ([36 input neurons]); the target value is the output of the unique [output layer neuron].
 There is one [hidden layer] containing [18 neurons].
 In recent years [feed forward neural networks] ([FFNN])  attracted attention due their ability to overcome biggest disadvantage of n-gram models: even when the ngram is not observed in training, FFNN estimates probabilities of the word based on the full history.
-The [RNN] is going further in model [generalization]: instead of considering only the several previous words ([parameter] n) the [recursive weights] are assumed to represent short term memory.
+The [RNN] is going further in [model] [generalization]: instead of considering only the several previous words ([parameter] n) the [recursive weights] are assumed to represent short term memory.
 [Long Short-Term Memory] ([LSTM]) [neural network] is different type of [RNN] structure.
 [LSTM] approved themselves in various applications and it seems to be very promising course also for the field of language modelling.
 Typical [NN] unit consists of the [input activation] which is transformed to [output activation] with [activation function] (usually [sigmoidal]).
 Firstly, the [activation function] is applied to all gates.
 There is a [softmax function] used in [output layer] to produce normalized probabilities.
 Normalization of [input vector] which is generally advised for [neural networks] is not needed due the 1-of-N input coding.
-All models were trained with 20 cells in [hidden layer].
+All [models] were trained with 20 cells in [hidden layer].
 The [recurrent neural network] language model RNNLM, originally proposed by 2 and 3, incorporates the time dimension by expanding the [input layer], which represents the current input word, with the previous [hidden layer].
 Theoretically, [recurrent neural networks] can store relevant information from previous time steps for an arbitrarily long period of time, making it possible to learn long-term dependencies.
-To explain how our approach works, let us examine the operation of a simple [perceptron] model.
-Hence, if the [weights] of the [feature extraction layer] were initialized with 2D DCT or Gabor filter coefficients, and only the weights of the hidden and [output layers] were tuned during training, then the model would be equivalent to a more traditional system, and incorporating the feature extraction step into the system would be just an implementational detail.
-Usually, as the [backpropagation] algorithm guarantees only a locally optimal solution, initializing the model with weights that already provide a good solution may help the [backpropagation] algorithm find a better local optimum than the one found using random initial values.
+To explain how our approach works, let us examine the operation of a simple [perceptron] [model].
+Hence, if the [weights] of the [feature extraction layer] were initialized with 2D DCT or Gabor filter coefficients, and only the weights of the hidden and [output layers] were tuned during training, then the [model] would be equivalent to a more traditional system, and incorporating the feature extraction step into the system would be just an implementational detail.
+Usually, as the [backpropagation] algorithm guarantees only a locally optimal solution, initializing the [model] with weights that already provide a good solution may help the [backpropagation] algorithm find a better local optimum than the one found using random initial values.
 We should add that the same [weights] are applied on each input block, so the number of [weights] will not change in this layer.
 It consisted of a hidden [feature extraction layer] with a [linear activation function], a [hidden layer] (with [1000 neurons]) with the [sigmoid] [activation function], and an [output layer] containing [softmax units].
 The number of [output neurons] was set to the number of classes (39), while the number of neurons in the input and [feature extraction layers] varied, depending on how many neighbouring patches were actually used.
-The [neural net] was trained with [random initial weights] in the hidden and [output layers], using standard [backpropagation] on 90% of the [training data] in [semi-batch] mode, while [crossvalidation] on the remaining, randomly selected 10% of the [training set] was used as the stopping criterion.
-The ‘extreme learning machine’ of Huang et al. also exploits this suprising fact: this learning model is practically a [twolayer network], where both layers are initialized randomly, and the lowest layer is not trained at all.
+The [neural net] was trained with random [initial weights] in the hidden and [output layers], using standard [backpropagation] on 90% of the [training data] in [semi-batch] mode, while [crossvalidation] on the remaining, randomly selected 10% of the [training set] was used as the stopping criterion.
+The ‘extreme learning machine’ of Huang et al. also exploits this suprising fact: this learning [model] is practically a [twolayer network], where both layers are initialized randomly, and the lowest layer is not trained at all.
 In order to verify how the whisper can be recognized by the [ANN], the two speakerdependent ASRs were developed with MATLAB [Neural Network] Toolbox.
 The structures of these [ANNs] were: 396 [input nodes], 140 [hidden neurons] and [50 output neurons].
-For each speaker all words are divided into three parts: 60% of them are used for training, 20% for [validation] and 20% for testing.
 The training, [development and test sets] for the classification task were not selected from the corpus in a completely random manner, but instead the division respected the websites, i.e. one set of websites was denoted the training set, another – [development set] and the third – [test set].
 The ASR system uses a hybrid Hidden Markov Model (HMM) and [Deep Neural Network] (DNN) architecture and a general 550k lexicon.
 The [DNN] utilizes five [hidden layers], with [1,024 neurons] per layer, and a [learning rate] of 0.08.
@@ -210,7 +208,7 @@ The network is trained with [AdaGrad] and we use [dropou]t on the [hidden layer]
 We implemented our [neural network] in Torch7, a scientific computing framework with wide support for machine learning algorithms.
 We tuned most of the [hyperparameters] on development portion of CNEC 1.0 and used them for all other corpora.
 Notably, we utilize window size W = 2, [hidden layer of 200 nodes], [dropout 0.5], [minibatches of size 100] and [learning rate] 0.02 with decay.
-All reported experiments use an ensemble of 5 networks, each using different [random seed], with the resulting distributions being an average of individual networks distributions.
+All reported [experiments] use an ensemble of 5 networks, each using different [random seed], with the resulting distributions being an average of individual networks distributions.
 A work most similar to ours, also proposed [neural network] architecture with word embeddings and character-level embeddings.
 The best published WER on CMUDict at present is demonstrated in using [Long Short-term Memory Recurrent Neural Networks] ([LSTM]) combined with a 5-gram graphone language model.
 We also use the exact same split of 90 % [training data] and 10 % [test data] as in 9, and thus our results are directly comparable to theirs.
@@ -236,7 +234,7 @@ In this context, [bidirectional RNNs] can be helpful by having separate layers p
 Here, the output of the [forward layer] is not directly propagated towards the [output layer], instead it serves as the input of the [backward layer].
 [Deep neural networks] usually come with a large amount of [parameters], leaving them prone to [overfitting].
 One straightforward way of avoiding that is using [Dropout].
-Those are applied by multiplying the output of each node that propagates towards a [dropout layer] by some random noise with each [batch of training data].
+Those are applied by multiplying the output of each node that propagates towards a [dropout layer] by some random [noise] with each [batch of training data].
 The amount of deactivated nodes depends on the [dropout] rate p which can be seen as the distribution’s [parameter] in the binary case.
 The positive effect of better [generalization] capabilities can be explained in two ways.
 First, it essentially produces an [ensemble of neural networks] and therefore producing an equally averaged result over those.
@@ -247,12 +245,13 @@ For the [sequential BRNN] the first [GRU layer] produces another time-dependent 
 After each of those follows one layer of [dropout] with p = 0.4.
 For both types of networks we finally use one to three [fully connected (dense)] layers with, again, 128 [hidden states] each, eventually followed by another single-state layer which produces the output by applying the [sigmoid] function which is also used as the inner activation of the [GRU nodes].
 The remaining [activation functions] between each two nodes are defined as the rectifier or [relu] function.
-As [optimizer] we use [Adam]. In earlier stages, RMSprop has also been tried, but it clearly proved to perform worse on that learning task and also oscillated a lot, making it useless for the [early stopping] described in Sect. 4.4.
+As [optimizer] we use [Adam].
+In earlier stages, RMSprop has also been tried, but it clearly proved to perform worse on that learning task and also oscillated a lot, making it useless for the [early stopping] described in Sect. 4.4.
 The loss which is minimized in the training stage is the [binary cross-entropy].
-The model is then trained for a maximum of 50 [epochs] and evaluated on the remaining 900 samples of the [development-test set] after each iteration.
+The [model] is then trained for a maximum of 50 [epochs] and evaluated on the remaining 900 samples of the [development-test set] after each [iteration].
 Training is stopped when the UAR of the [validation set] does not increase for 10 [epochs].
-A model checkpoint is used to keep track of the [weights] which have been used to reach the highest [UAR] on the [validation set] up to the last [epoch].
-Finally we obtain a measure of general performance by using the highest scoring model to predict the labels on the [testing set].
+A [model] checkpoint is used to keep track of the [weights] which have been used to reach the highest [UAR] on the [validation set] up to the last [epoch].
+Finally we obtain a measure of general performance by using the highest scoring [model] to predict the labels on the [testing set].
 Also, the [Gaussian dropout] leads to slightly higher performance than the binary one.
 In most cases the network with two [fully connected layers] after the recurrent ones achieves the highest measures.
 Eventually we used the [sequential BRNN] with two [dense layers] and [Gaussian dropout] after being trained on the sets specified in Sect. 4.4 to predict the labels of the [testing set] and reached a [UAR] of 71.03 and an accuracy of 71.30 percent.
@@ -263,7 +262,7 @@ The clear advantage of [maxout networks] over [DNNs] is demonstrated when using 
 It is also argued that [maxout networks] are prone to [overfitting] during sequence training but in some cases it can be successfully overcome with the use of the KL-divergence based [regularization].
 The [greedy layerwise pretraining] method became an impulse for tempestuous development of [DNN] training.
 The pretraining results in [DNN] [weights] initialization that facilitates the subsequent finetuning and improves its quality.
-Nevertheless, the [fully connected feedforward deep neural networks] (hereinafter just [DNNs] for brevity) still remain the workhorses of the large majority of ASR systems.
+Nevertheless, the [fully connected] [feedforward deep neural networks] (hereinafter just [DNNs] for brevity) still remain the workhorses of the large majority of ASR systems.
 The introduction of [piecewise-linear ReLU] ([rectified linear units]) [activation functions] made it possible to simplify and improve the optimization process during [DNN] training significantly.
 It was shown that [DNNs] with [ReLU] activations may be successfully learned without [layerwise pretraining].
 However, the fact that [ReLU] and its analogues are linear almost everywhere may also result in [overfitting] and instability of the training process.
@@ -273,7 +272,7 @@ To improve efficiency of the [dropout regularization] a new sort of tunable [pie
 In a short time the [deep maxout networks] ([DMN]) were applied to speech recognition tasks.
 It was also shown that [dropout] for [DMNs] can be very effective in an annealed mode, i.e. if the [dropout] rate gradually decreases [epoch-by-epoch].
 We apply [DMNs] to two significantly different tasks and demonstrate their clear superiority over conventional [DNNs] under [cross-entropy] ([CE]) training.
-[Dropout] proposed in is a [regularization technique] for [deep feedforward network] training which is effective in particular for training network with a large amount of [parameters] on a limited size dataset.
+[Dropout] proposed in is a [regularization] technique for [deep feedforward network] training which is effective in particular for training network with a large amount of [parameters] on a limited size [dataset].
 In the original form of [dropout] it was proposed to randomly “turn off” half of neurons per every training example.
 When the neurons with [piecewise-linear activation] functions (like [ReLU](x) = max(0, x)) are used the input space is divided into multiple regions where data is linearly transformed by the network.
 From this point of view using of [dropout] with [piecewise-linear activation] functions performs the more exact ensemble averaging than with [activation functions] of nonzero curvature (such as [sigmoid]).
@@ -284,21 +283,21 @@ The advantage of the maxout [activation function] over [ReLU] is the possibility
 The first application of [Deep Maxout Networks] ([DMN]) to speech recognition task seems to be done in February and in March, where it was shown that training of [DMNs] can be effective even without using [dropout].
 Nevertheless, the training of [DMNs] can be successfully combined with [dropout regularization] as it was shown here.
 There it was proposed to use not the conventional [dropout] where the [dropout] rate is constant during the entire training but the [annealed dropout] (AD) which consists of the gradually decreasing [dropout] rate according to the linear schedule.
-We do not compare [Maxout] + AD to [ReLU] + AD because, in our experience, AD training of [ReLU] networks does not provide significant WER reduction (it is also observed in the previous paper) whilist carefully tuned [sigmoidal DNNs] with [L2 weight decay] often outperform [ReLU] [DNNs] with [dropout] and other types of regularization.
-When the model was trained the low-rank factorization (based on SVD) of the last [hidden layer] was performed and the model was fine-tuned to provide bottleneck features, hereinafter SDBNs (Speaker-Dependent BottleNeck).
+We do not compare [Maxout] + AD to [ReLU] + AD because, in our experience, AD training of [ReLU] networks does not provide significant WER reduction (it is also observed in the previous paper) whilist carefully tuned [sigmoidal DNNs] with [L2 weight decay] often outperform [ReLU] [DNNs] with [dropout] and other types of [regularization].
+When the [model] was trained the low-rank factorization (based on SVD) of the last [hidden layer] was performed and the [model] was fine-tuned to provide bottleneck features, hereinafter SDBNs (Speaker-Dependent BottleNeck).
 In our first attempts we did not use [regularization].
-Since we observed that the [cross-validation] value of the sMBR criterion either increases or remains constant [epoch-by-epoch] we concluded that the model is [overfit].
+Since we observed that the [cross-validation] value of the sMBR criterion either increases or remains constant [epoch-by-epoch] we concluded that the [model] is [overfit].
 So to improve ST performance an effective [regularization] is required.
 We tried to use the [L1] and [L2] penalty as well as [dropout] and F-smoothing to make ST work on Switchboard, however none of these approaches succeeded in [overfitting] reduction.
 We considered the use of [maxout activation functions] for training [deep neural networks] as acoustic models for ASR.
-Using two English speech corpora namely CHiME Challenge 2015 dataset and Switchboard we demonstrated that in case of training with the [cross-entropy] criterion [Deep Maxout Networks] ([DMN]) are superior to conventional fully-connected [feedforward sigmoidal DNNs].
+Using two English speech corpora namely CHiME Challenge 2015 [dataset] and Switchboard we demonstrated that in case of training with the [cross-entropy] criterion [Deep Maxout Networks] ([DMN]) are superior to conventional fully-connected [feedforward sigmoidal DNNs].
 For the same [layer sizes] the number of [DMN] [parameters] is larger than that of [DNN] but the increase in [DNN layer sizes] is unable to provide the comparable accuracy gain.
-We also found that sequence discriminative training of [maxout networks] is prone to [overfitting] which can be reduced with the use of KLD-[regularization].
-The performance of the developed models was examined in terms of the Area Under the Curve (AUC) derived from the [ROC curves] as well as Pearson coefficient R between the predicted and the actual efficacy.
-[Associative Neural Networks] ([ASNN]) approach and fragment descriptors were used to build the models.
-In three layers neural networks, each neuron in the [initial layer] corresponded to one molecular descriptor.
+We also found that [sequence discriminative] training of [maxout networks] is prone to [overfitting] which can be reduced with the use of [KLD-regularization].
+The performance of the developed [models] was examined in terms of the Area Under the Curve ([AUC]) derived from the [ROC curves] as well as Pearson coefficient R between the predicted and the actual efficacy.
+[Associative Neural Networks] ([ASNN]) approach and fragment descriptors were used to build the [models].
+In three layers [neural networks], each neuron in the [initial layer] corresponded to one molecular descriptor.
 [Hidden layer] contained from three to [six neurons], whereas the [output layer] contained one (for STL and FN) or 11 (MTL) neurons, corresponding to the number of simultaneously treated properties.
-Each model was validated using external [fivefold cross-validation] procedure.
+Each [model] was validated using external [fivefold cross-validation] procedure.
 Supervised learning is usually achieved in what are called [feed-forward NNs] that process data in several layers consisting of varying numbers of nodes.
 These nodes are organized as [input nodes], several layers of [hidden nodes], and [output nodes].
 A sliding window covers 60 nucleotides, which is calculated to 240 [input units] to the [neural network].
@@ -325,19 +324,19 @@ The training of a TPNN is based on a combination of [stochastic gradient descend
 In [stochastic gradient descent], the true gradient is approximated by the gradient of the [loss function] which is evaluated on a single training sample.
 [Weight decay] is a [regularization] method that penalizes large [weights] in the network.
 The [weight decay] penalty term causes the insignificant [weights] to converge to zero.
-The [parameter] µ is controlling the [stepsize] of the [gradient descend].
+The [parameter] µ is controlling the [stepsize] of the [gradient descent].
 The initial [step size] is already small (around µ = 0.01) and it is decreased after each training [epoch] with a constant factor.
 This is necessary to achieve a slow [convergence] of the [weights].
-A sweep through the whole data set is called one [epoch].
+A sweep through the whole [data set] is called one [epoch].
 Up to 1000 [epochs] are necessary to train the TPNN in a typical experimental setup (20 amino acids in the alphabet, peptides of length 5 to 10, 30-50 training samples from measurements as a starting set).
 The slow [convergence] of the error is a consequence of the relative small [stepsize] in the [gradient descent], but it is necessary in order to get overall [convergence] of the [weights].
-It is well known, that [neural network ensembles] perform better in terms of [generalisation] than single models would do.
+It is well known, that [neural network ensembles] perform better in terms of [generalisation] than single [models] would do.
 An ensemble of TPNNs consists of several single TPNN models that are trained on randomly chosen subsets of the [training data] and the training starts with random [weight initializations].
-Two analytical models have been used to fit the data set to a prognostic index: a piecewise linear model Cox regression, also known as proportional hazards, and a flexible model consisting of Partial Logistic [Artificial Neural Networks] regularised with Automatic Relevance Determination (PLANN-ARD).
-If these features are stored in a vector f = (f1,...,fh), and if we represent the i-th residue in the sequence as ri, then f is obtained as: where N (h) is a non-linear function, which we implement by a two-layered [feedforward Neural Network] with h non-linear [output units].
-The number of free [parameters] in the overall [N1-NN] can be controlled by: the number of units in the [hidden layer] of the sequence-to-feature network N (h) (), N H f ; the number of [hidden units] in the feature-to-output network N (o)(), N H o ; the number of [hidden states] in the feature vector f, which is also the number of [output units] in the sequence-to-feature network, Nf .
+Two analytical models have been used to fit the [data set] to a prognostic index: a piecewise linear model Cox regression, also known as proportional hazards, and a flexible model consisting of Partial Logistic [Artificial Neural Networks] regularised with Automatic Relevance Determination (PLANN-ARD).
+If these features are stored in a [vector] f = (f1,...,fh), and if we represent the i-th residue in the sequence as ri, then f is obtained as: where N (h) is a non-linear function, which we implement by a two-layered [feedforward Neural Network] with h non-linear [output units].
+The number of free [parameters] in the overall [N1-NN] can be controlled by: the number of units in the [hidden layer] of the sequence-to-feature network N (h) (), N H f ; the number of [hidden units] in the feature-to-output network N (o)(), N H o ; the number of [hidden states] in the [feature vector] f, which is also the number of [output units] in the sequence-to-feature network, Nf .
 Each training is conducted by 10 [fold-cross validation], i.e. 10 different sets of training runs are performed in which a different tenth of the overall set is reserved for testing.
-The [training set] is used to learn the free [parameters] of the network by [gradient descent], while the [validation set] is used to choose model and [hyperparameters] ([network size] and architecture, i.e. N H f , Nf and N H o ).
+The [training set] is used to learn the free [parameters] of the network by [gradient descent], while the [validation set] is used to choose [model] and [hyperparameters] ([network size] and architecture, i.e. N H f , Nf and N H o ).
 For each fold the three networks for the best architecture are ensemble averaged and evaluated on the corresponding [test set].
 Training is performed by [gradient descent] on the error, which we model as the relative entropy between the target class and the output of the network.
 The overall output of the network (output layer of N (o) ()) is implemented as a [softmax] function, while all internal squashing functions are implemented as [hyperbolic tangents].
@@ -345,26 +344,26 @@ Training terminates when either the walltime on the server is reached (6 days fo
 The gradient is updated 360 times for each [epoch] (or once every 2-6 examples, depending on the set), and the examples are shuffled between [epochs].
 The [learning rate] is halved every time a reduction of the error is not observed for more than 50 [epochs].
 Both predictors are assessed by [ten-fold cross-validation].
-The type of [neural network] with which we performed the experiments was [Multilayer Perceptron] ([MLP]), because the results obtained with other types of networks were not satisfactory and they tended to be slower than [MLP].
-The preparatory steps for conducting the experiments consisted in determining: a) the size of the training and [testing set]; b) the [error function]; c) the number of [hidden units]; d) the [activation functions] for the hidden and the [output neurons]; e) the minimum and maximum values for [weight decay].
+The type of [neural network] with which we performed the [experiments] was [Multilayer Perceptron] ([MLP]), because the results obtained with other types of networks were not satisfactory and they tended to be slower than [MLP].
+The preparatory steps for conducting the [experiments] consisted in determining: a) the size of the training and [testing set]; b) the [error function]; c) the number of [hidden units]; d) the [activation functions] for the hidden and the [output neurons]; e) the minimum and maximum values for [weight decay].
 For the [hidden neuron]s were used as [activation functions] identity, logistic, [tanh] and exponential and the same ones were chosen for the [output neurons].
 The [error functions] used were [sum of squares] and [cross entropy].
-The minimum and the maximum number of [hidden units] were chosen differently for each experiment because we conducted several experiments which had different number of inputs.
-The larger the number of [hidden units] in a [neural network] model the stronger the model is, the more capable the network is to model complex relationships between the inputs and the target variables.
+The minimum and the maximum number of [hidden units] were chosen differently for each [experiment] because we conducted several [experiments] which had different number of inputs.
+The larger the number of [hidden units] in a [neural network] [model] the stronger the [model] is, the more capable the network is to model complex relationships between the inputs and the target variables.
 The optimal number of [hidden units] is minimum 1/10 of the number of training cases and maximum 1/5, but we have varied this interval.
 The use of [decay weights] for [hidden layer] and [output layer] was preferred in order to prevent [overfitting], thereby potentially improving [generalization] performance of the network.
 [Weight decay] or [weight] elimination are often used in [MLP] training and aim to minimize a [cost function] which penalizes large [weights].
 These techniques tend to result in networks with smaller [weights].
 The minimum chosen [weight decay] was 0.0001 and the maximum 0.001.
-To perform the experiments the data were split in a training (67 %) and a [testing dataset] (33 %).
+To perform the [experiments] the data were split in a training (67 %) and a [testing dataset] (33 %).
 As [error functions], we tested the [cross entropy] and the [sum of squares].
 The [weight decays] in both the hidden and the [output layer] varied between 0.0001 and 0.001.
 The values of the CV criterion (Table 1) show a better performance in correspondence to a choice of 6 [hidden units] and [decay parameter] equal to 0.01, that we therefore used.
 [Ten-fold cross-validation] obtained by averaging over five fits for various values of the number of hidden units (H) and of the [decay parameter].
 Scheme of a [multilayer perceptron] with the layer of inputs x1,...,xp, t, the layer of [hidden units] z1,...,zH and the [output layer], here represented by the unique response h.
 Additionally, one of the authors recently took advantage of a [deep learning] algorithm, built on a multilayer [autoencoder] [neural network], that lead to interesting prediction results in reference.
-We use the July 2009 version of the datasets for analyzing and selecting [hyper-parameters].
-[Autoencoder neural networks] were trained using the free GPU-accelerated [software package Torch7] using [stochastic gradient descent] with a [learning rate] of 0.01 for 25 iterations.
+We use the July 2009 version of the [datasets] for analyzing and selecting [hyper-parameters].
+[Autoencoder neural networks] were trained using the free GPU-accelerated [software package Torch7] using [stochastic gradient descent] with a [learning rate] of 0.01 for 25 [iterations].
 [L2 regularization] was used on all [weights], which were initialized randomly from the uniform distribution.
 The [hidden unit] function is a [Sigmoid].
 The [neural network] is a modified version of [General Regression Neural Network] ([GRNN]) used as a classification tool.
@@ -372,38 +371,38 @@ In order to perform the barcode sequences classification, we introduce a modifie
 The proposed method is based on two modified versions of the [General Regression Neural Network].
 The [General Regression Neural Network] is a [neural network] created for [regression] i.e. the approximation of a dependent variable y given a set of sample (x, y), where x is the independent variable.
 Classification results, in terms of [accuracy], [precision] and [recall] scores, have been compared with both the [GRNN] algorithm using J-function and the SVM classifier.
-[Simple spiking neural network] models such as Integrate and fire models without bio-realistic features were simulated in the older generation GPUs.
+[Simple spiking neural network models] such as Integrate and fire models without bio-realistic features were simulated in the older generation GPUs.
 All above described methods require to set two [hyper-parameters]: λ and α controlling the sparsity and the network influence, respectively.
 [Deep learning neural networks] are capable to extract significant features from raw data, and to use these features for classification tasks.
 In this work we present a [deep learning neural network] for DNA sequence classification based on spectral sequence representation.
-The framework is tested on a dataset of 16S genes and its performances, in terms of [accuracy] and F1 score, are compared to the [General Regression Neural Network], already tested on a similar problem, as well as naive Bayes, random forest and support vector machine classifiers.
+The framework is tested on a [dataset] of 16S genes and its performances, in terms of [accuracy] and F1 score, are compared to the [General Regression Neural Network], already tested on a similar problem, as well as naive Bayes, random forest and support vector machine classifiers.
 The obtained results demonstrate that the [deep learning approach] outperformed all the other classifiers when considering classification of small sequence fragment 500 bp long.
-Among the [deep learning architecture], it is usually comprised the [LeNet-5] network, or [Convolutional Neural Network] ([CNN]), a [neural network] that is inspired by the visual system’s structure.
+Among the [deep learning] architecture, it is usually comprised the [LeNet-5] network, or [Convolutional Neural Network] ([CNN]), a [neural network] that is inspired by the visual system’s structure.
 In this work we want to understand if the [convolutional network] is capable to identify and to use these features for sequence classification, outperforming the classifiers proposed in the past.
 The one used in this work is a modified version of the [LeNet-5] network introduced by LeCun et al. in and it is implemented using the python Theano package for [deep learning].
-The modified [LeNet-5] proposed network is made of two lower layers of [convolutional] and [max-pooling] processing elements, followed by two “traditional” fully connected [Multi Layer Perceptron] ([MLP]) processing layers, so that there are 6 processing layers.
+The modified [LeNet-5] proposed network is made of two lower layers of [convolutional] and [max-pooling] processing elements, followed by two “traditional” [fully connected] [Multi Layer Perceptron] ([MLP]) processing layers, so that there are 6 processing layers.
 The [max-pooling] is a non-linear [down-sampling layer].
-The first layer of [convolutional kernels], named [kernel] 0, is made of L = [10 kernels] of dimension 5 (so that n = 2).
-From a spectral representation vector made of 1024 components this layer produces [10 vectors] of 1024 dimensions that the [pooling layer] reduces to the 10 feature maps of 510 dimensions.
+The first layer of [convolutional kernels], named [kernel] 0, is made of L = 10 [kernels] of dimension 5 (so that n = 2).
+From a spectral representation [vector] made of 1024 components this layer produces 10 [vectors] of 1024 dimensions that the [pooling layer] reduces to the 10 feature maps of 510 dimensions.
 These [vectors] are the input for the second [convolutional layer].
-The second [layer of kernel] ([kernel] 1 ) is made of L = [20 kernels] of dimension 5.
+The second [layer of kernel] ([kernel] 1 ) is made of L = 20 [kernels] of dimension 5.
 In both cases the [max-pooling] layer has dimension 2.
 [Convolution] and [maxpooling] are usually considered together and they are represented in the lower part of Fig. 2 as two highly connected blocks.
-The two upper level layers corresponds to a traditional fully-connected [MLP]: the first layer of the [MLP] operates on the total number of output from the lower level (the output is flattened to a 1-D vector) and the total number of units in the [Hidden Layer] is 500.
+The two upper level layers corresponds to a traditional fully-connected [MLP]: the first layer of the [MLP] operates on the total number of output from the lower level (the output is flattened to a [1-D vector]) and the total number of units in the [Hidden Layer] is 500.
 In the second case, the ten-fold [cross validation] scheme was repeated considering as test set the sequence fragments of shorter size, 500 bp long, obtained randomly extracting 500 consecutive nucleotides from the original full length sequences.
 The [CNN] 134 has been run considering two different [kernels sizes]: [kernel] 0 = [kernel] 1 = 5 in the first run; [kernel] 0 = 25, [kernel] 1 = 15 in the second run.
 In both configurations the [training phase] has been run for 200 [epochs].
 The spectral representation is obtained as k-mers frequencies along the sequences; the [CNN] belongs to the so called “[deep learning]” algorithms.
 We designed and tested some topic modeling techniques, and we took advantage of a [deep neural network] approach.
 A [convolutional neural net] learns to classify patches as salient (long looks) or not.
-Two [output neurons] were connected to the reinitialized layer, then training followed on augmented 800 × 800 px patches for 10,000 iterations in Caffe.
+Two [output neurons] were connected to the reinitialized layer, then training followed on augmented [800 × 800 px patches] for 10,000 [iterations] in Caffe.
 Arguments of rkhs$new(.) define initial values of the functions and the initial value of the [l 2 norm weighting parameter].
 When new data is added, the [ANN] needs to be [retrained] in order to achieve good performance.
 The set of selected features are processed to accomplish the voxel classification by means of a [Multilevel Artificial Neural Network] ([MANN]), which assures various computational advantages.
 Then we discuss the issues concerning the minimum requirements that an [artificial neural network] ([ANN]) should fulfill in order that it would be capable of expressing the categories and mappings between them, underlying the MES.
 First generation networks studied the McCulloch-Pitts neuron, or [perceptrons], using digital inputs and outputs, usually binary.
 [Multi-layer perceptrons] with a single [hidden layer] were able to compute any binary function.
-Second generation networks had neurons with [activation functions], usually some [logistic function] like the [sigmoid], with continuous inputs and outputs, having probabilistic [weights] in the synapses, and learning algorithms based on [gradient descent]. 
+Second generation networks had neurons with [activation functions], usually some [logistic function] like the [sigmoid], with continuous inputs and outputs, having probabilistic [weights] in the synapses, and learning algorithms based on [gradient descent].
 Third generation networks are based on [spiking or pulsating neurons], that incorporate recent neurobiology discoveries, modeling the neuron as a dynamic electrical system with bifurcation in its equilibrium, usually following some variant of the Hodgkin-Huxley model.
 The [network was trained] with a [100-sentence database] and was generated by a Kohonen network with [60 x 60 neurons] and a decreasing neighborhood.
 It is needed for instance, when channels used in [training and testing] have different lengths or if the duration of [training and testing] simulation is different for some reason.
@@ -411,32 +410,32 @@ This gives an [accuracy rate] of 0.627.
 The [accuracy] of the system is calculated as the total number of correctly classified objects (1094) divided by the total number of objects (1627).
 [Neural networks] are generally better at [discriminating between classes], as is shown here.
 The whole [data set] was divided into different parts in order to get different validation [data sets].
-EXP-1, which [contains all data] from the first [clinical experiment] with [2500 measurements].
+EXP-1, which [contains all data] from the first [clinical experiment] with 2500 measurements.
 [Accuracy] is computed as the percentage of cases correctly classified.
 If yes, with probability 0.76 this is [classified] as a cancerous regions, otherwise, the region is certainly cancerous.
-Results show that on both data sets the certainty for the correctly classified [lesions] is higher (lower entropy) than for the incorrectly classified [lesions].
+Results show that on both [data sets] the certainty for the correctly classified lesions is higher (lower entropy) than for the incorrectly classified lesions.
 According to {25}, [artificial neural network] research evolved into three generations.
-Under normal circumstances, however, [accuracy] is determined by the [error rate] of the inferred rule (ie, the percentage of actions [incorrectly classified] as either legitimate or illegitimate) calculated over the entire [uniformly-sampled set] of action possibilities within the a priori motor space.
+Under normal circumstances, however, [accuracy] is determined by the [error rate] of the inferred rule (ie, the percentage of actions incorrectly classified as either legitimate or illegitimate) calculated over the entire [uniformly-sampled set] of action possibilities within the a priori motor space.
 As a result, the [data set] is optimally [classified into two classes], targets and non targets following a validation process, and an average [accuracy metric] is then calculated.
-This [set was divided] into 2 groups: [training] (320 thermographies in each class) and [testing] (80 thermographies in reach class).
+This [set was divided] into 2 groups: training (320 thermographies in each class) and testing (80 thermographies in reach class).
 Therefore, a total of 2.411 [images] of [healthy] [patients] and 534 [images] of [diseased] [patients] were used.
-A [balanced randomized selection] was performed on 500 [healthy] [patients] and 500 [sick] [patients].
-80% ([400 Healthy and 400 Sick]) [were allocated to training and testing], that is, the processes of extracting the attributes and optimizing the [weights] of the [filters].
-20% (100 [thermographies] in each class) [were reserved for blind validation] and establishing the final predictive [accuracy] of these architectures [using a database] of [images] that was not used for learning ([training and testing]).
+A balanced randomized selection was performed on 500 [healthy] [patients] and 500 [sick] [patients].
+80% (400 [Healthy] and 400 [Sick]) were allocated to [training and testing], that is, the processes of extracting the attributes and optimizing the [weights] of the [filters].
+20% (100 thermographies in each class) were [reserved for blind validation] and establishing the final predictive [accuracy] of these architectures using a database of [images] that was not used for learning ([training and testing]).
 [Data for the neural network] comes from a simulation [experiment].
 Before giving more in depth description of these data, it is good to acknowledge that the [input of a neural network] consists of several cell positions and output is the velocity of that cell at a particular time.
 [Data for this study] were [recorded every 0.001 s] (once in 1000 [simulation steps]), which results in almost 9 200 [records] for each cell.
-[Training and testing sets used for neural network are extracted from simulations] which differ only in [initial seeding] of the cells.
+[Training and testing] sets used for [neural network] are extracted from simulations which differ only in [initial seeding] of the cells.
 As was already mentioned, the [input for the neural network] are the positions of the cell center and the output is the velocity of this cell at given position.
 The [learning set for our neural network] consist of the simulation output which also includes [redundant data].
 We [processed the data] in the following steps.
-We [loaded the data] from the experiments and checked their correctness.
+We loaded the data from the [experiments] and checked their correctness.
 Next step was the [normalization of the data].
 [Normalization of data] is common in neural networks. 
 We made the desired pairs of the inputs and the outputs from the [normalized data].
 We work with two types of the input [tensor in the form of a 3−dimensional array].
 The horizontal layers of the [tensor] represent different cells, where the cell we are focused on is on the top of the [tensor].
-For our [tensorѓ we used zero padding of width p.
+For our [tensor] we used zero padding of width p.
 Thus the [dimension of this tensor] is:.
 This input type for the [neural network] set by [parameter] called [spatial tensor] is inspired by the [image] processing.
 We obtain a small [tensor] A by determining if the cell is present or not, in each of the disc x × disc y × disc z channel areas.
@@ -446,94 +445,93 @@ Then the [input tensor] consists of small [tensors] A(n),...,A(1), B(n),...,B(1)
 The small [tensor] A(n) is at the top horizontal layer of the input [tensor] and B(1) is at the bottom layer of the input [tensor].
 Therefore the [dimension of the input tensor] is:
 We also used the [gaussian kernel].
-Hence, the [dimension of the input tensor for the neural network was 16 × 16 × 24].
+Hence, the dimension of the [input tensor] for the [neural network] was 16 × 16 × 24.
 [Data for the input tensors] are selected as follows.
 Besides using [convolution] or [fully connected layers], we also used a relatively new type of layers, the [dense convolution layers], introduced in {7}.
-There were 6 [different architectures] of neural networks, see the Table 2.
+There were 6 different architectures of [neural networks], see the Table 2.
 First four [experiments], named [Experiment] 0 to [Experiment] 3 have no spatial [tensor] input with the same [parameters], but mutually different [networks architectures].
 The [network architectures] for [experiment] pairs 2 and 4 and for 3 and 5 are the same.
 Comparing the difference between the target and resulted values given from [neural networks], we observed that networks with spatial [tensor] [parameter] ([Experiments] 4 to 7) give better results than for no spatial [tensor] [parameter].
 The [Experiment] 7, [where the network has the most layers gave us the best result].
-In this section we report on a set of [experiments] performed on a [large data set] of nanopore FASTQ files.
-The [data set is comprised of 336 different files], with sizes ranging from 7.2 KB to 3.5 GB, including reads that are up to hundreds of thousands base-pair long.
-The total [size of the data set amounts to 114.2 GB] and the dynamic range of quality scores is 7 bits.
+In this section we report on a set of [experiments] performed on a large [data set] of nanopore FASTQ files.
+The [data set] is comprised of 336 different files, with sizes ranging from 7.2 KB to 3.5 GB, including reads that are up to hundreds of thousands base-pair long.
+The total size of the [data set] amounts to 114.2 GB and the dynamic range of quality scores is 7 bits.
 Among these methods, the [credibility of the back propagation neural network is up to 98%]. 
-To address the two issues, in this paper we propose to use a [deep ResNet structure with Convolutional Block Attention Module] ([CBAM]), in order to extract richer and finer features from pathological [images]. 
-Existing [deep learning approaches for Breast Cancer (BC) histology images classification] task include cell nuclei segmentation {14,15} and the patch-wise classification {12,16}.
-In order to classify the BC pathological images steadily and accurately, in this paper, we adopt an improved [ResNet architecture] to extract local and global features from [pathological images] and perform [end-to-end training]. 
-[ResNet] {17} is a recently popular [CNN architecture], it prevents vanishing gradient by using the residual connection, which allows the network architecture to be deeper to obtain richer and more abstract features.
+To address the two issues, in this paper we propose to use a deep [ResNet] structure with [Convolutional Block Attention Module] ([CBAM]), in order to extract richer and finer features from pathological [images].
+Existing [deep learning] approaches for Breast Cancer (BC) histology [images] classification task include cell nuclei segmentation {14,15} and the patch-wise classification {12,16}.
+In order to classify the BC pathological [images] steadily and accurately, in this paper, we adopt an improved [ResNet] architecture to extract local and global features from pathological [images] and perform end-to-end training.
+[ResNet] {17} is a recently popular [CNN] architecture, it prevents vanishing gradient by using the residual connection, which allows the [network architecture] to be deeper to obtain richer and more abstract features.
 To this end, we use [Convolutional Block Attention Module] ([CBAM]) {18} to enhance the performance of the [ResNet].
-To evaluate the effectiveness of our method, we conduct a series of experiments on the publicly available [BreakHis dataset].
-The [BreakHis dataset], a benchmark proposed by {11} for the BC histological images classification, [consists of 7909 breast histopathological images] from [82 patients].
-We use the deeper [ResNet CNN architecture] to extract richer and more abstract features of [patients’ BC tissue].
+To evaluate the effectiveness of our method, we conduct a series of [experiments] on the publicly available [BreakHis dataset].
+The [BreakHis dataset], a benchmark proposed by {11} for the BC histological [images] classification, consists of 7909 breast histopathological [images] from 82 [patients].
+We use the deeper [ResNet] [CNN] architecture to extract richer and more abstract features of [patients’] BC tissue.
 We use [CABM] to refine the tissue features extracted from each layer of [ResNet], which can improve the classification performance.
 We have significantly improved the accuracy of classification on the publicly available [BreakHis Dataset].
-Fortunately, [Breast cancer histopathology database provided 7,909 (2,480 benign and 5,429 malignant samples)] microscopic images of breast tumor which collected from [82 patients] by surgery {11}.
+Fortunately, [Breast cancer histopathology database provided 7,909 (2,480 benign and 5,429 malignant samples)] microscopic [images] of breast tumor which collected from 82 [patients] by surgery {11}.
 [AlexNet] is a typical [deep learning model], which {22} achieves a winning top-5 [test error rate] of 15.3%, which is 10.9% lower than the second one who uses SIFT {23} and FVS {24}.
-The [Breast Cancer Histopathological Image Classification (BreakHis) dataset] composes of [7909 microscopic images] of breast tumor tissue.
-They are collected from [82 patients] in different magnifying factors include 40×, 100×, 200×, and 400×. 
+The Breast Cancer Histopathological [Image] Classification (BreakHis) [dataset] composes of 7909 microscopic [images] of breast tumor tissue.
+They are collected from 82 [patients] in different magnifying factors include 40×, 100×, 200×, and 400×.
 The [BreakHis dataset] contains [2480 benign and 5429 malignant samples] (700 × 460 pixels, 3-channel RGB, 8-bit depth in each channel, PNG format).
 In this work, we use the [ResNet with 50 layers], which can be represented by [ResNet-50].
 Then we add [CBAM] to each block of the [ResNet-50].
-The original top [layer of ResNet-50 is replaced by a global average-pooling layer].
+The original top layer of [ResNet-50] is replaced by a global [average-pooling layer].
 A [dropout of 0.3] is also used after the [fully connected layer] for helping reduce [overfitting].
 The [loss is categorical cross-entropy] and the [optimizer] is [Stochastic Gradient Descent] ([SGD]).
 We set the [learning rate] at 0.001.
-We [pre-train] our model on the [ImageNet dataset], and then [fine-tune] our model on the [BreakHis dataset].
-We retrospectively evaluate our model on the data of [142 patients] with [305 lesions and 70 no-lesion] volumes, and it significantly outperforms the comparison methods with the sensitivity of 92.1% with 1.92 false positives per volume.
-The model is based on the standard [UNet segmentation architecture] with a down-sampling and upsampling path, where all the simply stacked [convolutional layers] are replaced with [residual blocks] to prevent [gradient vanishing].
+We [pre-train] our [model] on the [ImageNet dataset], and then fine-tune our [model] on the [BreakHis dataset].
+We retrospectively evaluate our [model] on the data of 142 [patients] with 305 lesions and 70 no-lesion volumes, and it significantly outperforms the comparison methods with the [sensitivity] of 92.1% with 1.92 false positives per volume.
+The [model] is based on the standard [UNet segmentation architecture] with a down-sampling and upsampling path, where all the simply stacked [convolutional layers] are replaced with [residual blocks] to prevent [gradient vanishing].
 We combine spatial information into different layers of [UNet] to reduce the false positive rate.
 Finally, considering the blurred boundaries between lesion and no-lesions, we adopt the sub-hard mining strategy in [loss function], which only computes the [loss] of the specific samples to update the [parameter] of the network, in order to ensure the network learn correct information.
-To validate the effectiveness of the proposed framework, we conduct extensive experiments on an [ABUS dataset] of [142 patients’ images] with [375 volumes].
+To validate the effectiveness of the proposed framework, we conduct extensive [experiments] on an [ABUS dataset] of 142 [patients’] [images] with 375 volumes.
 We introduce the [spatial information into different layers] of the segmentation network, which significantly [reduce the false positive rate].
 Our method is based on [UNet].
-The image resolution reduces by half after [max pooling] along the [downsampling path], while the resolution doubles via [deconvolution operation] along the [upsampling path].
+The [image] resolution reduces by half after [max pooling] along the [downsampling path], while the resolution doubles via [deconvolution operation] along the [upsampling path].
 Finally, a [softmax layer] is used to transform the result into a two-class problem.
 We improve [UNet] by replacing the simply stacked [convolutional layers] with [residual blocks] to prevent [vanishing gradient].
-Furthermore, the [attention skip connection] is included to make the model pay more attention to useful spatial areas and improve the ability of localization.
+Furthermore, the [attention skip connection] is included to make the [model] pay more attention to useful spatial areas and improve the ability of localization.
 As is shown in Fig. 3, it contains two [3 × 3 × 3 convolutional layers] with [stride] 1, and the [same padding] is used to ensure the output has the same size with the input.
 The reception field of two successive [3 × 3 × 3 convolutional layers] is the same with that of a [5×5×5 convolutional layer] but with fewer [parameters] to be computed.
-Since the extreme imbalance between normal regions and [lesion] regions, the [model tends to predict most areas as normal regions].
-To normally represent the actual shape and size of [lesions], we firstly [normalize] the pixel spacing of the ABUS volume in each direction.
+Since the extreme imbalance between normal regions and lesion regions, the [model tends to predict] most areas as normal regions.
+To normally represent the actual shape and size of lesions, we firstly [normalize] the pixel spacing of the ABUS volume in each direction.
 Our proposed framework is implemented with [PyTorch] and trained on NVIDIA Tesla M40 GPU.
-During training, in order to alleviate the computational complexity in each batch and increase the augmentation, we randomly [crop the ABUS images] into small [patches with the size of 160 × 80 × 160], 70% of which are lesion-centered.
-In addition, we adopt various [data augmentations], e.g., contrast adjustment, rotation, cropping, flipping, especially the elastic transform {26}, which are widely used in small medical image dataset to increase the data diversity.
-[Adam optimizer] is used to train the whole network, and the [learning rate] is set as 1e-4, and training is stopped when the model has similar performance on training and validation dataset.
-Then the [skip attention] is used to identify the image regions and prune the irrelevant feature responses so as to preserve only the activation relevant to this segmentation task.
-The [architecture of AssCNV23’s network] contains [four convolutional layers] intersected with [three max pooling layers], [three fully connected layers].
-The detected results were compared to the benchmark data, and the performance of each tool was evaluated by [Precision (Pre)], [Sensitivity (Sen)], [F1-score (F1)] and [Matthews correlation coefficient] ([MCC]).
+During training, in order to alleviate the computational complexity in each batch and increase the augmentation, we randomly crop the ABUS [images] into small [patches with the size of 160 × 80 × 160], 70% of which are lesion-centered.
+In addition, we adopt various [data augmentations], e.g., contrast adjustment, rotation, cropping, flipping, especially the elastic transform {26}, which are widely used in small medical [image dataset] to increase the data diversity.
+[Adam optimizer] is used to train the whole network, and the [learning rate] is set as 1e-4, and training is stopped when the [model] has similar performance on training and [validation dataset].
+Then the skip attention is used to identify the [image] regions and prune the irrelevant feature responses so as to preserve only the activation relevant to this segmentation task.
+The architecture of AssCNV23’s network contains four [convolutional layers] intersected with three [max pooling layers], three [fully connected layers].
+The detected results were compared to the benchmark data, and the performance of each tool was evaluated by [Precision] (Pre), [Sensitivity] (Sen), [F1-score] (F1) and [Matthews correlation coefficient] ([MCC]).
 They used [Gold-standard dataset], SCOP version 1.75 and 6SSE, 5SSE, 4SSE and 3SSE {10}.
 Indeed, this work will focus on the development of a [diagnosis support system], in terms of its knowledge representation and reasoning procedures, under a formal framework based on Logic Programming, complemented with an approach to computing centered on [Artificial Neural Networks], to evaluate ACS predisposing and the respective Degree-of-Confidence that one has on such a happening.
-In this study [627 patients] admitted on the emergency department were considered, during the period of three months (from February to May of 2013), with suspect of ACS.
+In this study 627 [patients] admitted on the emergency department were considered, during the period of three months (from February to May of 2013), with suspect of ACS.
 The [gender distribution] was [48% and 52% for female and male], respectively.
-Seventeen variables were selected allowing one to have a multivariable [dataset with 627 records].
+Seventeen variables were selected allowing one to have a multivariable [dataset] with 627 records.
 To ensure statistical significance of the attained results, [20 (twenty) experiments] were applied in all tests.
 In each simulation, the available data was randomly divided into two mutually exclusive partitions, i.e., the [training set] with 67% of the available data and, the [test set] with the remaining 33% of the cases.
 In the other layers we used the [sigmoid] function.
 As the [output function] in the preprocessing layer it was used the [identity] one.
-Table 2 shows that the [model accuracy was 96.9% for the training set] (410 correctly classified in 423) and [94.6% for test set] (193 correctly classified in 204).
-Thus, the predictions made by the ANN model are satisfactory, attaining [accuracies close to 95%].
+Table 2 shows that the [model] [accuracy] was 96.9% for the [training set] (410 correctly classified in 423) and 94.6% for test set (193 correctly classified in 204).
+Thus, the predictions made by the [ANN model] are satisfactory, attaining [accuracies close to 95%].
 Huang and Liao {45} introduced a comprehensive study to investigate the capability of the [probabilistic neural networks] ([PNN]) associated with a feature selection method, the so-called signal-to-noise statistic, in [cancer classification].
-As an illustrated in Figure 1.6a, the entire data-set of all [88 experiments] was first quality filtered (1) and then the [dimensionality was further reduced] by [principal component analysis] ([PCA]) to [10 PC projections] (2), from the original 6,567 expression values.
-Next, the [25 test experiments] were set aside and the [63 training experiments] were randomly partitioned into 3 groups (3).
-ANN models were then calibrated using for each sample the [10 PC values as input] and the [cancer category as output] (5).
-For each model, the calibration was optimized with 100 iterative cycles ([epochs)].
-In addition, there was no sign of [over-training]: if the models begin to learn features in the [training set], which are not present in the [validation set], this would result in an increase in the error for the validation at that point and the curves would no longer remain parallel.
+As an illustrated in Figure 1.6a, the entire data-set of all 88 [experiments] was first quality filtered (1) and then the [dimensionality was further reduced] by [principal component analysis] ([PCA]) to [10 PC projections] (2), from the original 6,567 expression values.
+Next, the 25 [test experiments] were set aside and the 63 [training experiments] were randomly partitioned into 3 groups (3).
+[ANN models] were then calibrated using for each sample the [10 PC values as input] and the [cancer category as output] (5).
+For each [model], the calibration was optimized with 100 iterative cycles ([epochs)].
+In addition, there was no sign of [over-training]: if the [models] begin to learn features in the [training set], which are not present in the [validation set], this would result in an increase in the error for the validation at that point and the curves would no longer remain parallel.
 A standard approach to [neural network] training is the use of [backpropagation] to optimize the [weight assignments] for a fixed neural network topology.
 Gene selection using [Feed Forward Back Propagation Neural Network] as a classifier is illustrated in Figure 1.7.
 The new technique is based on [Switching Neural Networks] ([SNN]), learning machines that assign a relevance value to each input variable, and adopts Recursive Feature Addition (RFA) for performing gene selection.
-After that, authors classify the microarray data sets with a [Fuzzy Neural Network] ([FNN]).
+After that, authors classify the microarray [data sets] with a [Fuzzy Neural Network] ([FNN]).
 Recently, Marylyn et al. {74} took a serious attempt to introduce a [genetic programming neural network] ([GPNN]) as a method for optimizing the architecture of a [neural network] to improve the identification of genetic and gene-environment combinations associated with a disease risk.
 This empirical studies suggest [GPNN] has excellent power for identifying gene-gene and gene-environment interactions.
 Using simulated data,authors show that [GPNN] has higher power to identify gene-gene and gene-environment interactions than SLR and CART.
 These include an independent variable input set, a list of mathematical functions, a [fitness function], and finally the operating [parameters] of the GP.
 These operating [parameters] include [number of demes (or populations)], [population size], [number of generations], [reproduction rate], [crossover rate], [mutation rate], and [migration] {90}.
-Here, we will [train the GPNN on 9/10 of the data] to develop an NN model.
-They [test this model on the 1/10 of the data] left out to evaluate the predictive ability of the model.
+Here, we will [train the GPNN on 9/10 of the data] to develop an [NN model].
 Another work introduced by Alison et al {74} which developed a [grammatical evolution neural network] ([GENN]) approach that accounts for the drawbacks of [GPNN].
-They also, compare the performance of [GENN] to [GPNN], a traditional [Back-Propagation Neural Network] ([BPNN]) and a random search algorithm.
-[GENN] outperforms both [BPNN] and the random search, and performs at least as well as [GPNN].
-Liang and Kelemen {60} proposed a [Time Lagged Recurrent Neural Network] with trajectory learning for identifying and classifying the gene functional patterns from the heterogeneous nonlinear time series microarray experiments.
+They also, compare the performance of [GENN] to [GPNN], a traditional [Back-Propagation Neural Network] ([BPNN]) and a [random search] algorithm.
+[GENN] outperforms both [BPNN] and the [random search], and performs at least as well as [GPNN].
+Liang and Kelemen {60} proposed a [Time Lagged Recurrent Neural Network] with trajectory learning for identifying and classifying the gene functional patterns from the heterogeneous nonlinear time series microarray [experiments].
 We used a [fuzzy neural network] ([FNN]) proposed earlier for [cancer classification].
 In this work we used three well-known [microarray databases], i.e., the [lymphoma data set], the [small round blue cell tumor (SRBCT) data set], and the [ovarian cancer data set].
 Our result shows the [FNN] classifier not only improves the accuracy of cancer classification problem but also helps biologists to find a better relationship between important genes and development of cancers.
@@ -554,39 +552,37 @@ We used the [log-sigmoid] transfer function ([logsig]) in each layer.
 The [learning rate] was set to value 0.05 and the tolerable error to 5.10-5.
 The said algorithm is based on [Levenberg-Marquardt] optimization.
 In this study a novel [neural network-based] method for [peptide identification] is proposed.
-The presented here Qual method uses for classification purposes a [fully connected, feed-forward multilayer neural network] {6} with [6 input nodes] corresponding to the spectral features, [one hidden layer], and [one output node].
+The presented here Qual method uses for classification purposes a [fully connected], [feed-forward multilayer neural network] {6} with [6 input nodes] corresponding to the spectral features, [one hidden layer], and [one output node].
 The number of nodes in the hidden layer was determined by cross-validation during training with the [back-propagation Leveberg-Marquadt] algorithm.
-The final [neural network] model included a [hidden layer with 8 nodes].
-The [training set] consisted of [184 653 tandem spectra] acquired with an high resolution LTQ– FTICR mass spectrometer and searched against a target/decoy database with the X!Tandem engine {3}.
+The final [neural network model] included a [hidden layer with 8 nodes].
+The [training set] consisted of 184 653 tandem spectra acquired with an high resolution LTQ– FTICR mass spectrometer and searched against a target/decoy database with the X!Tandem engine {3}.
 The expected [neural network output values] for positive and negative examples were equal to 1 and 0, respectively.
 To recognize the performed activity the [backpropagation neural network] with [one hidden layer] was used.
-We conduct experiments on the newly proposed [COSMIC CNA dataset], which contains [25 types of cancer].
-We [obtained 4731 corn seed RGB images] consisting of [952 haploid] and [3779 diploid] seeds from several different proprietary maize inbred lines.
-We [train our network] using the [image dataset] that was randomly split into [4021 training] ([809 haploid] and [3212 diploid] seeds) and [710 test] ([143 haploids] and [567 diploids]) images with [20% haploids in both sets].
-Input images of the corn seeds are convolved with [16 filter kernels] in each convolutional layer, followed by [two fully connected layers] and an output layer.
-In this paper, we propose a [Convolutional neural network] ([CNN]) as a tool to improve efficiency and accuracy of [Osteosarcoma tumor classification] into [tumor classes] (viable tumor, necrosis) vs non-tumor.
-The proposed [CNN architecture] contains [five learned layers]: [three convolutional layers] interspersed with [max pooling layers] for feature extraction and [two fully-connected layers] with [data augmentation] strategies to boost performance.
-The [convolution filters] are applied to small patches of the input image to detect and extract image features.
-Our [neural network architecture] combines features of [AlexNet] {9} and [LeNet] {10} to develop a fast and accurate slide classification system.
-The goal of this paper is to utilize [CNN] to identify the four [regions of interest] (Fig. 2), namely, (1) [Viable tumor], (2) [Coagulative necrosis], (3) [fibrosis or osteoid], and (4) [Non tumor] (Bone, cartilage).
-These four regions are used to extract information about the three main [classes of interest]: [viable tumor], [necrosis] (coagulative necrosis, osteiod, and fibrosis), and other tissue (bone, blood vessels, cartilage, etc.).
+We conduct [experiments] on the newly proposed [COSMIC CNA dataset], which contains 25 types of cancer.
+We obtained 4731 corn seed [RGB images] consisting of 952 haploid and 3779 diploid seeds from several different proprietary maize inbred lines.
+We train our network using the [image dataset] that was randomly split into 4021 training (809 haploid and 3212 diploid seeds) and 710 test (143 haploids and 567 diploids) [images] with 20% haploids in both sets.
+Input [images] of the corn seeds are convolved with 16 [filter kernels] in each [convolutional layer], followed by two [fully connected layers] and an output layer.
+In this paper, we propose a [Convolutional neural network] ([CNN]) as a tool to improve efficiency and [accuracy] of Osteosarcoma tumor classification into tumor classes (viable tumor, necrosis) vs non-tumor.
+The proposed [CNN] architecture contains [five learned layers]: [three convolutional layers] interspersed with [max pooling layers] for feature extraction and [two fully-connected layers] with [data augmentation] strategies to boost performance.
+The [convolution filters] are applied to small patches of the input [image] to detect and extract [image] features.
+Our [neural network] architecture combines features of [AlexNet] {9} and [LeNet] {10} to develop a fast and accurate slide classification system.
+The goal of this paper is to utilize [CNN] to identify the four regions of interest (Fig. 2), namely, (1) Viable tumor, (2) Coagulative necrosis, (3) fibrosis or osteoid, and (4) Non tumor (Bone, cartilage).
 Spanhol et al. {15} developed on existing [AlexNet] for different segmentation and classification tasks in breast cancer.
-In this paper, we propose a deep learning approach capable of assigning [tumor classes] (viable tumor, necrosis) vs non-tumor directly to input slides in osteosarcoma, a type of cancer with significantly more variability in tumor description.
-We extend the successful [Alexnet] proposed by Krizhevsky (see {9}) and [LeNet] network architectures introduced by LeCun (see {10}) which uses [gradient based learning] with [back propogation] algorithm.
-The typical [CNN architecture] for image classification consists of a series of [convolution filters] paired with [pooling layers].
-It is trained to classify patches into three bins: [viable tumor], [necrosis] (coagulative necrosis, osteoid, fibrosis) and [non-tumor].
+In this paper, we propose a [deep learning] approach capable of assigning tumor classes (viable tumor, necrosis) vs non-tumor directly to input slides in osteosarcoma, a type of cancer with significantly more variability in tumor description.
+We extend the successful [Alexnet] proposed by Krizhevsky (see {9}) and [LeNet] [network architectures] introduced by LeCun (see {10}) which uses [gradient based learning] with [back propogation] algorithm.
+The typical [CNN] architecture for [image] classification consists of a series of [convolution filters] paired with [pooling layers].
 We develop on existing proven networks [LeNet] and [AlexNe]t because finding a successful network configuration for a given problem can be a difficult challenge given the total number of possible configurations that can be defined.
-The [data augmentation] methods to reduce [over-fitting] on image data as described by Krizhevsky {9} has been proclaimed for its success rate in various object recognition applications.
+The [data augmentation] methods to reduce [over-fitting] on [image] data as described by Krizhevsky {9} has been proclaimed for its success rate in various object recognition applications.
 We start with a simple [3 layer network] [INPUT - CONVOLUTION - MAX POOL - MLP].
-[INPUT 128 × 128 × 3] will hold the raw pixel values of the image, i.e. an image of width 128, height 128, and with three color channels R,G,B.
-This may result in volume such as [124 × 124 × 4] for [4 filters].
+[INPUT 128 × 128 × 3] will hold the raw pixel values of the [image], i.e. an [image] of width 128, height 128, and with three color channels R,G,B.
+This may result in volume such as [124 × 124 × 4] for 4 [filters].
 [MAX POOL layer] will down-sample along the spatial dimensions (width, height), resulting in volume [62 × 62 × 4].
-[MLP layer] will compute the class scores, resulting in volume of size [1 × 1 × 4], where each of the 4 numbers correspond to a class score for the [4 tumor regions].
-The different layers in the network are [3 Convolution layer] (C), [3 Sub-Sampling layer] (P), and [2 fully connected multi-level perceptrons] (M).
+[MLP layer] will compute the class scores, resulting in volume of size [1 × 1 × 4], where each of the 4 numbers correspond to a class score for the 4 tumor regions.
+The different layers in the network are 3 [Convolution layer] (C), 3 [Sub-Sampling layer] (P), and 2 [fully connected] [multi-level perceptrons] (M).
 We worked with different number of [hidden layers] to define the best output in terms of tumor identification and computational resources needed (see Table 1).
-The detailed architecture of the [five level CNN] for [tumor classification] is shown in Fig. 3.
-Our architecture combines the simplicity of [Lenet architecture] with the [data augmentation] methods used by [AlexNet architecture].
-The lower [3 layers] are comprised of alternating [convolution and max-pooling layers].
+The detailed architecture of the five level [CNN] for tumor classification is shown in Fig. 3.
+Our architecture combines the simplicity of [Lenet] architecture with the [data augmentation] methods used by [AlexNet] architecture.
+The lower 3 layers are comprised of alternating [convolution and max-pooling layers].
 The first [convolution layer] has [filter size 5 × 5] used to detect low level features like edges which is followed by a [max pooling layer of scale 2] to down-sample the data. 
 This data is then sent to second layer of [5 × 5 filters] to detect higher order features like texture and spatial connectivity followed by a [max-pooling layer].
 The last [convolution layer] uses a [filter of size 3 × 3] and [max-pooling size 2] for down- sampling to generate more higher order features.
@@ -594,24 +590,22 @@ The upper 2 layers are [fully-connected multi-level perceptron] ([MLP]) [neural 
 The second layer of the [MLP] is the [output layer] consisting of [four neurons] (see Table 2).
 The sum of the output probabilities from the [MLP] is 1, ensured by the use of [Softmax] algorithm as the [activation function] in the [output layer] of the MLP.
 The [convolution] and [max pooling layers] are feature extractors and the [MLP] is the classifier.
-The easiest and most common method to reduce [overfitting] of data is to artificially augment the dataset using label-preserving transformations.
-We use two distinct [data augmentation] techniques both of which allow transformed images to be produced from the original images with very little computation, so the transformed images do not need to be stored on disk.
+The easiest and most common method to reduce [overfitting] of data is to artificially augment the [dataset] using label-preserving transformations.
+We use two distinct [data augmentation] techniques both of which allow transformed [images] to be produced from the original [images] with very little computation, so the transformed [images] do not need to be stored on disk.
 The second technique for [data augmentation] alters the intensities of the RGB channels in [training images] {9}.
-We perform [Principal component analysis] ([PCA]) on the set of RGB pixel values throughout the [training set] and then, for each training image, we add the following quantity to each RGB image pixel (i.e., Ixy = {IR xy, IG xy, IB xy} T ): {p1, p2, p3}{α1λ1, α2λ2, α3λ3} T , where pi and λi are the i-th eigenvector and eigenvalue of the 3 × 3 covariance matrix of RGB pixel values, respectively, and αi is a random variable drawn from a Gaussian with mean 0 and standard deviation 0.1.
-[Data augmentation] helps alleviate [over-fitting] by considerably increasing the amount of [training data], removing rotation dependency and making the training images invariant to changes in the color brightness and intensity through PCA.
+We perform [Principal component analysis] ([PCA]) on the set of RGB pixel values throughout the [training set] and then, for each [training image], we add the following quantity to each [RGB image] pixel (i.e., Ixy = {IR xy, IG xy, IB xy} T ): {p1, p2, p3}{α1λ1, α2λ2, α3λ3} T , where pi and λi are the i-th eigenvector and eigenvalue of the 3 × 3 covariance matrix of RGB pixel values, respectively, and αi is a random variable drawn from a Gaussian with mean 0 and standard deviation 0.1.
+[Data augmentation] helps alleviate [over-fitting] by considerably increasing the amount of [training data], removing rotation dependency and making the [training images] invariant to changes in the color brightness and intensity through PCA.
 The network is trained with [stochastic gradient descent].
 We initialized all [weights] with 0 mean by assigning them small, random and unique numbers from 10−2 standard deviation Gaussian random numbers, so that each layer calculates unique updates and integrate themselves as different units of the full network.
-Each case consists of an average of [25 individual svs images] representing different sections of the microscopic slide.
-From these [9 svs slides], [81 random tiles of size 1024 × 1024] that represent different tissue and cellular regions with appearance of both normal and malignant regions were used.
-The pathologists then used an in-house tool that we developed to annotate these [81 tiles] as [viable tumor], [necrosis], [non-viable tumor], and [non-tumor].
+Each case consists of an average of 25 individual svs [images] representing different sections of the microscopic slide.
 The [256 × 256 patches] limited the [CNN] due to memory issues and the [64 × 64 patch size] had very low [accuracy].
 Hence we decided on a [128 × 128 patch size].
-This resulted in about [5000 image patches] in the [dataset].
-Only [60% patches] were used for [training], and [20% data] was used as [validation se]t, the remaining [20% data] was use for [test set].
+This resulted in about 5000 [image] patches in the [dataset].
+Only 60% patches were used for training, and 20% data was used as [validation set], the remaining 20% data was use for [test set].
 The architecture was developed in JAVA using [dl4j] ([deep learning for java]) libraries {1}.
 The [training data] was fed to the network in [batch sizes] of 100 to utilize parallelism and improve the network efficiency.
-The objective of the network was to classify the [input images tiles] into one of the four regions ([viable tumor], [coagulative necrosis], [osteoid or fibrosis], [non-tumor]) mentioned before.
-The performance of the [neural network] was monitored by assessing the [error rate] on the [validation set], once the [error rate] saturated after [10 epochs], [training] was stopped.
+The objective of the network was to classify the [input images] tiles into one of the four regions (viable tumor, coagulative necrosis, osteoid or fibrosis, non-tumor) mentioned before.
+The performance of the [neural network] was monitored by assessing the [error rate] on the [validation set], once the [error rate] saturated after 10 [epochs], training was stopped.
 Our implementation gives [F1-score] of 0.86 and an [accuracy] of 0.84.
 In this section we present and compare the qualitative output of three architectures: [AlexNet], [Lenet], and our proposed architecture.
 We find that the running time of [Lenet] is fastest but the [accuracy] and [precision] of our proposed architecture is better than both [AlexNet] and [Lenet] (see Table 3).
@@ -620,24 +614,24 @@ This can be done by applying the full [convolution neural network] to generate c
 As far as the authors are aware, this is the first paper describing the applicability of [convolutional neural networks] for diagnostic [analysis of osteosarcoma].
 In this paper, we propose a new computational method for predicting DTIs from drug molecular structure and protein sequence by using the stacked [autoencoder] of deep learning which can adequately extracts the raw data information.
 The experimental results of [5-fold cross-validation] indicate that the proposed method achieves superior performance on [golden standard datasets] (enzymes, ion channels, GPCRs and nuclear receptors) with [accuracy] of 0.9414, 0.9116, 0.8669 and 0.8056, respectively.
-In the experiment, we make the predictions on the [golden standard] drug-target interactions datasets involving enzymes, ion channels, GPCRs and nuclear receptors.
-In this experiment, we used the chemical structure of the molecular substructure fingerprints from [PubChem database].
-It defines an [881 dimensional binary vector] to represent the molecular substructure.
-[Stacked Auto-Encoder] ([SAE]) is a popular depth learning model, which uses [autoencoders] as building blocks to create deep [neural network] {17}.
+In the [experiment], we make the predictions on the [golden standard] drug-target interactions [datasets] involving enzymes, ion channels, GPCRs and nuclear receptors.
+In this [experiment], we used the chemical structure of the molecular substructure fingerprints from [PubChem database].
+It defines an 881 dimensional binary [vector] to represent the molecular substructure.
+[Stacked Auto-Encoder] ([SAE]) is a popular depth learning [model], which uses [autoencoders] as building blocks to create deep [neural network] {17}.
 The [auto-encoder] (AE) can be considered as a special [neural network] with [one input layer], [one hidden layer] and [one output layer], as shown in Fig. 1.
 The combination of multiple [auto-encoders] together constitutes the stacked [auto-encoders], which has the characteristics of deep learning.
 Figure 2 shows the structure of the stacked [auto-encoder] with h-level [auto-encoders] which are trained in the [layer-wise] and bottom-up manner.
 The [activation function] is usually the [sigmoid] function or [tanh] function.
 In this paper, we set up a [3 layer auto-encoder], and use the rotation forest as the final classifier.
-In this paper, we use [5-fold cross-validation] to assess the predictive ability of our model in the [golden standard datasets] involving enzymes, ion channels, GPCRs and nuclear receptors.
-The proposed model performs well in the [golden standard datasets]: enzymes, ion channels, GPCRs and nuclear receptors.
-Table 1 lists the experimental results on the enzyme dataset, it yielded an [accuracy] of 0.9414, [sensitivity] of 0.9555, [precision] of 0.9293, [MCC] of 0.8832 and [AUC] of 0.9425.
-The highest [accuracy] of the five models reached 0.9462, and the lowest also reached 0.9385.
+In this paper, we use [5-fold cross-validation] to assess the predictive ability of our [model] in the [golden standard datasets] involving enzymes, ion channels, GPCRs and nuclear receptors.
+The proposed [model] performs well in the [golden standard datasets]: enzymes, ion channels, GPCRs and nuclear receptors.
+Table 1 lists the experimental results on the [enzyme dataset], it yielded an [accuracy] of 0.9414, [sensitivity] of 0.9555, [precision] of 0.9293, [MCC] of 0.8832 and [AUC] of 0.9425.
+The highest [accuracy] of the five [models] reached 0.9462, and the lowest also reached 0.9385.
 The [accuracy], [sensitivity], [precision], [MCC] and [AUC] of [cross-validation] are 0.9116, 0.9569, 0.8778, 0.8271 and 0.9107, respectively.
 The average [accuracy], [sensitivity], [precision], [MCC] and [AUC] are 0.8669, 0.8164, 0.9102, 0.7396 and 0.8743, respectively.
-The highest [accuracy] of the five models reached 0.9331.
+The highest [accuracy] of the five [models] reached 0.9331.
 We achieved an [accuracy] of 0.8056, [sensitivity] of 0.7627, [precision] of 0.8410, [MCC] of 0.6188 and [AUC] of 0.8176.
-Figures 4, 5, 6 and 7 show the [ROC curves] obtained on the enzymes, ion channels, GPCRs and nuclear receptors datasets by the proposed method.
+Figures 4, 5, 6 and 7 show the [ROC curves] obtained on the enzymes, ion channels, GPCRs and [nuclear receptors datasets] by the proposed method.
 The results of the comparison show that the stacked [auto-encoder] combined with the rotation forest classifier can improve the prediction ability on the [golden standard datasets] (Table 6).
 CAST uses [Multi-Layer Perceptron] ([MLP]), a type of [artificial neural network] ([ANN]) that is often applied to classification problems {17}.
 The [retina training set] is comprised of [5,891 pixel examples].
@@ -646,10 +640,10 @@ The network used consisted of [97 input nodes], [1 hidden layer with 49 nodes], 
 The network was trained using [ten-fold cross validation].
 The learning method used was the standard method of [backpropagation] ([gradient decent]).
 In order to develop CAST we utilized an [artificial neural network] ([ANN]) and tested its ability against fast marching.
-Classifiers such as [perceptrons], the basic component of [neural networks], have been found useful for [identifying membranes in EM images] {6}.
-One kind of [neural network] that has been widely used for image segmentation is the [Convolutional Neural Network] ([CNN]).
+Classifiers such as [perceptrons], the basic component of [neural networks], have been found useful for identifying membranes in EM [images] {6}.
+One kind of [neural network] that has been widely used for [image] segmentation is the [Convolutional Neural Network] ([CNN]).
 [ANNs] require significant computing power, which can be an important factor if the [data set] is large.
-Use of [ANNs] has become common in [image processing] due to generally high performance, and our results do not differ in that we also find classification by [ANN] to provide superior performance.
+Use of [ANNs] has become common in [image] processing due to generally high performance, and our results do not differ in that we also find classification by [ANN] to provide superior performance.
 The [artificial neural network] examines each pixel in the selected area.
 This allows the [neural network] to make an accurate classification despite low contrasts and fragmented boundaries.
 Outlines made using the [neural network] are subjectively much more accurate than those made using fast marching.
@@ -657,28 +651,26 @@ Expand Area works in three dimensions {21}, but the current [neural network] onl
 If part of the structure of interest shifted out of the area being examined by the [neural network] somewhere in the stack, the results produced by the network would be off.
 One possible solution would be to move the region being examined by the [neural network] on a slice-to-slice basis.
 These words are filtered by the [NLTK toolkit] {9}.
-However, Bengio et al. {11} developed a [neural network] language model ([NNLM]) that learns a probability distribution over words in the corpus and the model is trained to produce the vector representations of word.
-In contrast to the one-hot encoding, the [NNLM] generates [word vectors] with low and dense [vector], it is easier to capture the word’s property.
-Mikolov et al. {12} extended the Bengio’ work and built a new [neural network] language leaning model, [Word2Ve], using different learning methods: Continues Bag of Words (CBOW) and Skip-gram.
+In contrast to the one-hot encoding, the [NNLM] generates word [vectors] with low and dense [vector], it is easier to capture the word’s property.
+Mikolov et al. {12} extended the Bengio’ work and built a new [neural network] language learning [model], [Word2Ve], using different learning methods: Continues Bag of Words (CBOW) and Skip-gram.
 The reason that we use the [Word2Vec] due to it consume less time than Benhio’s [NNLM] while training.
-We applied the [Word2Vec] to generate the good quality of [word vectors] through training the whole [data set].
+We applied the [Word2Vec] to generate the good quality of word [vectors] through training the whole [data set].
 In order to explore the performances of different combinations of the nine features, we trained [5621000 pattern recognition neural networks] {11}.
-[45667 models] were selected to test the new discriminants for near native protein-protein interface recognition according to the performances for interface residue pair prediction.
 In this article, we study the impacts of encoding schemes on several variant algorithms in [auto-encoders] by applying [deep neural networks] to gene annotation.
 Four variant [auto-encoder] algorithms include [orthodox auto-encoder], [denoising auto-encoder], [hidden-layer denoising auto-encoder] and [double denoising auto-encoder]. 
 The [data sets] are the standard benchmark from fruitfly.org for [predicting gene splicing sites] on human genome sequences {16}.
 The [data set] I is the Acceptor locations containing [6,877 sequences] with [90 features].
 The [data set] II is the Donor locations including [6,246 sequences] with [15 features].
-The [data set] of cleaned 269 genes is divided into a test and a training data set {16}.
+The [data set] of cleaned 269 genes is divided into a test and a training [data set] {16}.
 [Denoising auto-encoder] seems not fit to the application of [DNA structure prediction] because corrupted [input data] (DNA features) at each location may have a high dependency with others such that denoising makes the prediction messed.
-Compared with the performance of [input-layer denoising auto-encoder] in Fig. 2(c), (d), in [hidden-layer denoising auto-encoder] model, corrupting some nodes on [hidden layers] makes a less impact than corrupting nodes on [input layer].
+Compared with the performance of [input-layer denoising auto-encoder] in Fig. 2(c), (d), in [hidden-layer] [denoising auto-encoder] [model], corrupting some nodes on [hidden layers] makes a less impact than corrupting nodes on [input layer].
 Figure 2(g), (h) shows the performance of [double denoising auto-encoder].
 On the other side, it shows that [auto-encoder] method without denoising is better than other three variants.
 The [over-fitting] issues occur in [Denoising Auto-encoder] more frequently than others.
 The [over-fitting] occurrence is correlated to the [auto-encoder] algorithm and the encoding schemes.
 The DAE shows the poorest performance among the [autoencoder] algorithms.
 In case study section given below, we demonstrate the application of a [Neural Network] for identifying multimarker panels for breast cancer based on liquid chromatography tandem mass spectrometry (LC/MS/MS) proteomics profiles.
-Lancashire et al. (24) described with recent literature that [artificial neural networks] can cope with highly dimensional, complex datasets such as those generated by protein mass spectrometry and DNA microarray experiments, and can also be used to solve problems, such as disease classification and identification of biomarkers.
+Lancashire et al. (24) described with recent literature that [artificial neural networks] can cope with highly dimensional, complex [datasets] such as those generated by protein mass spectrometry and DNA microarray [experiments], and can also be used to solve problems, such as [disease classification] and identification of biomarkers.
 We used a data analysis method based on a [Feed-Forward Neural Network] ([FFNN]) to identify multiprotein biomarker panels, with which we are capable of separating plasma samples regarding reference and cancerous with high predictive performance.
 According to an [area-under-the-curve] ([AUC]) criterion the optimal combination of a panel of five markers was determined, using both a twovariable output encoding scheme and a single-variable encoding scheme.
 We compared the [Receiver Operating Characteristics] ([ROC]) performance and verified that the best five-marker panel performed well in both [training dataset] and [test dataset], achieving more than 82.5% in [sensitivity] and [specificity].
@@ -694,12 +686,12 @@ The donor sites are modeled with a set of [10 networks], each with 23 bases in t
 The [10 networks] were separately trained from different starting points, and their outputs (from 0 to 1) averaged to get the final score.
 A similar set of [10 networks] was used to score acceptor sites, except that these have a 61-base input window and 15 [hidden layer] units.
 The set of [neural networks] used to predict coding regions in NetPlantGene has as output a score for each base of its likelihood of being in a coding region.
-A [neural network] predicts the three [secondary structure types] (a, b, and coil) using real numbers from the output units that make up the [output layer].
+A [neural network] predicts the three secondary structure types (a, b, and coil) using real numbers from the output units that make up the [output layer].
 The first network is a [sequence-to-structure network] whose input represents the local alignment, residue conservation, and additionally long-range sequence information (see Figure 11.22).
 The output of the first network forms the input to the second [neural network], a [structure-to-structure network].
 [NNSSP] ([Neural Net Nearest Neighbor]) is a [neural network] development of a statistical and knowledge-based program, SSP, which, like PREDATOR, used the nearestneighbor approach.
 [NNSSP] has an advanced scoring system that combines sequence similarity, local sequence information, and knowledge-based information on b-turns and the amino- and carboxy-terminal properties of a-helices and b-strands.
-Schematic representation of the double [neural network] architecture frequently used in [protein secondary structure prediction].
+Schematic representation of the double [neural network architecture] frequently used in [protein secondary structure prediction].
 The three [hidden layer] units receive the same signals from the [input layer], but apply different [weights] to them.
 The first [hidden layer] will contain [39 units] for a 13-residue window, and these send signals to units in a second [hidden layer], which then signals the [output layer] (see Figure 12.26).
 The communication from the first [hidden layer] to the second has a repeat pattern intended to mimic the helical structure, and has been colored for clarity.
@@ -709,63 +701,62 @@ The initial [neural network] has a [sevenstate output], namely a-helix (H), b-st
 A 15-residue sequence window is used with [20 input layer] units per residue representing the PSSM and an additional spacer unit.
 The [neural network] used is a standard [feed-forward model] as described in Section 12.4, with six [hidden layer units] and two [output units].
 Indeed, this work will focus on the development of a diagnosis support system, in terms of its knowledge representation and reasoning procedures, under a formal framework based on Logic Programming, complemented with an approach to computing centered on [Artificial Neural Networks], to evaluate ACS predisposing and the respective Degree-of-Confidence that one has on such a happening.
-Each base pair (A, C, T, G) was denoted as a [one-hot vector] {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0} and {0, 0, 0, 1} respectively.
-For DNase-seq data and each histone modification data, TFBSs and non-TFBSs were described as [one channel vector] at each nucleotide position, For HMS, existing methods calculated the statistical values (such average reads number in each base pair) within the range of hundreds or thousands nucleotide.
-For example, if we used DNase-seq data with 101 bp, the [vector was of size 1 x 101] for a sample.
+Each base pair (A, C, T, G) was denoted as a one-hot [vector] {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0} and {0, 0, 0, 1} respectively.
+For example, if we used DNase-seq data with 101 bp, the [vector] was of size 1 x 101 for a sample.
 The [CNN] consists of a [convolutional layer], a [max-pooling layer], a [fully connected layer], a [dropout layer] {28} and an [output layer].
 [DNN] consists of one or two [full connection layers], a [dropout layer] after each [full connection layer] and an [output layer].
-For [CNN] models, we vary the [number of kernels], the [size of kernel] window, and the [number of neurons] in the [full connection layer].
-For [DNN] models, we vary the [number of layers], and the [number of neural] in each [full connection layer].
+For [CNN models], we vary the [number of kernels], the [size of kernel] window, and the [number of neurons] in the [full connection layer].
+For [DNN models], we vary the [number of layers], and the [number of neural] in each [full connection layer].
 For training, we used the [cross-entropy] as the [loss function].
-Given this [loss function] and different [hyper-parameters] (see below), the models were trained using the [standard error back-propagation] algorithm and [AdaDetla] method {29}.
-We set each model for [100 epochs] and 128 [mini-batch size] and validated the model after each epoch.
-Then the [early-stop] trick was used to stop training as the error on [validation set] is higher than the last four [epochs].
-The best model was chosen according to the [accuracy] on the [validation set].
+Given this [loss function] and different [hyper-parameters] (see below), the [models] were trained using the [standard error back-propagation] algorithm and [AdaDetla] method {29}.
+We set each [model] for [100 epochs] and 128 [mini-batch size] and validated the [model] after each epoch.
+Then the [early-stop] trick was used to [stop training] as the error on [validation set] is higher than the last four [epochs].
+The best [model] was chosen according to the [accuracy] on the [validation set].
 For KNN, LR, RF, we implemented these baselines using the python based [scikit-learn] package.
 We used [python] and [Keras] framework to train [neural networks].
 We used [python] and [skcikit-learn] to train conventional machine learning methods {30}.
-We used different [sample lengths] to train the [CNN] models and different [hyper-parameters] for each length.
+We used different [sample lengths] to train the [CNN models] and different [hyper-parameters] for each length.
 For each length, we selected the results of best [hyper-parameters].
-Performance evaluation of [CNN] with respect to [sample length] and model structure using HMS data in terms of the distribution of [AUCs] across [256 experiments].
+Performance evaluation of [CNN] with respect to [sample length] and [model] structure using HMS data in terms of the distribution of [AUCs] across 256 [experiments].
 The effect of [kernel number].
 The effect of [neuron number].
 The effect of [kernel window size].
 The effect of [sample length] and [DNN model structure].
 The performance comparison of [DNN] versus [CNN].
 First, more [convolutional kernels] could also improve the prediction performance (Fig. 2B).
-However, when more than [64 kernels] were used, the improvement seemed to be saturated for the [256 experiments] (Fig. 2B).
+However, when more than 64 [kernels] were used, the improvement seemed to be saturated for the 256 [experiments] (Fig. 2B).
 Second, more neurons in the [full connection layer] of [CNN] could improve the prediction performance (Fig. 2C).
-We observe that small [kernel window size] achieves better performance than using large ones (Fig. 2D) while big [kernel window size] usually used in sequence-based [CNN] models.
+We observe that small [kernel window size] achieves better performance than using large ones (Fig. 2D) while big [kernel window size] usually used in sequence-based [CNN models].
 We find that deeper [neural networks] and longer sample length work better too for [DNN] (Fig. 2E).
 However, the performance of [DNN] is still slightly worse than that of [CNN], indicating the importance of combining convolution operation with HMS data (Fig. 2F).
-We conducted leave-one-feature-out feature selection [experiments] to train the [CNN] models by using merely four histone modifications data with the same [hyperparameters] in previous section.
-For model architectures, more [convolutional kernels] could also improve the prediction performance (Fig. 4B).
-Thus, no matter what the data type is, the additional [kernels] are beneficial to enhance power in extracting features and improve model performance.
-By changing the [number of neurons] in the last [dense layer] of [CNN], we can see that models with more [hidden neurons] achieve better performance (Fig. 4C).
-We also see that [CNN] models with small and large [kernel window sizes] (4 and 24) achieve almost the same performance for different sample lengths (Fig. 4D).
+We conducted leave-one-feature-out feature selection [experiments] to train the [CNN models] by using merely four histone modifications data with the same [hyperparameters] in previous section.
+For [model] architectures, more [convolutional kernels] could also improve the prediction performance (Fig. 4B).
+Thus, no matter what the data type is, the additional [kernels] are beneficial to enhance power in extracting features and improve [model] performance.
+By changing the [number of neurons] in the last [dense layer] of [CNN], we can see that [models] with more [hidden neurons] achieve better performance (Fig. 4C).
+We also see that [CNN models] with small and large [kernel window sizes] (4 and 24) achieve almost the same performance for different sample lengths (Fig. 4D).
 This suggests that [kernel window sizes] (4 and 24) could not distinctly influence DHS data information.
 For comparison with [CNN], we also trained [DNN] using different sequence lengths and [hyper-parameters] for the DHS data.
 Moreover, the performance of [DNN] is slightly worse than that of [CNN], indicating the importance of combining convolution operation with DHS data (Fig. 4F).
-In both HMS and DHS cases, [CNN] perform significantly better than conventional classifiers in term of the distribution of [AUCs] across [256 experiments] (Fig. 5).
-With 3D [convolution kernel] in [3DCNN] could learn more spatial information than the standard 2D convolutional [neural networks] with the [2D kernels].
+In both HMS and DHS cases, [CNN] perform significantly better than conventional classifiers in term of the distribution of [AUCs] across 256 [experiments] (Fig. 5).
+With [3D convolution kernel] in [3DCNN] could learn more spatial information than the standard 2D convolutional [neural networks] with the [2D kernels].
 Our [3DCNN] is a [seven layers deep neural network] consists the layers of [3D convolution], [batch normalization], and [Softmax].
 As the input is a high-resolution 3D MRI data, [3DCNN] is applied deep [convolution layers] with small [kernel] numbers to overcome the [overfitting] problem.
 Meanwhile, [3DMaxPooling] is introduced to [dimension reduction].
 Except for the [output layer], all the layers are [3D convolution layers], which have a much stronger nonlinear mapping power and feature extraction capacity than traditional [2D convolution neural network].
 At last, due to the 3D high dimension in MRI data, all the [parameters] and [convolution kernels] in [3DCNN] are small to prevent the [overfitting].
-There are [80 samples] in our MRI [dataset] which consists 40 BECT instances and 40 control instances.
-Therefore, we construct a traditional [2D convolution] [neural network] ([2DCNN]) as the baseline model for BECT prediction.
+There are [80 samples] in our [MRI dataset] which consists 40 BECT instances and 40 control instances.
+Therefore, we construct a traditional [2D convolution] [neural network] ([2DCNN]) as the baseline [model] for BECT prediction.
 The convolution [kernel sizes] of [2DCNN] are set the same [3DCNN].
 And the [stride] of [2DCNN] is modified to get a full convolution architecture which reduces the number of [weights] and overcomes the [overfitting] problem.
 However, [3DCNN] extends one more dimension as the data channel dimension in the [input layer].
 The detailed comparison of [2DCNN] and [3DCNN] are shown in Table 1.
-We evaluate [3DCNN] on our MRI [dataset] in [five-fold cross-validation].
+We evaluate [3DCNN] on our [MRI dataset] in [five-fold cross-validation].
 The whole 80-cases [dataset] is divided into [training dataset] ([54 instances]) and [testing dataset] ([16 instances]), and the evaluation criterion is the prediction [accuracy].
 The [learning rate] is set to 1e − 4 under [Adam optimizer].
 Table 2 shows the performance of [3DCNN] and [2DCNN] on the [test dataset].
-The result shows [3DCNN] achieving a prediction [accuracy] of 89.80% on the [five-fold cross-validation] evaluation, which outperforms the [2DCNN] baseline model (82.50%).
-Finally, the [dataset] for model contains [32 independent variables], [1 dependent variable], and [1 time index].
-We test 4 different [LSTM] models: large/small sample size that the predictor variables come from air pollution, temperature change, and google trends [datasets]; large/small sample size that only use google trends data as predictor variables.
+The result shows [3DCNN] achieving a prediction [accuracy] of 89.80% on the [five-fold cross-validation] evaluation, which outperforms the [2DCNN] baseline [model] (82.50%).
+Finally, the [dataset] for [model] contains 32 independent variables, 1 dependent variable, and 1 time index.
+We test 4 different [LSTM models]: large/small sample size that the predictor variables come from air pollution, temperature change, and google trends [datasets]; large/small sample size that only use google trends data as predictor variables.
 The [number of neurons] in the [input layer] was equal to the number of [input data] points for each attribute.
 The optimal [number of neurons] in the [hidden layer] was determined through experimentation for minimizing the error at the best [epoch] for each network individually.
 An upper limit for the total [number of weight connections] was set to half of the total number of [input vectors] to avoid [overfitting], as suggested previously (Andrea and Kalayeh, 1991).
@@ -774,7 +765,7 @@ At this threshold value of Pad, the [Matthew's correlation coefficient] was obse
 The first [neural network] ([NN1]) predicts the residue contact number on the basis of the PSSM weights.
 The structure of the [NN1] is as follows.
 The PSSM values are the [input parameters].
-The complete vector of the [input data] for the [NN1] thus composed of (2/z + 1) x 1 = 11 x 21 =[231 parameters].
+The complete [vector] of the [input data] for the [NN1] thus composed of (2/z + 1) x 1 = 11 x 21 =231 [parameters].
 [Two internal layers] with 50 and [3 neurons] were implied for the [NN1].
 A single number was at the [NN1] output, the predicted value of the contact number of the rth residue.
 The [neural network] at the second level ([NN2]) was built as follows.
@@ -786,7 +777,7 @@ The prediction [accuracy] was estimated on the [testing data].
 The second level [neural network NN2] enables the improvement of prediction [accuracy].
 [NN2] was introduced to additionally take into consideration the interdependence of the contact number of residues neighboring along the protein chain.
 The [NN2] introduces, although slight, yet regular improvement in prediction [accuracy].
-Similarly to VL-XT, a [neural network] with a [fully connected hidden layer] of [ten neurons] was trained on the specific datasets and it outputs a value for the central amino acid in the window.
+Similarly to VL-XT, a [neural network] with a [fully connected hidden layer] of [ten neurons] was trained on the specific [datasets] and it outputs a value for the central amino acid in the window.
 Using an original approach, [RONN] ([Regional Order Neural Network]) {82} recognizes disordered segments based on their similarity to well-characterized prototype sequences with known disordered status.
 The resulting homology scores are converted into distances and are used to train a modified version of radial basis function networks called a [bio-basis function neural network].
 Seven [physical parameters] describing the physicochemical properties of the residue: a steric parameter(graph shape index), hydrophobicity, volume, polarizability, isoelectric point, helix probability, and sheet probability.
@@ -796,51 +787,51 @@ Probability predictions from this network were further refined using a filter ne
 In general the networks used to predict ψ angles were composed of two [hidden layers], each with [51 nodes].
 [Ten fold cross validation] will be used to judge the [accuracy] of the predictions.
 We use a bipolar [activation function] given by f (x) = tanh(αx), with α = 0.2, [momentum of 0.4], and the [back-propagation] method with relatively slow learning ([learning rate] 0.001) to optimize the [weights].
-To determine the quality of the prediction we use the [Mean Absolute Error] ([MAE]) in degrees, [Pearson’s correlation coefficient] (pc), and the probability that the predicted and native angles are separated by less than 10% (Q10p).
+To determine the quality of the prediction we use the [Mean Absolute Error] ([MAE]) in degrees, Pearson’s correlation coefficient (pc), and the probability that the predicted and native angles are separated by less than 10% (Q10p).
 We use [10-fold cross-validations] {35} to estimate the accuracy over the set.
 To test for possible [overfit] issues we take secondary structure predictions based on the [weights] trained for the first [cross-validation] fold and compare angle prediction between the folds.
 Firpi et al. (2010) developed a method called CSI-ANN based on a [time-delayed neural network] ([TDNN]) framework to predict enhancers in HeLa and Human CD4+ T cells.
-A model particularly well suited for the tasks of interest is the [Bidirectional Recurrent Neural Network] ([BRNN]) {6}.
-The model they used is a fully connected [Multi-Layer Perceptron] ([MLP]) with one [hidden layer] {4} (Haykin).
-They randomly weighted each input and used [back-propagation] {4} totrain the system on a PDB file chosen from the PDB.
+A [model] particularly well suited for the tasks of interest is the [Bidirectional Recurrent Neural Network] ([BRNN]) {6}.
+The [model] they used is a [fully connected] [Multi-Layer Perceptron] ([MLP]) with one [hidden layer] {4} (Haykin).
+They randomly weighted each input and used [back-propagation] {4} to train the system on a PDB file chosen from the PDB.
 Moreover, owing to the rapid growth of the [PDB database], the [training sets] for [ANNs] have also increased.
 Since these artificial intelligence methods are based on an empirical risk-minimization principle, they have some disadvantages, for example, finding the [local minimal] instead of [global minimal]; having low [convergence] rate; more prone to [overfitting]; and when the size of fault samples is limited, it might cause poor [generalization].
 As a collaborative filter, we use [General Regression Neural Network] ([GRNN]).
 In the literature, [GRNN] was shown to be effective in noisy environments as it deals with [sparse data] effectively.
 The method makes use of [RDKit], an open-source cheminformatics software, allowing the incorporation of any global molecular (such as molecular charge) and local (such as atom type) information.
 We evaluate the method on the [Side Effect Resource (SIDE) v4.1 dataset] and show that it significantly outperforms another recently proposed method based on deep [convolutional neural networks].
-Surprisingly, while being one of the best performing methods on all other datasets in {19} their presented [DCNN] performed very poorly on the [SIDER dataset] and were outperformed by traditional methods such as random forest and [logistic regression].
+Surprisingly, while being one of the best performing methods on all other [datasets] in {19} their presented [DCNN] performed very poorly on the [SIDER dataset] and were outperformed by traditional methods such as random forest and [logistic regression].
 Several authors overcome this flaw by either using a [recurrent neural network] ([RNN]) or a [DCNN].
 Wallach et al. {17} for example apply a three dimensional [DCNN] on the spatial structure of molecules.
 Due to the conventions of the field, F will be defined as the [leaky ReLU] function {12} in the rest of this paper.
 The H in Eq. (5) represents an arbitrary [activation function].
 In this paper the [Leaky ReLU] function will be used for H(l) except in the [final layer] where the [sigmoid] function will be used instead.
-The [sigmoid] function is selected here since we want the output of our model to be in the range of 0 to 1.
-To train and test our proposed model we use the publicly available [SIDER dataset] presented in {19}.
+The [sigmoid] function is selected here since we want the output of our [model] to be in the range of 0 to 1.
+To train and test our proposed [model] we use the publicly available [SIDER dataset] presented in {19}.
 This [dataset] contains information on molecules, marketed as medicines, and their recorded side effects.
 The data originates from the [SIDER database].
 The original data consist of [1430 molecules] and [5868 different types of side effects].
-However, in the [dataset] presented by Wu et al. {19}, similar side effects are grouped together, leaving the dataset with [28 groups of side effects].
+However, in the [dataset] presented by Wu et al. {19}, similar side effects are grouped together, leaving the [dataset] with 28 groups of side effects.
 [RDKit] is also used to extract information about the atoms, bonds and molecules, such as chirality and molecular weight.
-The model described earlier in Sect. 3 is implemented in [Theano] {15} and with a network architecture that is as similar as possible as the architecture presented by Wu et al. {19}.
+The [model] described earlier in Sect. 3 is implemented in [Theano] {15} and with a [network architecture] that is as similar as possible as the architecture presented by Wu et al. {19}.
 [Two convolutional layers], each with [64 neurons], will therefore be used.
 These layers are then followed by a single [fully connected layer], with [128 neurons].
-Between each layer in our model we use a 10% [dropout] rate {14}.
-The models are trained by minimizing the [cross entropy error].
+Between each layer in our [model] we use a 10% [dropout] rate {14}.
+The [models] are trained by minimizing the [cross entropy error].
 This is achieved by optimizing the values of all free [parameters] (W(l) and V (l)) using the [ADAM] optimization algorithm {7}.
 Each network is trained for [200 epochs] using a [batch size] of 20 examples.
-The performance of our model on the presented experimental set-ups is measured as the mean [AUC-ROC] value, averaged over all trials and all target variables.
+The performance of our [model] on the presented experimental set-ups is measured as the mean [AUC-ROC] value, averaged over all trials and all target variables.
 The network mainly consists of [three convolution blocks] and [two fully-connected blocks], as well as flattening and concatenating layers that bridge the two types of blocks.
 Each [convolution block] is composed of a [convolution layer] with [ReLU] activation, followed by a max pooling layer, and a dropout layer.
-The first [convolution layer] filters the input of size 1280 × 1024 × 2 using [16 kernels] of size 10 × 10 with a horizontal [stride] of 10 pixels and a vertical [stride] of 8 pixels.
-The result image of size 128×128×16 is then shrunk to 64×64×16 in the following [max pooling] layer.
-The second [convolution layer] filters it using [32 kernels] of size 3 × 3 with a [stride] of 2 pixels.
+The first [convolution layer] filters the input of size 1280 × 1024 × 2 using 16 [kernels] of size 10 × 10 with a horizontal [stride] of 10 pixels and a vertical [stride] of 8 pixels.
+The result [image] of size 128×128×16 is then shrunk to 64×64×16 in the following [max pooling] layer.
+The second [convolution layer] filters it using 32 [kernels] of size 3 × 3 with a [stride] of 2 pixels.
 Through a similar process, the input of the third [convolution layer] becomes of size 16×16×32 and at the end of the block, the input is flattened to a [vector] of length 1024 from 4 × 4 × 64.
 The [vector] is then concatenated with the second input, a [vector] of eight metrics, and delivered to a [fully-connected layer] of [512 neurons].
 Finally, the [vector] of length 512 goes through a [sigmoid] function to generate the output.
-We conducted the self-assembly [experiment] for four hours and recorded images of size 1280 × 1024 at 1 fps, leading to over 14,000 pairs of front and right images.
+We conducted the self-assembly [experiment] for four hours and recorded [images] of size 1280 × 1024 at 1 fps, leading to over 14,000 pairs of front and right [images].
 In total, 725 positive real pairs, 2,475 negative real pairs, 12,000 positive synthetic pairs, and 12,000 negative synthetic pairs are utilized in our [experiment].
 Note that the presented accuracies are the mean accuracy over [10-fold cross validation] except the case when only the synthetic data is used as a [training set].
-Our algorithm reaches an [accuracy] of 93.2% when it is trained with labeled real images.
+Our algorithm reaches an [accuracy] of 93.2% when it is trained with labeled real [images].
 It justifies our utilization of synthetic data, as it recorded 88.7% [accuracy] when only the real data are used as a [training set].
-Our classifier also shows promising results with synthetic images, reaching an [accuracy] of 86%.
+Our classifier also shows promising results with synthetic [images], reaching an [accuracy] of 86%.
