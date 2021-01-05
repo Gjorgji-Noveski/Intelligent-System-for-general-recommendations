@@ -110,7 +110,7 @@ def extractEntitySents(pdfs_path, output_folder):
                     doc = nlp(chunk)
                     for ent in doc.ents:
                         entitySents.add(ent.sent.text)
-                    entSentFile.writelines('\n'.join(entitySents))
+                entSentFile.writelines('\n'.join(entitySents))
             print('Extracted: ' + extractedEntSentFileName)
 
 
