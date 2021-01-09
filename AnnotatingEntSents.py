@@ -55,7 +55,7 @@ def annotateByCategory(inputPath, outputPath):
                 # Extracting only the sentences that i managed to annotate
                 annotatedAnEntity = False
                 for entity in CATEGORIES[category]:
-                    regex = r'(?<=\()' + entity + r's?(?=\))|(?<=\s)' + entity + r'(?=\s)'
+                    regex = r'(?<=\()' + entity + r's?(?=\))|(?<=\s)' + entity + r's?(?=\s)'
 
                     # Using regex to search for singular and plural of entities and if they also appear in '( )' brackets.
                     matchObjIter = re.finditer(regex, line, flags=re.IGNORECASE)
@@ -63,8 +63,7 @@ def annotateByCategory(inputPath, outputPath):
                         annotatedAnEntity = True
 
                         # using counter so i can annotate more than 1 entity in one sentence, without it the array positions won't be correct for the 2nd annotation
-                        line = line[:match.start() + (2 * counter)] + '{' + match.group() + '}' + line[match.end() + (
-                                    2 * counter):]
+                        line = line[:match.start() + (2 * counter)] + '{' + match.group() + '}' + line[match.end() + (2 * counter):]
                 if annotatedAnEntity:
                     sentences.add(line)
             with open(annotatedFile, encoding='utf-8', mode='a')as fw:
