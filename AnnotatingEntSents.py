@@ -55,7 +55,7 @@ def annotateByCategory(inputPath, outputPath):
                 # Extracting only the sentences that i managed to annotate
                 annotatedAnEntity = False
                 for entity in CATEGORIES[category]:
-                    regex = r'(?<=\()' + entity + r's?(?=\))|(?<=\s)' + entity + r's?(?=\s)'
+                    regex = r'(?<=\()' + entity + r's?(?=\))|\b' + entity + r's?\b'
 
                     # Using regex to search for singular and plural of entities and if they also appear in '( )' brackets.
                     matchObjIter = re.finditer(regex, line, flags=re.IGNORECASE)
