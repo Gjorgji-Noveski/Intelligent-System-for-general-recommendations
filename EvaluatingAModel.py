@@ -1,9 +1,8 @@
-import spacy
 from spacy.gold import GoldParse
 from spacy.scorer import Scorer
-import logging
 import os.path
-
+import pickle
+import plac
 
 # TODO: Careful NOT to evaluate a model on the SAME sentences it was trained
 # With this function i'm making sentences in the format
@@ -15,88 +14,42 @@ import os.path
 # ]
 # so i can get NER precision/recall/fscore of the model using the Scorer.score function
 
-def makingEvaluationSents(input_path, unknown_label):
-    allLines = []
-    try:
-        f = open(input_path, 'r')  # input file
-        data_dict = {}
-        annotations = []
-        label_dict = {}
-        s = ''
-        start = 0
-        for line in f:
-            # if its NOT the end of the sentence
-            if line[0:len(line) - 1] != '.\tO':
-                word, entity = line.split('\t')
-                s += word + " "
-                entity = entity[:len(entity) - 1]
-                if entity != unknown_label:
-                    if len(entity) != 1:
-                        d = {}
-                        d['text'] = word
-                        d['start'] = start
-                        d['end'] = start + len(word) - 1
-                        try:
-                            label_dict[entity].append(d)
-                        except:
-                            label_dict[entity] = []
-                            label_dict[entity].append(d)
-                start += len(word) + 1
+"""
+This script writes evaluation results only for the entity recognizer
+"""
 
 
-            else:
-                data_dict['content'] = s
-                content = s
-                s = ''
-                label_list = []
-                for ents in list(label_dict.keys()):
-                    for i in range(len(label_dict[ents])):
-                        if (label_dict[ents][i]['text'] != ''):
-                            l = [ents, label_dict[ents][i]]
-                            for j in range(i + 1, len(label_dict[ents])):
-                                if (label_dict[ents][i]['text'] == label_dict[ents][j]['text']):
-                                    di = {}
-                                    di['start'] = label_dict[ents][j]['start']
-                                    di['end'] = label_dict[ents][j]['end']
-                                    di['text'] = label_dict[ents][i]['text']
-                                    l.append(di)
-                                    label_dict[ents][j]['text'] = ''
-                            label_list.append(l)
-
-                for entities in label_list:
-                    label = {}
-                    label['label'] = [entities[0]]
-                    label['points'] = entities[1:]
-
-                    annotations.append(label)
-                # ('I like London and Berlin.',
-                #      [(7, 13, 'LOC'), (18, 24, 'LOC')])
-                data_dict['annotation'] = annotations
-                THEREALstartlistendlist = []
-                for tmp in data_dict['annotation']:
-                    ent = tmp['label'][0]
-                    startEndList = []
-                    for lblDic in tmp['points']:
-                        THESTART = lblDic['start']
-                        THEEND = lblDic['end'] + 1
-                        startEndList.append((THESTART, THEEND, ent))
-                    THEREALstartlistendlist.extend(startEndList)
-                allLines.append((content, THEREALstartlistendlist))
-
-                annotations = []
-                data_dict = {}
-                start = 0
-                label_dict = {}
-        # print(allLines)
-        return allLines
-    except Exception as e:
-        logging.exception("Unable to process file" + "\n" + "error = " + str(e))
-        return None
+@plac.annotations(
+    models_dir=('Path to a directory where spacy models will be used for evaluation', 'option', 'm', str),
+    input_file=('An input spacy binary file from which evaluation sentences are taken from', 'option', 'i', str),
+    output_dir=(
+    "Output directory where a .txt file containing entity evaluation results will be written", "option", "o", str))
+def main(models_dir=None, input_file=None, output_dir=None):
+    if not os.path.isdir(models_dir):
+        print('Please specify a directory to spacy models')
+        raise SystemExit(1)
+    if not os.path.isfile(input_file):
+        print('Please specify an input file')
+        raise SystemExit(1)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    evalSents = makingEvaluationSents(input_file)
+    outputFile = os.path.join(output_dir, "Evaluation results.txt")
+    with open(outputFile, mode='a', encoding='utf-8') as wf:
+        for model in models_dir:
+            results = evaluate(os.path.join(models_dir, model), evalSents)
+            resultsStr = 'Model: %s\nResults:\n\tents_p:%s\n\tents_r:%s\n\tents_f:%s\n\tents_per_type:%s\n\n' % (
+                    model, results['ents_p'], results['ents_r'], results['ents_f'], results['ents_per_type'])
+            wf.write(resultsStr)
+            print("Evaluated %s" % model)
 
 
-evalSents = makingEvaluationSents(
-    "C:/Users/Gjorgji Noveski/Desktop/Files for my Spacy work/Files for evaluating a model/new sentences, after sentence 850+.tsv",
-    'abc')
+def makingEvaluationSents(input_bin):
+    with open(input_bin, 'rb') as binary:
+        data = pickle.load(binary)
+    evalSents = []
+    [evalSents.append((line[0], line[1].get('entities'))) for line in data]
+    return evalSents
 
 
 def evaluate(ner_model, examples):
@@ -108,22 +61,5 @@ def evaluate(ner_model, examples):
         scorer.score(pred_value, gold)
     return scorer.scores
 
-
-def writeResults():
-    pass
-
-
-for i in range(1, 101):
-    model_path = "C:/Users/Gjorgji Noveski/Desktop/Files for my Spacy work/NLP models and bin training data/Incremental epochs models, 850 sents, with decaying dropout(0.6,0.35,0.00009) batch_compouding(32,128,1.001)/" + str(i) + " epochs on 850 sents"
-    print(model_path)
-    nlp = spacy.load(model_path)
-    results = evaluate(nlp, evalSents)
-    with open(
-            "C:/Users/Gjorgji Noveski/Desktop/Files for my Spacy work/NLP models and bin training data/Incremental epochs models, 850 sents, with decaying dropout(0.6,0.35,0.00009) batch_compouding(32,128,1.001)/Evaluation data.txt",
-            mode='a', encoding='UTF-8')as wf:
-        modelStr = 'Model: %s\n' % os.path.basename(model_path)
-        trainingDataStr = 'Trained on: 850 sents, no dropout decay, tagger and parser NOT saved\n'
-        resultsStr = 'Results:\n\t ents_p:%s\n\tents_r:%s\n\tents_f:%s\n\tents_per_type:%s\n\n' % (
-            results['ents_p'], results['ents_r'], results['ents_f'], results['ents_per_type'])
-        wf.write(modelStr+trainingDataStr+resultsStr)
-        print("WROTE")
+if __name__ == '__main__':
+    plac.call(main)
