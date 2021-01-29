@@ -2,8 +2,11 @@ import fitz
 import re
 import os
 import spacy
+import subprocess
 from pathlib import Path
 from Preprocessing import preprocessSinglePdfPage
+from WordSetAndMappings import ACTIVATION_FUNC as ACT_FUNC_KYW, ARCHITECTURE_TYPE as ARC_TYPE_KYW, BUILDING_BLOCKS as BUILD_BL_KYW, mappings
+
 fileNames = []
 pdfPathNames = {}
 paperText = ''
@@ -16,35 +19,41 @@ building_blocks_model = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\specia
 nlp_act = spacy.load(act_model)
 nlp_arc = spacy.load(arc_model)
 nlp_build = spacy.load(building_blocks_model)
+###
+arcModelEnts = set()
+actModelEnts = set()
+buildBlockModelEnts = set()
+# Format, id, paper Title, keywords vector, arcModelEntsVector, actModelEntsVector, buildBlockModelEntsVector
+GENERAL_PAPER_VECTOR = {'id': [], 'paper title': [], 'keywords vector': [], 'arcModelEntsVector': [], 'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
+###
 
 # OVDE potrebna ni e kategorijata od sekoj fajl, zatoa mora for ciklusov, za da znaeme od koja kategorija pripagja
 def makeVectorForPDF(pdf, all_keywords):
+    global GENERAL_PAPER_VECTOR
     # Getting table of content titles
     # Mozhno podobruvanje, baraj go naslovot samo na stranata koja e navedeno
     # mnogu poedinechni sluchaevi ima shto nekoi tekst da se chisti/sredi
     pdfToc = pdf.getToC()
     # getting all the ToC titles, except the word References, because it is needed for finding the end of a research paper
     tocTitlesNoReferences = [element[1].strip() for element in pdfToc if element[1].strip() != 'References']
-    wholePdfText = ''
     keyWords = []
+    GENERAL_PAPER_VECTOR['keywords vector'] = dict.fromkeys(all_keywords, 0)
+
     for pageNm, page in enumerate(pdf, 1):
+
+
         pageTextInLines = preprocessSinglePdfPage(page, tocTitlesNoReferences)
-        wholePdfText += ' '.join(pageTextInLines) + ' '
-        pageKeywords = getPageKeywords(pageNm, pageTextInLines, pdfToc)
-        # specializedNERvectors mora da bide posle getPageKeywords, deka tamu setiram globalnata foundAbstract
-        specialzedNERVectors = getSpecializedNERVector(pageTextInLines,pageNm)
+        tryGetPageKeywords(pageNm, pageTextInLines, pdf)
+        # specializedNERvectors mora da bide posle tryGetPageKeywords, deka tamu setiram globalnata foundAbstract
+        # otkako ke se najde References, taa funckija ima raboti da go vrati generalniot vektor kako shto beshe originalno
+        tryMakeEntityVector(pageTextInLines, pageNm)
 
+        if GENERAL_PAPER_VECTOR['arcModelEntsVector']:
+            print('PAPER TITLE ->', GENERAL_PAPER_VECTOR['paper title'])
+            reInitializeVector(all_keywords)
 
-        if len(pageKeywords) != 0:
-            all_keywords = dict.fromkeys(all_keywords, 0)
-            # print(pageKeywords)
-            for keyword in pageKeywords:
-                if keyword in all_keywords:
-                    all_keywords[keyword] = 1
-            # print('Paper vector of keywords %s->' % all_keywords)
-        keyWords += pageKeywords
     # gi vrakjam site keywords so mali bukvi, trgnati prazni mesta na pochetokot i na krajot
-    return [keyword.strip().lower() for keyword in keyWords if keyword.strip() != '']
+    return [keyword.strip().lower().rstrip('.') for keyword in keyWords if keyword.strip().rstrip('.') != '']
 
 
 """
@@ -54,12 +63,12 @@ def makeVectorForPDF(pdf, all_keywords):
 4 ako ima gi zema niv se dodeka ne dojde do linija kade shto pishuva 1 Introduction, deka ako ja vidime taa znachi deka sme gi zele site zborchinja koi oznachuvaat keywords.
 5 Note: zema po 2 linii keywords, deka ako zeme povishe, ima shansa da nema 1 Introduction i da zeme tekst shto ne e keywords.
 """
-def getPageKeywords(pageNm, pageTextInLines, pdfToc):
-    global foundAbstract, foundBeginning
+def tryGetPageKeywords(pageNm, pageTextInLines, pdf):
+    global foundAbstract, foundBeginning, GENERAL_PAPER_VECTOR
     # if the word "abstract" is found at the beggiing of the line we can be more sure that it's the first page of the scientific research paper
     foundAbstract = False
     foundKeyWordLines = []
-    paperTitle = 'None'
+    paperTitle = 'Not found'
     for line in pageTextInLines:
         if line[:8].lower() == 'abstract':
             foundAbstract = True
@@ -72,11 +81,7 @@ def getPageKeywords(pageNm, pageTextInLines, pdfToc):
             if line[:8] == 'Keywords' or line[:9] == 'Key words':
                 #ova kazhuva za drugata funckija, za modelite od spacy deka e vo trudot
                 foundBeginning = True
-                #ovde barame naslovot na trudot, bara vo table of contents ako ima ist broj na strana kade shto se momentalno najdeni keywords go zema prviot
-                for element in pdfToc:
-                    if element[2] == pageNm:
-                        paperTitle = element[1]
-                        break
+                paperTitle = extractTitle(pdf, pageNm)
                 # ova gi zema zborovite shto se posle Keywords zborot, i processNlines mu vika da j procesira samo narednata linija, deka vishe prvata posle Keywords zborot ima drugi zborovi i vishe gi apendnavme
                 if len(line[9:]) > 3:
                     foundKeyWordLines.append(line[9:])
@@ -99,30 +104,64 @@ def getPageKeywords(pageNm, pageTextInLines, pdfToc):
                         break
                     else:
                         foundKeyWordLines.append(pageTextInLines[idx])
-    keywords = []
-    if paperTitle !='None':
-        print(paperTitle)
     if len(foundKeyWordLines) != 0:
         joinedKeywords = ' '.join(foundKeyWordLines)
         # koristi ovoj regex se dodeka ne nauchish kako da gi odbirash site interpunkciski znaci od posebni unicode blokovi, deka mojata tastatura nema apostrov kako shto ima angliskata primer
         keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\–\- ]', joinedKeywords)
-        return [keyword.strip().lower() for keyword in keywords]
-    return [keyword.strip().lower() for keyword in keywords]
+        keywords = [keyword.strip().lower() for keyword in keywords]
+        for keyword in keywords:
+            if keyword in GENERAL_PAPER_VECTOR['keywords vector']:
+                GENERAL_PAPER_VECTOR['keywords vector'][keyword] = 1
+            else:
+                print('Keyword not found in set of keywords: %s' % keyword)
+        GENERAL_PAPER_VECTOR['paper title'] = paperTitle
 
-# samo za debagiranje mi e pageNm
-def getSpecializedNERVector(pageTextInLines, pageNm):
-    global foundBeginning, paperText, insidePaper
+
+def extractTitle(pdf, titlePageNm):
+
+    print('page nm for extracting title: %s' % titlePageNm)
+    titlePageNm -= 1
+    tmp = fitz.open()
+    tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
+    tmp.save("Temp/paperTitle.pdf")
+    completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True, encoding='UTF-8')
+    return completed_process.stdout.strip()
+
+def updateCategoryVectors(arcModelEnts, actModelEnts, buildBlockModelEnts):
+    global GENERAL_PAPER_VECTOR
+    arcModelVec = getVectorFromCategory(arcModelEnts, ARC_TYPE_KYW)
+    actModelVec = getVectorFromCategory(actModelEnts, ACT_FUNC_KYW)
+    buildBlockModelVec = getVectorFromCategory(buildBlockModelEnts, BUILD_BL_KYW)
+    GENERAL_PAPER_VECTOR['arcModelEntsVector'] = arcModelVec
+    GENERAL_PAPER_VECTOR['actModelEntsVector'] = actModelVec
+    GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'] = buildBlockModelVec
+
+
+def reInitializeVector(all_keywords):
+    global GENERAL_PAPER_VECTOR
+    GENERAL_PAPER_VECTOR = {'id': [], 'paper title': [], 'keywords vector': [], 'arcModelEntsVector': [], 'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
+    GENERAL_PAPER_VECTOR['keywords vector'] = dict.fromkeys(all_keywords, 0)
+
+
+
+def tryMakeEntityVector(pageTextInLines, pageNm):
+    global foundBeginning, paperText, insidePaper, actModelEnts, arcModelEnts, buildBlockModelEnts,GENERAL_PAPER_VECTOR
 
     if foundBeginning:
-        print('found new beginning' + str(pageNm))
+        print('Found start of paper' + str(pageNm))
         # stavi inside flag = 1 za da mozhesh da vidish ako PAK najdesh abstract a ne se se otarasil preku references
         if paperText != '':
             print('NEFINISHIRAN TEKST')
             print('najdeni NEFINISHIRANI entiteti: ')
             print('nefinishiran tekst:' + paperText)
+            
             arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
-            print(arcModelEnts)
-            print(''.join(arcModelEnts))
+            actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
+            buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
+            
+            updateCategoryVectors(arcModelEnts, actModelEnts, buildBlockModelEnts)
+            return
+
         foundBeginning = False
         insidePaper = True
         paperText = ''.join(pageTextInLines) + ' '
@@ -132,13 +171,43 @@ def getSpecializedNERVector(pageTextInLines, pageNm):
             if line[0:10] == 'References':
                 print('najdeni entiteti: ')
                 arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
-                print(''.join(arcModelEnts))
+                actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
+                buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
+                
+                updateCategoryVectors(arcModelEnts, actModelEnts, buildBlockModelEnts)
                 insidePaper = False
                 print('exiting paper')
                 paperText = ''
-                break
+                return 
+
         else:
             paperText += ' '.join(pageTextInLines) + ' '
+
+def addAllEnts(extractedArcEnts, extractedActEnts, extractedBuildBlockEnts):
+    global arcModelEnts, actModelEnts, buildBlockModelEnts
+    for ent in extractedArcEnts:
+        arcModelEnts.add(ent)
+    for ent in extractedActEnts:
+        actModelEnts.add(ent)
+    for ent in extractedBuildBlockEnts:
+        buildBlockModelEnts.add(ent)
+
+#mu davas entiteti, i mu davash od koja kategorija zborovite da gi bara
+# primer cat = architecture type, i gi bara samo vo niv, za da vrati vektor od zborovi samo za taa kategorija posle ke gi appendirash site za da go dobiesh krajniot dolg vektor
+def getVectorFromCategory(ents, category_kyw):
+    category_kyw_values = dict.fromkeys(category_kyw, 0)
+    # checking if the entity is plural, then slicing it so we take it as singular and search that in the features
+    for ent in ents:
+        ent = ent.strip().lower()
+        if ent[-1] == 's':
+            ent = ent[:-1]
+        if ent in category_kyw_values:
+            if ent in mappings:
+                feature = mappings[ent]
+            else:
+                feature = ent
+            category_kyw_values[feature] = 1
+    return category_kyw_values
 
 """
 
@@ -166,18 +235,21 @@ def processCategory(cat_path,all_keywords):
         keyWordsFromPdf = makeVectorForPDF(pdf, all_keywords)
         for keyWord in keyWordsFromPdf:
             keyWords.add(keyWord)
-    categoryName = os.path.basename(cat_path)
+    # categoryName = os.path.basename(cat_path)
     # with open(r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Keyword Vectors\%s.txt' % categoryName, mode='w', encoding='UTF-8')as f:
     #     f.write(','.join(keyWords))
 
+# ovde smeniv namesto da pushta kategorija po kategorija da procesira fajlovite, site vektori od SITE KATEGORII DA GI SPOI I da gi prati
 def processEveryCategory(cats_path):
+    allKeywords = []
     for cat in os.listdir(cats_path):
         with open('C:\\Users\\Gjorgji Noveski\\Desktop\\nov spacy test\\Keyword Vectors\\%s.txt' % cat, mode='r', encoding='UTF-8')as kw:
-            allKeywords = kw.read().split(',')
+            words = kw.read().split(',')
+            allKeywords += words
+
+    for cat in os.listdir(cats_path):
         cat_path = os.path.join(cats_path, cat)
         processCategory(cat_path, allKeywords)
-
-
 
 # processCategory(r'C:\Users\Gjorgji Noveski\PycharmProjects\SciBooksCrawler\SciBooks\Downloaded PDFs')
 processEveryCategory(r'C:\Users\Gjorgji Noveski\PycharmProjects\SciBooksCrawler\SciBooks\Downloaded PDFs')
