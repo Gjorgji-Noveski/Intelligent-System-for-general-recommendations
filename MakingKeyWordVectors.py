@@ -21,6 +21,8 @@ building_blocks_model = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\specia
 nlp_act = spacy.load(act_model)
 nlp_arc = spacy.load(arc_model)
 nlp_build = spacy.load(building_blocks_model)
+
+keyWordPath = r''
 ###
 arcModelEnts = set()
 actModelEnts = set()
@@ -35,7 +37,7 @@ buildBlockModelEnts = set()
 GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arcModelEntsVector': [],
                         'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 paperIDcounter = 1
-allPapersOutputPath = r'D:\Opshto Desktop\allPapersVectors.txt'
+allPapersOutputPath = r'D:\Opshto Desktop\dispozable.txt'
 testingOutput = open(allPapersOutputPath, mode='a', encoding='UTF-8')
 
 ###
@@ -49,34 +51,36 @@ def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx,cat_name):
     pdfToc = pdf.getToC()
     # getting all the ToC titles, except the word References, because it is needed for finding the end of a research paper
     tocTitlesNoReferences = [element[1].strip() for element in pdfToc if element[1].strip() != 'References']
-    keyWords = []
     GENERAL_PAPER_VECTOR['keywords vector'] = dict.fromkeys(all_keywords, 0)
     paperIDcounter = 1
+    allKeywords = []
     for pageNm, page in enumerate(pdf, 1):
 
         pageTextInLines = preprocessSinglePdfPage(page, tocTitlesNoReferences)
         tryGetPageKeywords(pageNm, pageTextInLines, pdf, pdfToc)
+
+        keywords, paperTitle = pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc)
         # specializedNERvectors mora da bide posle tryGetPageKeywords, deka tamu setiram globalnata foundAbstract
         # otkako ke se najde References, taa funckija ima raboti da go vrati generalniot vektor kako shto beshe originalno
-        tryMakeEntityVector(pageTextInLines, pageNm, catIdx, fileIdx)
+        # tryMakeEntityVector(pageTextInLines, pageNm, catIdx, fileIdx)
 
         # check if the whole vector is full
-        if GENERAL_PAPER_VECTOR['ID']:
-            # print('PAPER TITLE ->', GENERAL_PAPER_VECTOR['paper title'])
-            # print('PAPER ID ->', GENERAL_PAPER_VECTOR['ID'])
-            # print(GENERAL_PAPER_VECTOR)
-            testingOutput.write(cat_name+'\n')
-            for key, value in GENERAL_PAPER_VECTOR.items():
-                testingOutput.write(key+'\n')
-                testingOutput.write(str(value)+'\n\n')
-            testingOutput.write('-' * 80 + 'END OF PAPER' + '-' * 80 +'\n\n\n')
-            testingOutput.flush()
-            reInitializeVector(all_keywords)
 
-
+        # if GENERAL_PAPER_VECTOR['ID']:
+        #     # print('PAPER TITLE ->', GENERAL_PAPER_VECTOR['paper title'])
+        #     # print('PAPER ID ->', GENERAL_PAPER_VECTOR['ID'])
+        #     # print(GENERAL_PAPER_VECTOR)
+        #     testingOutput.write(cat_name+'\n')
+        #     for key, value in GENERAL_PAPER_VECTOR.items():
+        #         testingOutput.write(key+'\n')
+        #         testingOutput.write(str(value)+'\n\n')
+        #     testingOutput.write('-' * 80 + 'END OF PAPER' + '-' * 80 +'\n\n\n')
+        #     testingOutput.flush()
+        #     reInitializeVector(all_keywords)
+        allKeywords += keywords
     # gi vrakjam site keywords so mali bukvi, trgnati prazni mesta na pochetokot i na krajot
 
-    return [keyword.strip().lower().rstrip('.') for keyword in keyWords if keyword.strip().rstrip('.') != '']
+    return allKeywords
 
 
 """
@@ -140,18 +144,16 @@ def tryGetPageKeywords(pageNm, pageTextInLines, pdf, pdfToc):
             else:
                 print('Keyword not found in set of keywords: %s' % keyword)
         if paperTitle == '':
+            # if PDFTITLE fails to find title, we try with the ToC
             for element in pdfToc:
                 if element[2] == pageNm:
-                    # print(element[2])
                     paperTitle = element[1]
-                    # print("NAJDEN OD TOC TITLE A PREKU PDFTITLE NEMAlO.....")
                     break
 
         GENERAL_PAPER_VECTOR['paper title'] = paperTitle
 
 
 def extractTitle(pdf, titlePageNm):
-    # print('page nm for extracting title: %s' % titlePageNm)
     titlePageNm -= 1
     tmp = fitz.open()
     tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
@@ -159,6 +161,44 @@ def extractTitle(pdf, titlePageNm):
     completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True,
                                        encoding='UTF-8')
     return completed_process.stdout.strip()
+
+def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc):
+    global foundAbstract, foundBeginning
+    blocks = page.getText('blocks')
+    textBlocks = [block[4].replace('-\n', '').replace('\xa0', ' ').replace('\n', ' ') for block in blocks]
+    foundAbstract = False
+    keywords = ''
+    paperTitle = 'Not found'
+    for paragraph in textBlocks:
+        if paragraph[:8].lower() == 'abstract':
+            foundAbstract = True
+            break
+    if foundAbstract:
+        for paragraph in textBlocks:
+            if paragraph[:8] == 'Keywords' or paragraph[:9] == 'Key words':
+                foundBeginning = True
+                paperTitle = extractTitle(pdf, pageNm)
+                keywords += paragraph[9:]
+    if keywords != '':
+        keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\–\- ]', keywords)
+        keywords = [re.sub(r'\s{2,}', ' ', keyword.strip().lower().rstrip('.')) for keyword in keywords if not keyword.strip().rstrip('.').isspace() and keyword.strip().rstrip('.') != '']
+        for keyword in keywords:
+            if keyword in GENERAL_PAPER_VECTOR['keywords vector']:
+                GENERAL_PAPER_VECTOR['keywords vector'][keyword] = 1
+            else:
+                print('Keyword not found in set of keywords: %s' % keyword)
+    else:
+        keywords = []
+    if paperTitle == '':
+        # if PDFTITLE fails to find title, we try with the ToC
+        for element in pdfToc:
+            if element[2] == pageNm:
+                paperTitle = element[1]
+                break
+
+    GENERAL_PAPER_VECTOR['paper title'] = paperTitle
+    return keywords, paperTitle
+
 
 
 def updateCategoryVectors(arcModelEnts, actModelEnts, buildBlockModelEnts):
@@ -182,12 +222,8 @@ def tryMakeEntityVector(pageTextInLines, pageNm, catIdx, fileIdx):
     global foundBeginning, paperText, insidePaper, actModelEnts, arcModelEnts, buildBlockModelEnts, GENERAL_PAPER_VECTOR, paperIDcounter
 
     if foundBeginning:
-        # print('Found start of paper' + str(pageNm))
-        # stavi inside flag = 1 za da mozhesh da vidish ako PAK najdesh abstract a ne se se otarasil preku references
         if paperText != '':
             print('NEFINISHIRAN TEKST')
-            print('najdeni NEFINISHIRANI entiteti: ')
-            print('nefinishiran tekst:' + paperText)
 
             arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
             actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
@@ -202,10 +238,8 @@ def tryMakeEntityVector(pageTextInLines, pageNm, catIdx, fileIdx):
         insidePaper = True
         paperText = ''.join(pageTextInLines) + ' '
     elif insidePaper:
-        # print('inside paper' + str(pageNm))
         for line in pageTextInLines:
             if line[0:10] == 'References':
-                # print('najdeni entiteti: ')
                 arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
                 actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
                 buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
@@ -214,7 +248,6 @@ def tryMakeEntityVector(pageTextInLines, pageNm, catIdx, fileIdx):
                 GENERAL_PAPER_VECTOR['ID'] = makePaperID(catIdx, fileIdx, paperIDcounter)
                 paperIDcounter += 1
                 insidePaper = False
-                # print('exiting paper')
                 paperText = ''
                 return
 
@@ -257,7 +290,7 @@ Vo ovaa skripta gi sobiram site keywords shto mozham da gi najdam vo kategeroija
 """
 
 
-def processCategory(cat_path, all_keywords, catIdx):
+def processCategory(cat_path, all_keywords, catIdx, keyWordPath=None):
     global fileNames, pdfPathNames
     keyWords = set()
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
@@ -273,18 +306,18 @@ def processCategory(cat_path, all_keywords, catIdx):
             continue
 
         pdf = fitz.open(PDF_PATH)
-        # pdf = fitz.open(r'C:\Users\Gjorgji Noveski\PycharmProjects\SciBooksCrawler\SciBooks\Downloaded PDFs\chemoinformatics\Chemoinformaticsandcomputationalchemicalbiology.pdf')
+        # pdf = fitz.open(r'C:\Users\Gjorgji Noveski\PycharmProjects\SciBooksCrawler\SciBooks\Downloaded PDFs\bioinformatics\ApplicationofClinicalBioinformatics.pdf')
         print(file)
         keyWordsFromPdf = makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, os.path.basename(cat_path))
-        # for keyWord in keyWordsFromPdf:
-        #     keyWords.add(keyWord)
-    # categoryName = os.path.basename(cat_path)
-    # with open(r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Keyword Vectors\%s.txt' % categoryName, mode='w', encoding='UTF-8')as f:
-    #     f.write(','.join(keyWords))
+        if keyWordPath:
+            for keyWord in keyWordsFromPdf:
+                keyWords.add(keyWord)
+            with open(keyWordPath, mode='a', encoding='UTF-8')as f:
+                f.write(','.join(keyWords))
 
 
 # ovde smeniv namesto da pushta kategorija po kategorija da procesira fajlovite, site vektori od SITE KATEGORII DA GI SPOI I da gi prati
-def processEveryCategory(cats_path):
+def processEveryCategory(cats_path, keyWordDirPath=None):
     allKeywords = []
     for cat in os.listdir(cats_path):
         with open('C:\\Users\\Gjorgji Noveski\\Desktop\\nov spacy test\\Keyword Vectors\\%s.txt' % cat, mode='r',
@@ -294,7 +327,13 @@ def processEveryCategory(cats_path):
 
     for catIdx, cat in enumerate(os.listdir(cats_path), 1):
         cat_path = os.path.join(cats_path, cat)
-        processCategory(cat_path, allKeywords, catIdx)
+        if keyWordDirPath:
+            categoryName = os.path.basename(cat_path)
+            keyWordFilePath = os.path.join(keyWordDirPath, '%s.txt' % categoryName)
+            processCategory(cat_path, allKeywords, catIdx, keyWordFilePath)
+        else:
+            processCategory(cat_path, allKeywords, catIdx)
+
     testingOutput.close()
 
 
