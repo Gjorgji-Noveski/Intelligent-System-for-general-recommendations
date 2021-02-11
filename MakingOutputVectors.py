@@ -69,12 +69,10 @@ def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
         # otkako ke se najde References, taa funckija ima raboti da go vrati generalniot vektor kako shto beshe originalno
         if all_keywords is not None:
             arcModelVec, actModelVec, buildBlockModelVec = tryMakeEntityVector(pageTextInLines, catIdx, fileIdx)
-
         # ID is set when we finish finding all vectors for the paper, so if it's present, it means all other vectors are present
         if GENERAL_PAPER_VECTOR['ID']:
             paperCount += 1
             writeVectors(GENERAL_PAPER_VECTOR['ID'])
-
             reInitializeVector(all_keywords)
         allKeywords += keywords
     # gi vrakjam site keywords so mali bukvi, trgnati prazni mesta na pochetokot i na krajot
@@ -117,14 +115,15 @@ def writeVectors(paperID):
 
 
 def extractTitle(pdf, titlePageNm):
-    titlePageNm -= 1
-    tmp = fitz.open()
-    tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
-    tmp.save("Temp/paperTitle.pdf")
-
-    completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True,
-                                       )
-    return completed_process.stdout.strip()
+    # titlePageNm -= 1
+    # tmp = fitz.open()
+    # tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
+    # tmp.save("Temp/paperTitle.pdf")
+    #
+    # completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True,
+    #                                    )
+    # return completed_process.stdout.strip()
+    return 'empty'
 
 
 # split keywords by conjunction, so we can have more specialized keywords and less general ones
@@ -138,7 +137,7 @@ def splitByConjunction(keywords):
                 break
         else:
             conjunctionSplitKeyW.append(keywordPhrase)
-    return [keyword.strip() for keyword in conjunctionSplitKeyW]
+    return [keyword.strip() for keyword in conjunctionSplitKeyW if keyword != '' and not keyword.isspace()]
 
 
 def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc):
@@ -277,7 +276,6 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
 
     if keywordOutputPath:
         writeFile = open(keywordOutputPath, mode='a', encoding='UTF-8')
-
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
         if file[-4:] != '.pdf':
             continue
@@ -325,15 +323,11 @@ def processEveryCategory(cats_path, keywordInputDir=None, keywordOutputDir=None)
             processCategory(cat_path, catIdx, keywordsSet)
     print('Paper count %d' % paperCount)
 
-@plac.annotations(
-    cats_path=('Path to a directory containing the categories of PDF files, and insde each category are the PDF files.', 'option', 'i', str),
-    keyword_output_dir=('Path to a directory where all the keywords will be saved in their respectful category.', 'option', 'o', str),
 
-)
 def main(cats_path, keyword_output_dir):
     processEveryCategory(cats_path, keywordOutputDir=keyword_output_dir)
     processEveryCategory(cats_path, keywordInputDir=keyword_output_dir)
 
 
 if __name__ == '__main__':
-    plac.call(main)
+    main(r'C:\Users\Gjorgji Noveski\Desktop\test', 'keywords')
