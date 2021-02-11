@@ -1,19 +1,3 @@
-features = ['perceptron', 'feed forward', 'radial basis network', 'recurren neural network',
-            'long short-term memory', 'long short term memory', 'long-short term memory',
-            'long shortterm memory', 'gated recurrent unit', 'auto encoder', 'markov chain',
-            'hopfield network', 'boltzman machine', 'deep belief network',
-            'convolutional neural network', 'deconvolutional neural network', 'convolutional inverse graphics network',
-            'probabilistic neural network', 'generative adversarial network', 'liquid state machine',
-            'extreme learning machine', 'echo state network', 'deep residual network', 'kohonen network',
-            'support vector machine', 'neural turing machine', 'cnn', 'rnn', 'lstm', 'gru', 'rbm', 'gan',
-            'lsm', 'elm', 'esn', 'drn', 'svm', 'ntm',
-            'linear activation function', 'rectified linear unit', 'sigmoid', 'gaussian error linear unit',
-            'softmax', 'hyperbolic tangent function', 'softsign function', 'exponential linear unit',
-            'leaky rectified linear unit', 'relu', 'gelu', 'tanh', 'elu', 'lrelu', 'leaky relu',
-            'fully connected layer', 'fully-connected layer', 'recurrent layer', 'pooling layer',
-            'convolutional layer', 'conv', 'convolution layer', 'deconvolutional layer', 'deconvolution layer',
-            'dropout layer', 'softmax layer', 'subsampling layer', 'gru layer']
-
 # words with multiple mappings
 mappings = {
     'long short term memory': 'long short-term memory',
@@ -22,6 +6,7 @@ mappings = {
     'lstm': 'long short-term memory',
     'gru': 'gated recurrent unit',
     'rnn': 'recurrent neural network',
+    'rbm': 'boltzmann machine',
     'cnn': 'convolutional neural network',
     'gan': 'generative adversarial network',
     'lsm': 'liquid state machine',
@@ -47,7 +32,7 @@ DATASET = ['number', 'subjects', 'dataset', 'patients', 'images', 'analyzed', 'd
 
 ARCHITECTURE_TYPE_NO_ABBREVIATION = ['perceptron', 'feed forward', 'radial basis network', 'recurrent neural network',
                                      'long short-term memory', 'gated recurrent unit', 'auto encoder', 'markov chain',
-                                     'hopfield network', 'boltzman machine', 'deep belief network',
+                                     'hopfield network', 'boltzmann machine', 'deep belief network',
                                      'convolutional neural network',
                                      'deconvolutional neural network', 'convolutional inverse graphics network',
                                      'probabilistic neural network', 'generative adversarial network',
@@ -59,7 +44,7 @@ ARCHITECTURE_TYPE_NO_ABBREVIATION = ['perceptron', 'feed forward', 'radial basis
 ARCHITECTURE_TYPE = ['perceptron', 'feed forward', 'radial basis network', 'recurrent neural network',
                      'long short-term memory', 'long short term memory', 'long-short term memory',
                      'long shortterm memory', 'gated recurrent unit', 'auto encoder', 'markov chain',
-                     'hopfield network', 'boltzman machine', 'deep belief network', 'convolutional neural network',
+                     'hopfield network', 'boltzmann machine', 'deep belief network', 'convolutional neural network',
                      'deconvolutional neural network', 'convolutional inverse graphics network',
                      'probabilistic neural network', 'generative adversarial network', 'liquid state machine',
                      'extreme learning machine', 'echo state network', 'deep residual network', 'kohonen network',
