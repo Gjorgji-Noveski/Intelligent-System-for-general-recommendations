@@ -6,6 +6,7 @@ mappings = {
     'lstm': 'long short-term memory',
     'gru': 'gated recurrent unit',
     'rnn': 'recurrent neural network',
+    'auto encoder': 'autoencoder',
     'rbm': 'boltzmann machine',
     'cnn': 'convolutional neural network',
     'gan': 'generative adversarial network',
@@ -43,7 +44,8 @@ ARCHITECTURE_TYPE_NO_ABBREVIATION = ['perceptron', 'feed forward', 'radial basis
 
 ARCHITECTURE_TYPE = ['perceptron', 'feed forward', 'radial basis network', 'recurrent neural network',
                      'long short-term memory', 'long short term memory', 'long-short term memory',
-                     'long shortterm memory', 'gated recurrent unit', 'auto encoder', 'markov chain',
+                     'long shortterm memory', 'gated recurrent unit', 'auto encoder', 'autoencoder',
+                     'markov chain',
                      'hopfield network', 'boltzmann machine', 'deep belief network', 'convolutional neural network',
                      'deconvolutional neural network', 'convolutional inverse graphics network',
                      'probabilistic neural network', 'generative adversarial network', 'liquid state machine',
