@@ -5,10 +5,10 @@ import pickle
 import plac
 
 
-ACTIVATION_CAT_PATH = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Annotated dataset AMA SO PRAZNO MESTO\activation function model'
-
-ARCHITECTURE_CAT_PATH = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Annotated dataset AMA SO PRAZNO MESTO\architecture type model'
-OUTPUTPATH = r'C:\Users\Gjorgji Noveski\Desktop\test test'
+ACTIVATION_CAT_PATH = r'../corpora/annotated/activation function model'
+ARCHITECTURE_CAT_PATH = r'../corpora/annotated/architecture type model'
+BUILDING_BLOCKS_CAT_PATH = r'../corpora/annotated/building blocks model'
+OUTPUTPATH = r'../training_and_testing_data/specialized_models'
 ## ("Uber blew through $1 million a week", [(0, 4, 'ORG')]),
 
 # the first elements of startIdx and first elements of endIdx correspond to one one entity of the sentence,
@@ -28,8 +28,8 @@ def convertLineToSpacyFormat(line, entity_name):
 
     for start, end in zip(startIdx, endIdx):
         points.append((start, end, entity_name))
-    # ova treba da go menjavash koga ke go trenirash deeplearning modelit i razlichno koga ke gi trenirash specialized ner models
-    # deka specialized ner models datasetot e anotiram so {} a vo prviot e so []
+    # ova treba da go menjavash koga ke go trenirash deeplearning modelit i razlichno koga ke gi trenirash specialized ner NER_models
+    # deka specialized ner NER_models datasetot e anotiram so {} a vo prviot e so []
     trainingFormatLine = (line.replace('{', '').replace('}', ''), {'entities': points})
     return trainingFormatLine
 
@@ -45,7 +45,7 @@ def main(input_dir, output_dir, train_test_split):
     """
 
     if input_dir is None:
-        print('Please enter dir Path, and output dir Path')
+        print('Please enter dir Path')
         raise SystemExit(1)
     if not os.path.exists(input_dir):
         print('Please enter valid input path')
@@ -70,7 +70,7 @@ def main(input_dir, output_dir, train_test_split):
 
     if train_test_split is None:
         category = os.path.basename(input_dir)
-        output_file = os.path.join(TRAIN_OUTPUT_DIR, category, 'training.bin')
+        output_file = os.path.join(TRAIN_OUTPUT_DIR, category, '.bin')
         makeIntoBinary(allLines, output_file)
 
     else:
@@ -79,8 +79,8 @@ def main(input_dir, output_dir, train_test_split):
         train_data = allLines[:split]
         test_data = allLines[split:]
         category = os.path.basename(input_dir)
-        output_file_train = os.path.join(TRAIN_OUTPUT_DIR, category + '_train_data.bin')
-        output_file_test = os.path.join(TEST_OUTPUT_DIR, category + '_test_data.bin')
+        output_file_train = os.path.join(TRAIN_OUTPUT_DIR, category + '.bin')
+        output_file_test = os.path.join(TEST_OUTPUT_DIR, category + '.bin')
         makeIntoBinary(train_data, output_file_train, category)
         makeIntoBinary(test_data, output_file_test, category)
 
@@ -99,8 +99,18 @@ def makeIntoBinary(lines, output_file, entity_name):
 
 
 if __name__ == '__main__':
-    plac.call(main)
-    # main(ARCHITECTURE_CAT_PATH, OUTPUTPATH, 0.0)
-    # main(ACTIVATION_CAT_PATH, OUTPUTPATH, 0.0)
+    # plac.call(main)
+    """
+    pravilno povikuvanje
+    
+    python convertTotrainingDataDirectly.py -i "corpora/annotated/activation function model" -o "training_and_testing_data/specialized_models"
+    ili
+    python convertTotrainingDataDirectly.py -i "corpora/annotated/AllSents - ischisteni nekoi entiteti" -o "training_and_testing_data/deep_learning_model"
+    
+    """
+
+    main(ARCHITECTURE_CAT_PATH, OUTPUTPATH, 0.75)
+    main(ACTIVATION_CAT_PATH, OUTPUTPATH, 0.75)
+    main(BUILDING_BLOCKS_CAT_PATH, OUTPUTPATH, 0.75)
 
     # print(convertLineToSpacyFormat('An Effective Support Vector Machines( {SVMs} )','entitet'))
