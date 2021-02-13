@@ -32,7 +32,7 @@ DATASET = ['number', 'subjects', 'dataset', 'patients', 'images', 'analyzed', 'd
            'corpus', 'corpora', 'files']
 
 ARCHITECTURE_TYPE_NO_ABBREVIATION = ['perceptron', 'feed forward', 'radial basis network', 'recurrent neural network',
-                                     'long short-term memory', 'gated recurrent unit', 'auto encoder', 'markov chain',
+                                     'long short-term memory', 'gated recurrent unit', 'autoencoder', 'markov chain',
                                      'hopfield network', 'boltzmann machine', 'deep belief network',
                                      'convolutional neural network',
                                      'deconvolutional neural network', 'convolutional inverse graphics network',
