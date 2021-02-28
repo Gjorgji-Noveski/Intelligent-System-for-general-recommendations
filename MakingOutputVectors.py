@@ -69,16 +69,6 @@ def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
 
         # ID is set when we finish finding all vectors for the paper, so if it's present, it means all other vectors are present
         if GENERAL_PAPER_VECTOR['ID']:
-            # print('Krajnata rechenica od trudot: %s' % ' '.join(pageTextInLines))
-            # print('Za trudot vektorite se Arc:')
-            # print(GENERAL_PAPER_VECTOR['arcModelEntsVector'])
-            #
-            # print('Za trudot vektorite se Act:')
-            # print(GENERAL_PAPER_VECTOR['actModelEntsVector'])
-            #
-            # print('Za trudot vektorite se build:')
-            # print(GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'])
-            #
             print(GENERAL_PAPER_VECTOR['ID'])
             paperCount += 1
             writeVectors(GENERAL_PAPER_VECTOR['ID'])
@@ -112,8 +102,6 @@ def writeVectorHeaders(keywordsSet):
 
 
 def writeVectors(paperID):
-    print(f'writing the vectors for paperID {paperID}')
-
     keywordsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['keywords vector'].values())) + '\n')
     arcEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['arcModelEntsVector'].values())) + '\n')
     actEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['actModelEntsVector'].values())) + '\n')
@@ -305,10 +293,8 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
         writeFile = open(keywordOutputPath, mode='a', encoding='UTF-8')
 
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
-        if fileIdx < 182:
-            continue
         keyWords = set()
-        print(f'file NAME: {file}, file idx: {fileIdx}')
+        print(file)
         # Checks if file is already processed by file name file size (sometimes 2 different pdfs have same name)
         PDF_PATH = os.path.join(cat_path, file)
         if file not in fileNames:
