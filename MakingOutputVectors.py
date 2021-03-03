@@ -14,7 +14,6 @@ from WordSetAndMappings import ACTIVATION_FUNC as ACT_FUNC_SEARCH_WORDS, ARCHITE
 fileNames = []
 pdfPathNames = {}
 paperText = ''
-foundBeginning = False
 insidePaper = False
 nlp_act = None
 nlp_arc = None
@@ -63,7 +62,7 @@ def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
         # otkako ke se najde References, taa funckija ima raboti da go vrati generalniot vektor kako shto beshe originalno
         if all_keywords is not None:
             # isto i za ovie dole vazhi deka pogolemiot del ke ti vracha prazni, kade e gi iskoristis ? nigde
-            arcModelVec, actModelVec, buildBlockModelVec = tryMakeEntityVector(pageTextInLines, catIdx, fileIdx)
+            tryMakeEntityVector(pageTextInLines, catIdx, fileIdx)
 
         # ID is set when we finish finding all vectors for the paper, so if it's present, it means all other vectors are present
         if GENERAL_PAPER_VECTOR['ID']:
@@ -143,7 +142,7 @@ def splitByConjunction(keywords):
 
 
 def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, allKeywords):
-    global foundBeginning, paperText, paperIDcounter, GENERAL_PAPER_VECTOR, paperCount
+    global insidePaper, paperText, paperIDcounter, GENERAL_PAPER_VECTOR, paperCount
     blocks = page.getText('blocks')
     textBlocks = [block[4].replace('-\n', '').replace('\xa0', ' ').replace('\n', ' ').strip() for block in blocks]
     foundAbstract = False
@@ -156,13 +155,13 @@ def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, 
     if foundAbstract:
         for paragraph in textBlocks:
             if paragraph[:8] == 'Keywords' or paragraph[:9] == 'Key words':
-                foundBeginning = True
+                insidePaper = True
                 paperTitle = extractTitle(pdf, pageNm)
                 keywords += paragraph[9:]
 
     if keywords != '':
         if paperText != '':
-            print('NEFINISHIRAN TEKST')
+            print('Previous paper\'s vectors weren\'t written but found new one, writing old ones vectors...')
             # ovde zapishuvam trud ako predhodno ne doprel kaj References
             #mozhesh da go stavish vo edna funkcija.
             arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
@@ -178,7 +177,7 @@ def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, 
             paperText = ''
             paperCount += 1
             writeVectors(GENERAL_PAPER_VECTOR['ID'])
-            print('Go zapishuvam so ID: %s' % GENERAL_PAPER_VECTOR['ID'])
+            print(GENERAL_PAPER_VECTOR['ID'])
             reInitializeVector(allKeywords)
             # the end
         keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\–\- ]', keywords)
@@ -222,17 +221,10 @@ def reInitializeVector(all_keywords):
 
 
 def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx):
-    global foundBeginning, paperText, insidePaper, actModelEnts, arcModelEnts, buildBlockModelEnts, GENERAL_PAPER_VECTOR, paperIDcounter
-    arcModelVec, actModelVec, buildBlockModelVec = None, None, None
-    if foundBeginning:
-        foundBeginning = False
-        insidePaper = True
-        paperText = ''.join(pageTextInLines) + ' '
-        return arcModelVec, actModelVec, buildBlockModelVec
-    elif insidePaper:
+    global insidePaper, paperText, GENERAL_PAPER_VECTOR, paperIDcounter
+    if insidePaper:
         for line in pageTextInLines:
             if line[0:10] == 'References' or line[0:9] == 'Refrences':
-                print(paperText)
                 arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
                 actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
                 buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
@@ -243,13 +235,11 @@ def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx):
                 GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'] = buildBlockModelVec
                 GENERAL_PAPER_VECTOR['ID'] = makePaperID(catIdx, fileIdx, paperIDcounter)
                 paperIDcounter += 1
-
                 insidePaper = False
                 paperText = ''
-                return arcModelVec, actModelVec, buildBlockModelVec
+                break
         else:
             paperText += ' '.join(pageTextInLines) + ' '
-    return arcModelVec, actModelVec, buildBlockModelVec
 
 
 # mu davas entiteti, i mu davash od koja kategorija zborovite da gi bara
@@ -285,6 +275,7 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
         keyWords = set()
         print(file)
+
         # Checks if file is already processed by file name file size (sometimes 2 different pdfs have same name)
         PDF_PATH = os.path.join(cat_path, file)
         if file not in fileNames:
@@ -293,7 +284,7 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
         elif Path(pdfPathNames[file]).stat().st_size == Path(PDF_PATH).stat().st_size:
             print('Info: Found duplicate file, skipping processing it')
             continue
-        with fitz.open(PDF_PATH)as pdf:
+        with fitz.open(PDF_PATH) as pdf:
             keyWordsFromPdf = makeVectorForPDF(pdf, keywordsSet, catIdx, fileIdx, os.path.basename(cat_path))
         if keywordOutputPath and keyWordsFromPdf:
             for keyWord in keyWordsFromPdf:
