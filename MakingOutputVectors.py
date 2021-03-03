@@ -45,10 +45,8 @@ nlp.max_length = 1100000
 
 # OVDE potrebna ni e kategorijata od sekoj fajl, zatoa mora for ciklusov, za da znaeme od koja kategorija pripagja
 def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
-    global GENERAL_PAPER_VECTOR, paperIDcounter, paperCount
-    # Getting table of content titles
-    # Mozhno podobruvanje, baraj go naslovot samo na stranata koja e navedeno
-    # mnogu poedinechni sluchaevi ima shto nekoi tekst da se chisti/sredi
+    global GENERAL_PAPER_VECTOR, paperIDcounter, paperCount, paperText
+    paperText = ''
     pdfToc = pdf.getToC()
     # getting all the ToC titles, except the word References, because it is needed for finding the end of a research paper
     tocTitlesNoReferences = [element[1].strip() for element in pdfToc if element[1].strip() != 'References']
@@ -116,9 +114,16 @@ def writeVectors(paperID):
 def extractTitle(pdf, titlePageNm):
     titlePageNm -= 1
     tmp = fitz.open()
-    tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
-    tmp.save("Temp/paperTitle.pdf")
-    tmp.close()
+    try:
+        tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
+        tmp.save("Temp/paperTitle.pdf")
+
+    except Exception as e:
+        print(e)
+    finally:
+        tmp.close()
+        return ''
+
     completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True, encoding='UTF-8')
     return completed_process.stdout.strip()
 
@@ -220,21 +225,6 @@ def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx):
     global foundBeginning, paperText, insidePaper, actModelEnts, arcModelEnts, buildBlockModelEnts, GENERAL_PAPER_VECTOR, paperIDcounter
     arcModelVec, actModelVec, buildBlockModelVec = None, None, None
     if foundBeginning:
-        # if paperText != '':
-            # print('NEFINISHIRAN TEKST')
-            #
-            # arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
-            # actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
-            # buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
-            # arcModelVec, actModelVec, buildBlockModelVec = updateCategoryVectors(arcModelEnts, actModelEnts,
-            #                                                                      buildBlockModelEnts)
-            # GENERAL_PAPER_VECTOR['arcModelEntsVector'] = arcModelVec
-            # GENERAL_PAPER_VECTOR['actModelEntsVector'] = actModelVec
-            # GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'] = buildBlockModelVec
-            # GENERAL_PAPER_VECTOR['ID'] = makePaperID(catIdx, fileIdx, paperIDcounter)
-            # paperIDcounter = paperIDcounter + 1
-            # paperText = ''
-
         foundBeginning = False
         insidePaper = True
         paperText = ''.join(pageTextInLines) + ' '
@@ -242,6 +232,7 @@ def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx):
     elif insidePaper:
         for line in pageTextInLines:
             if line[0:10] == 'References' or line[0:9] == 'Refrences':
+                print(paperText)
                 arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
                 actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
                 buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
@@ -288,7 +279,6 @@ Vo ovaa skripta gi sobiram site keywords shto mozham da gi najdam vo kategeroija
 
 def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
     global fileNames, pdfPathNames
-
     if keywordOutputPath:
         writeFile = open(keywordOutputPath, mode='a', encoding='UTF-8')
 
@@ -303,9 +293,8 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
         elif Path(pdfPathNames[file]).stat().st_size == Path(PDF_PATH).stat().st_size:
             print('Info: Found duplicate file, skipping processing it')
             continue
-        pdf = fitz.open(PDF_PATH)
-
-        keyWordsFromPdf = makeVectorForPDF(pdf, keywordsSet, catIdx, fileIdx, os.path.basename(cat_path))
+        with fitz.open(PDF_PATH)as pdf:
+            keyWordsFromPdf = makeVectorForPDF(pdf, keywordsSet, catIdx, fileIdx, os.path.basename(cat_path))
         if keywordOutputPath and keyWordsFromPdf:
             for keyWord in keyWordsFromPdf:
                 keyWords.add(keyWord)
@@ -358,11 +347,14 @@ def main(cats_path, keyword_dir, best_arc_model, best_act_model, best_build_mode
     nlp_act.max_length = 1100000
     nlp_build.max_length = 1100000
 
-    processEveryCategory(cats_path, keywordOutputDir=keyword_dir)
+    # processEveryCategory(cats_path, keywordOutputDir=keyword_dir)
     processEveryCategory(cats_path, keywordInputDir=keyword_dir)
 
 
 if __name__ == '__main__':
-    plac.call(main)
-    # main(r'C:\Users\Gjorgji Noveski\PycharmProjects\SciBooksCrawler\SciBooks\Downloaded PDFs VtorPat', r'NEWkeywords', r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\architecture type model\\88 epochs',
-    #      r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\activation function model\\95 epochs', r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\building blocks model\\93 epochs')
+    # plac.call(main)
+    main(r'D:\Diplomska\arxiv',
+         r'arxivKeywords',
+         r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\architecture type model\\88 epochs',
+         r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\activation function model\\95 epochs',
+         r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\building blocks model\\93 epochs')
