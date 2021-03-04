@@ -21,9 +21,9 @@ nlp_build = None
 arcModelEnts = set()
 actModelEnts = set()
 buildBlockModelEnts = set()
+all_keywords = None
 GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arcModelEntsVector': [],
                         'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
-paperIDcounter = 1
 paperCount = 0
 keywordsFile = open(r'NEWoutput\keywordVectors1.csv', mode='a', encoding='UTF-8')
 arcEntsFile = open(r'NEWoutput\arcEntsVector1.csv', mode='a', encoding='UTF-8')
@@ -43,9 +43,9 @@ nlp.max_length = 1100000
 
 
 # OVDE potrebna ni e kategorijata od sekoj fajl, zatoa mora for ciklusov, za da znaeme od koja kategorija pripagja
-def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
-    global GENERAL_PAPER_VECTOR, paperIDcounter, paperCount, paperText
-    paperText = ''
+def makeVectorForPDF(pdf, catIdx, fileIdx):
+    global GENERAL_PAPER_VECTOR, paperText, insidePaper, all_keywords
+
     pdfToc = pdf.getToC()
     # getting all the ToC titles, except the word References, because it is needed for finding the end of a research paper
     tocTitlesNoReferences = [element[1].strip() for element in pdfToc if 'reference' not in element[1].strip().lower()]
@@ -55,21 +55,19 @@ def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
     foundKeywords = []
     for pageNm, page in enumerate(pdf, 1):
         pageTextInLines = preprocessSinglePdfPage(page, tocTitlesNoReferences)
-        #kewords ke bide prazno skoro za sekoja strana, trgni gi deka ti samo na edna ke ti bide polna ova
-        keywords, paperTitle = pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, all_keywords)
+        #kewords ke bide prazno skoro za sekoja strana, ama ke ti treba koga ke ja gradish listata so keywords
+        keywords, paperTitle = getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx, paperIDcounter)
 
-        # otkako ke se najde References, taa funckija ima raboti da go vrati generalniot vektor kako shto beshe originalno
         if all_keywords is not None:
-            # isto i za ovie dole vazhi deka pogolemiot del ke ti vracha prazni, kade e gi iskoristis ? nigde
-            tryMakeEntityVector(pageTextInLines, catIdx, fileIdx)
+            tryMakeEntityVector(pageTextInLines, catIdx, fileIdx, paperIDcounter)
 
-        # ID is set when we finish finding all vectors for the paper, so if it's present, it means all other vectors are present
-        if GENERAL_PAPER_VECTOR['ID']:
-            print(GENERAL_PAPER_VECTOR['ID'])
-            paperCount += 1
-            writeVectors(GENERAL_PAPER_VECTOR['ID'])
-            reInitializeVector(all_keywords)
         foundKeywords += keywords
+    if paperText != '' and insidePaper:
+        populateVectors(catIdx, fileIdx, paperIDcounter)
+        writeVectors(GENERAL_PAPER_VECTOR['ID'])
+        reInitializeVector(all_keywords)
+    paperText = ''
+    insidePaper = False
     # gi vrakjam site keywords so mali bukvi, trgnati prazni mesta na pochetokot i na krajot
     return foundKeywords
 
@@ -98,32 +96,29 @@ def writeVectorHeaders(keywordsSet):
 
 
 def writeVectors(paperID):
+    print(paperID)
     keywordsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['keywords vector'].values())) + '\n')
     arcEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['arcModelEntsVector'].values())) + '\n')
     actEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['actModelEntsVector'].values())) + '\n')
     buildBlocksFile.write(
         '%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'].values())) + '\n')
-    keywordsFile.flush()
-    arcEntsFile.flush()
-    actEntsFile.flush()
-    buildBlocksFile.flush()
 
 
 def extractTitle(pdf, titlePageNm):
     titlePageNm -= 1
     tmp = fitz.open()
+    title = ''
     try:
         tmp.insertPDF(pdf, from_page=titlePageNm, to_page=titlePageNm)  # make a 1-page PDF of it
         tmp.save("Temp/paperTitle.pdf")
-
+        completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True,
+                                           encoding='UTF-8')
+        title = completed_process.stdout.strip()
     except Exception as e:
         print(e)
     finally:
         tmp.close()
-        return ''
-
-    completed_process = subprocess.run(['pdftitle', '-p', 'Temp/paperTitle.pdf'], capture_output=True, text=True, encoding='UTF-8')
-    return completed_process.stdout.strip()
+        return title
 
 
 # split keywords by conjunction, so we can have more specialized keywords and less general ones
@@ -140,8 +135,8 @@ def splitByConjunction(keywords):
     return [keyword.strip() for keyword in conjunctionSplitKeyW if keyword != '' and not keyword.isspace()]
 
 
-def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, allKeywords):
-    global insidePaper, paperText, paperIDcounter, GENERAL_PAPER_VECTOR, paperCount
+def getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx, paperIDcounter):
+    global insidePaper, paperText, GENERAL_PAPER_VECTOR, all_keywords
     blocks = page.getText('blocks')
     textBlocks = [block[4].replace('-\n', '').replace('\xa0', ' ').replace('\n', ' ').strip() for block in blocks]
     foundAbstract = False
@@ -153,7 +148,7 @@ def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, 
             break
     if foundAbstract:
         for paragraph in textBlocks:
-            if paragraph[:8] == 'Keywords' or paragraph[:9] == 'Key words':
+            if paragraph[:8].lower() == 'keywords' or paragraph[:9].lower() == 'key words':
                 insidePaper = True
                 paperTitle = extractTitle(pdf, pageNm)
                 keywords += paragraph[9:]
@@ -163,21 +158,10 @@ def pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, 
             print('Previous paper\'s vectors weren\'t written but found new one, writing old ones vectors...')
             # ovde zapishuvam trud ako predhodno ne doprel kaj References
             #mozhesh da go stavish vo edna funkcija.
-            arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
-            actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
-            buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
-            arcModelVec, actModelVec, buildBlockModelVec = updateCategoryVectors(arcModelEnts, actModelEnts,
-                                                                                 buildBlockModelEnts)
-            GENERAL_PAPER_VECTOR['arcModelEntsVector'] = arcModelVec
-            GENERAL_PAPER_VECTOR['actModelEntsVector'] = actModelVec
-            GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'] = buildBlockModelVec
-            GENERAL_PAPER_VECTOR['ID'] = makePaperID(catIdx, fileIdx, paperIDcounter)
-            paperIDcounter = paperIDcounter + 1
-            paperText = ''
-            paperCount += 1
+            populateVectors(catIdx, fileIdx, paperIDcounter)
             writeVectors(GENERAL_PAPER_VECTOR['ID'])
             print(GENERAL_PAPER_VECTOR['ID'])
-            reInitializeVector(allKeywords)
+            reInitializeVector(all_keywords)
             # the end
         keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\–\- ]', keywords)
         keywords = [re.sub(r'\s{2,}', ' ', keyword.strip().lower().rstrip('.')) for keyword in keywords if
@@ -214,28 +198,18 @@ def updateCategoryVectors(arcModelEnts, actModelEnts, buildBlockModelEnts):
 
 def reInitializeVector(all_keywords):
     global GENERAL_PAPER_VECTOR
-    GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arcModelEntsVector': [],
-                            'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
-    GENERAL_PAPER_VECTOR['keywords vector'] = dict.fromkeys(all_keywords, 0)
+    GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': dict.fromkeys(all_keywords, 0),
+                            'arcModelEntsVector': [], 'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 
 
-def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx):
-    global insidePaper, paperText, GENERAL_PAPER_VECTOR, paperIDcounter
+def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx, paperIDcounter):
+    global insidePaper, paperText, GENERAL_PAPER_VECTOR, all_keywords
     if insidePaper:
         for line in pageTextInLines:
-            if line[0:10] == 'References' or line[0:9] == 'Refrences':
-                arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
-                actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
-                buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
-                arcModelVec, actModelVec, buildBlockModelVec = updateCategoryVectors(arcModelEnts, actModelEnts,
-                                                                                     buildBlockModelEnts)
-                GENERAL_PAPER_VECTOR['arcModelEntsVector'] = arcModelVec
-                GENERAL_PAPER_VECTOR['actModelEntsVector'] = actModelVec
-                GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'] = buildBlockModelVec
-                GENERAL_PAPER_VECTOR['ID'] = makePaperID(catIdx, fileIdx, paperIDcounter)
-                paperIDcounter += 1
-                insidePaper = False
-                paperText = ''
+            if line[0:10].lower() == 'references' or line[0:9].lower() == 'refrences':
+                populateVectors(catIdx, fileIdx, paperIDcounter)
+                writeVectors(GENERAL_PAPER_VECTOR['ID'])
+                reInitializeVector(all_keywords)
                 break
         else:
             paperText += ' '.join(pageTextInLines) + ' '
@@ -258,15 +232,24 @@ def getVectorFromCategory(ents, category_search_words, category_kyw):
             category_kyw_values[feature] = 1
     return category_kyw_values
 
+def populateVectors(catIdx, fileIdx, paperIDcounter):
+    global paperText, nlp_arc, nlp_act, nlp_build, insidePaper, paperCount
+    arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
+    actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
+    buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
+    arcModelVec, actModelVec, buildBlockModelVec = updateCategoryVectors(arcModelEnts, actModelEnts,
+                                                                         buildBlockModelEnts)
+    GENERAL_PAPER_VECTOR['arcModelEntsVector'] = arcModelVec
+    GENERAL_PAPER_VECTOR['actModelEntsVector'] = actModelVec
+    GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'] = buildBlockModelVec
+    GENERAL_PAPER_VECTOR['ID'] = makePaperID(catIdx, fileIdx, paperIDcounter)
+    paperIDcounter += 1
+    paperCount += 1
+    insidePaper = False
+    paperText = ''
 
-"""
 
-Vo ovaa skripta gi sobiram site keywords shto mozham da gi najdam vo kategeroijata vo sekoj pdf i vo sekoj trud vo pdf-to
-
-"""
-
-
-def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
+def processCategory(cat_path, catIdx, keywordOutputPath=None):
     global fileNames, pdfPathNames
     if keywordOutputPath:
         writeFile = open(keywordOutputPath, mode='a', encoding='UTF-8')
@@ -274,6 +257,8 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
         keyWords = set()
         print(file)
+        if fileIdx <65:
+            continue
         # Checks if file is already processed by file name file size (sometimes 2 different pdfs have same name)
         PDF_PATH = os.path.join(cat_path, file)
         if file not in fileNames:
@@ -283,7 +268,7 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
             print('Info: Found duplicate file, skipping processing it')
             continue
         with fitz.open(PDF_PATH) as pdf:
-            keyWordsFromPdf = makeVectorForPDF(pdf, keywordsSet, catIdx, fileIdx, os.path.basename(cat_path))
+            keyWordsFromPdf = makeVectorForPDF(pdf, catIdx, fileIdx)
         if keywordOutputPath and keyWordsFromPdf:
             for keyWord in keyWordsFromPdf:
                 keyWords.add(keyWord)
@@ -293,7 +278,7 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
 
 
 def processEveryCategory(cats_path, keywordInputDir=None, keywordOutputDir=None):
-    global fileNames, pdfPathNames
+    global fileNames, pdfPathNames, all_keywords
     fileNames = []
     pdfPathNames = {}
     # nema potreba od pravenje vo set, deka posle vo drugata funckija pravish dict.fromKeys() i toa gi trga duplikatite, so sepak
@@ -307,6 +292,7 @@ def processEveryCategory(cats_path, keywordInputDir=None, keywordOutputDir=None)
                     if keyword != '':
                         keywordsSet.add(keyword)
         print(len(keywordsSet))
+        all_keywords = keywordsSet
         writeVectorHeaders(keywordsSet)
 
     for catIdx, cat in enumerate(os.listdir(cats_path), 1):
@@ -314,9 +300,9 @@ def processEveryCategory(cats_path, keywordInputDir=None, keywordOutputDir=None)
         if keywordOutputDir:
             categoryName = os.path.basename(cat_path)
             keyWordFilePath = os.path.join(keywordOutputDir, '%s.csv' % categoryName)
-            processCategory(cat_path, catIdx, keywordsSet, keyWordFilePath)
+            processCategory(cat_path, catIdx, keyWordFilePath)
         else:
-            processCategory(cat_path, catIdx, keywordsSet)
+            processCategory(cat_path, catIdx)
     print('Paper count %d' % paperCount)
 
 @plac.annotations(
