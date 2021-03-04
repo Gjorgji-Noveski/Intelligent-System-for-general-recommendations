@@ -25,10 +25,10 @@ GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arc
                         'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 paperIDcounter = 1
 paperCount = 0
-keywordsFile = open(r'NEWoutput\keywordVectors.csv', mode='a', encoding='UTF-8')
-arcEntsFile = open(r'NEWoutput\arcEntsVector.csv', mode='a', encoding='UTF-8')
-actEntsFile = open(r'NEWoutput\actEntsVector.csv', mode='a', encoding='UTF-8')
-buildBlocksFile = open(r'NEWoutput\buildBlocksVector.csv', mode='a', encoding='UTF-8')
+keywordsFile = open(r'NEWoutput\keywordVectors1.csv', mode='a', encoding='UTF-8')
+arcEntsFile = open(r'NEWoutput\arcEntsVector1.csv', mode='a', encoding='UTF-8')
+actEntsFile = open(r'NEWoutput\actEntsVector1.csv', mode='a', encoding='UTF-8')
+buildBlocksFile = open(r'NEWoutput\buildBlocksVector1.csv', mode='a', encoding='UTF-8')
 nlp = spacy.load('en_core_web_sm')
 nlp.max_length = 1100000
 """
@@ -48,13 +48,12 @@ def makeVectorForPDF(pdf, all_keywords, catIdx, fileIdx, cat_name):
     paperText = ''
     pdfToc = pdf.getToC()
     # getting all the ToC titles, except the word References, because it is needed for finding the end of a research paper
-    tocTitlesNoReferences = [element[1].strip() for element in pdfToc if element[1].strip() != 'References']
+    tocTitlesNoReferences = [element[1].strip() for element in pdfToc if 'reference' not in element[1].strip().lower()]
     if all_keywords is not None:
         GENERAL_PAPER_VECTOR['keywords vector'] = dict.fromkeys(all_keywords, 0)
     paperIDcounter = 1
     foundKeywords = []
     for pageNm, page in enumerate(pdf, 1):
-
         pageTextInLines = preprocessSinglePdfPage(page, tocTitlesNoReferences)
         #kewords ke bide prazno skoro za sekoja strana, trgni gi deka ti samo na edna ke ti bide polna ova
         keywords, paperTitle = pageKeywordsTESTbyGETTEXTBLOCKS(page, pageNm, pdf, pdfToc, catIdx, fileIdx, all_keywords)
@@ -275,7 +274,6 @@ def processCategory(cat_path, catIdx, keywordsSet, keywordOutputPath=None):
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
         keyWords = set()
         print(file)
-
         # Checks if file is already processed by file name file size (sometimes 2 different pdfs have same name)
         PDF_PATH = os.path.join(cat_path, file)
         if file not in fileNames:
