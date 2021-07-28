@@ -14,12 +14,12 @@ from spacy.util import decaying
 spacy.require_gpu()
 
 @plac.annotations(
-    model=("Model name. Defaults to blank 'en' model.", "option", "m", str),
-    new_model_name=("New model name for model meta.", "option", "nm", str),
-    n_iter=("Number of training iterations", "option", "n", int),
-    input_binaries_dir=('Input directory where all the binary training files are.', 'option', 'i', str),
-    output_models_dir=("Output directory where all the trained NER models will be for each entity category.", "option", "o", Path))
-def main(model=None, new_model_name='new_model', input_binaries_dir=None, output_models_dir=None, n_iter=100):
+    model=("Model name. Defaults to blank 'en' model.", "positional"),
+    new_model_name=("New model name for model meta.", "positional"),
+    n_iter=("Number of training iterations", "positional", None, int),
+    input_binaries_dir=('Input directory where all the binary training files are.', 'positional'),
+    output_models_dir=("Output directory where all the trained NER models will be for each entity category.", "positional"))
+def main(model=None, new_model_name='new_model', n_iter=100, input_binaries_dir=None, output_models_dir=None, ):
     """
     This script gets as input a directory containing training data for the Spacy NER pipeline (input_binaries_dir).
     The training data must be in the correct format, as such:
