@@ -5,17 +5,6 @@ import fitz
 import plac
 from Preprocessing import preprocessSinglePdfPage, checkAlreadyProcessedFile
 
-NLP_MODEL_PATH_PARSER = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\22 epochs on 850 sents 77fscore'
-
-DOWNLOADED_PDFS_PATH = r"C:\Users\Gjorgji Noveski\PycharmProjects\SciBooksCrawler\SciBooks\Downloaded PDFs"
-OUTPUT_FOLDER = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Extracted Entity Sents, one phrase entity'
-
-''' ------------------------ '''
-
-# TODO: OTFRLI RECHENICI SHTO SE MNOGU DOLGI, NEKOGASH IMA ENT.SENT SHOT E PREGOLEM PORADI NEMANJE TOCKA
-
-''' ------------------------ '''
-
 
 def extractEntitySents(pdf, outputDir, countFolder, countFile, file, characterLimit, nlp):
     # Getting table of content titles
@@ -25,9 +14,7 @@ def extractEntitySents(pdf, outputDir, countFolder, countFile, file, characterLi
     EXTRACTED_ENTITY_SENTS_PATH = os.path.join(outputDir, extractedEntSentFileName)
     wholePdfText = ''
     for page in pdf:
-
         pageTextInLines = preprocessSinglePdfPage(page, tocTitles)
-
         wholePdfText += ' '.join(pageTextInLines) + ' '
 
     # Poradi toa shto Imam 8GB RAM, moram da go secham dokumentot koj mu go davam na spacy
@@ -45,9 +32,9 @@ def extractEntitySents(pdf, outputDir, countFolder, countFile, file, characterLi
     print('Extracted: ' + extractedEntSentFileName)
 
 @plac.annotations(
-    model_path=('Path to a Spacy model that will be used for extracting named entities', 'option', 'm', str),
-    pdfs_path=('Directory containing categories and inside each category are PDF files.', 'option', 'i', str),
-    output_dir=('Output directory where all the extracted sentences that contain an entity will be saved.', 'option', 'o', str),
+    model_path=('Path to a Spacy model that will be used for extracting named entities', 'positional'),
+    pdfs_path=('Directory containing categories and inside each category are PDF files.', 'positional'),
+    output_dir=('Output directory where all the extracted sentences that contain an entity will be saved.', 'positional'),
     character_limit=('Maximum number of characters a single preprocessed pdf chunk will have.', 'option', 'l', int)
 )
 def main(model_path, pdfs_path, output_dir, character_limit=3000000):
