@@ -3,13 +3,8 @@ import random
 import re
 import pickle
 import plac
+import sys
 
-
-ACTIVATION_CAT_PATH = r'../corpora/annotated/activation function model'
-ARCHITECTURE_CAT_PATH = r'../corpora/annotated/architecture type model'
-BUILDING_BLOCKS_CAT_PATH = r'../corpora/annotated/building blocks model'
-OUTPUTPATH = r'../training_and_testing_data/specialized_models'
-## ("Uber blew through $1 million a week", [(0, 4, 'ORG')]),
 
 # the first elements of startIdx and first elements of endIdx correspond to one one entity of the sentence,
 # this continues to the end.
@@ -22,35 +17,36 @@ def convertLineToSpacyFormat(line, entity_name):
         startIdx.append(idxEntStart)
 
     for counter, match in enumerate(re.finditer('(\})', line)):
-
         idxEntEnd = match.start() - (2 * counter) - 1
         endIdx.append(idxEntEnd)
 
     for start, end in zip(startIdx, endIdx):
         points.append((start, end, entity_name))
-    # ova treba da go menjavash koga ke go trenirash deeplearning modelit i razlichno koga ke gi trenirash specialized ner NER_models
-    # deka specialized ner NER_models datasetot e anotiram so {} a vo prviot e so []
     trainingFormatLine = (line.replace('{', '').replace('}', ''), {'entities': points})
     return trainingFormatLine
 
+
 @plac.annotations(
-    input_dir=('Directory containing .txt files to be turned into binary files used in training/testing an NLP model.', 'option', 'i', str),
-    output_dir=('Directory where the training/testing binaries will be located.', 'option', 'o', str),
-    train_test_split=('Split ratio between the training and testing data, Ex. 0.7 = 70%% of data is for training, 30%% for testing.', 'option', 's', float))
+    input_dir=('Directory containing .txt files to be turned into binary files used in training/testing an NLP model.',
+               'positional'),
+    output_dir=('Directory where the training/testing binaries will be located.', 'positional'),
+    train_test_split=(
+            'Split ratio between the training and testing data, Ex. 0.7 = 70%% of data is for training, '
+            '30%% for testing.',
+            'positional', None, float))
 def main(input_dir, output_dir, train_test_split):
     """
     This script takes a directory containing .txt files as input.
     The text files have to have sentences with entities which are annoteted using the '{ }' parentheses.
     It clears the parentheses and makes binary files which will be used for training an NLP model.
     """
-
     if input_dir is None:
         print('Please enter dir Path')
         raise SystemExit(1)
     if not os.path.exists(input_dir):
         print('Please enter valid input path')
         raise SystemExit(1)
-    
+
     TRAIN_OUTPUT_DIR = os.path.join(output_dir, 'training_bins')
     TEST_OUTPUT_DIR = os.path.join(output_dir, 'testing_bins')
 
@@ -61,17 +57,18 @@ def main(input_dir, output_dir, train_test_split):
     if not os.path.exists(TEST_OUTPUT_DIR):
         os.makedirs(TEST_OUTPUT_DIR)
 
-
     allLines = []
     for file in os.listdir(input_dir):
+        if not file.endswith('.txt'):
+            continue
         filePath = os.path.join(input_dir, file)
         with open(filePath, mode='r', encoding='utf-8')as f:
             allLines += f.readlines()
 
     if train_test_split is None:
         category = os.path.basename(input_dir)
-        output_file = os.path.join(TRAIN_OUTPUT_DIR, category, '.bin')
-        makeIntoBinary(allLines, output_file)
+        output_file = os.path.join(TRAIN_OUTPUT_DIR, category + '.bin')
+        makeIntoBinary(allLines, output_file, category)
 
     else:
         split = int(len(allLines) * train_test_split)
@@ -91,26 +88,10 @@ def makeIntoBinary(lines, output_file, entity_name):
         spacyFormatLine = convertLineToSpacyFormat(line, entity_name)
         convertedLines.append(spacyFormatLine)
     if len(convertedLines) > 0:
-
         with open(output_file, mode='wb')as f:
             pickle.dump(convertedLines, f)
     else:
-        print('emtpy')
+        print('No data found to convert', file=sys.stderr)
 
 
-if __name__ == '__main__':
-    # plac.call(main)
-    """
-    pravilno povikuvanje
-    
-    python convertTotrainingDataDirectly.py -i "corpora/annotated/activation function model" -o "training_and_testing_data/specialized_models"
-    ili
-    python convertTotrainingDataDirectly.py -i "corpora/annotated/AllSents - ischisteni nekoi entiteti" -o "training_and_testing_data/deep_learning_model"
-    
-    """
-
-    main(ARCHITECTURE_CAT_PATH, OUTPUTPATH, 0.75)
-    main(ACTIVATION_CAT_PATH, OUTPUTPATH, 0.75)
-    main(BUILDING_BLOCKS_CAT_PATH, OUTPUTPATH, 0.75)
-
-    # print(convertLineToSpacyFormat('An Effective Support Vector Machines( {SVMs} )','entitet'))
+plac.call(main)
