@@ -2,14 +2,6 @@ import os
 import re
 import plac
 from WordSetAndMappings import ARCHITECTURE_TYPE, ACTIVATION_FUNC, BUILDING_BLOCKS
-EXTRACTED_ENT_SENTS_PATH = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Extracted Entity Sents, one phrase entity'
-ANNOTATED_ENT_SENTS_PATH = r'C:\Users\Gjorgji Noveski\Desktop\nov spacy test\Annotated dataset AMA SO PRAZNO MESTO'
-TRUE_OUTPUT_PATH =r'corpora/annotated'
-"""
-Mozhe samo da barame za auto encoder pa posle da izvlecheme ako zborot pred nego e denoising, variational itn.
-istoto mozhe i za neural network da bide, primer samo neural network da barame i posle da izvlecheme i za boltzman machine
-"""
-
 
 CATEGORIES = {'architecture type model': ARCHITECTURE_TYPE, 'activation function model': ACTIVATION_FUNC,
               'building blocks model': BUILDING_BLOCKS}
@@ -17,6 +9,8 @@ CATEGORIES = {'architecture type model': ARCHITECTURE_TYPE, 'activation function
 """
 Annotates all the corpora and saves them in their dedicated folder (based on entity category, a.k.a model)
 """
+
+
 def annotateByCategory(allLines, category):
     sentences = set()
     for line in allLines:
@@ -31,28 +25,32 @@ def annotateByCategory(allLines, category):
             for counter, match in enumerate(matchObjIter):
                 # using counter so i can annotate more than 1 entity in one sentence, without it the array positions won't be correct for the 2nd annotation
                 annotatedAnEntity = True
-                line = line[:match.start() + (2 * counter)] + '{' + match.group() + '}' + line[match.end() + (2 * counter):]
+                line = line[:match.start() + (2 * counter)] + '{' + match.group() + '}' + line[
+                                                                                          match.end() + (2 * counter):]
         # Ovie 2 for loops, ako ima neshto sto ne e prazno mesto pred entitetot i posle, mu dadavam prazno mesto, za da ima alignment so spacy tokenizer
         timesOpeningBracket = line.count('{')
         foundIdx = 0
         for i in range(timesOpeningBracket):
             foundIdx = line.find('{', foundIdx + 2)
             if line[foundIdx - 1] != ' ':
-
                 line = line[:foundIdx] + ' ' + line[foundIdx:]
         timesClosingBracket = line.count('}')
         foundIdx = 0
         for i in range(timesClosingBracket):
             foundIdx = line.find('}', foundIdx + 2)
             if line[foundIdx + 1] != ' ':
-                line = line[:foundIdx + 1] + ' ' + line[foundIdx+1:]
+                line = line[:foundIdx + 1] + ' ' + line[foundIdx + 1:]
         if annotatedAnEntity:
             sentences.add(line)
     return sentences
 
+
 @plac.annotations(
-    input_path=('Directory containing .txt files that need to be annotated using search words found in WordSetAndMappings.', 'option', 'i', str),
-    output_path=('Directory where all the annotated files will be saved in the categories found in WordSetAndMappings.', 'option', 'o', str)
+    input_path=(
+    'Directory containing .txt files that need to be annotated using search words found in WordSetAndMappings.',
+    'positional'),
+    output_path=('Directory where all the annotated files will be saved in the categories found in WordSetAndMappings.',
+                 'positional')
 )
 def main(input_path, output_path):
     """
@@ -87,5 +85,4 @@ def main(input_path, output_path):
 
 
 if __name__ == '__main__':
-    # plac.call(main)
-    main(EXTRACTED_ENT_SENTS_PATH, TRUE_OUTPUT_PATH)
+    plac.call(main)
