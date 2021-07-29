@@ -4,15 +4,12 @@ import os
 import spacy
 import subprocess
 import plac
-from pathlib import Path
-from Preprocessing import preprocessSinglePdfPage, makePaperID
+from Preprocessing import preprocessSinglePdfPage, makePaperID, checkAlreadyProcessedFile, PDF_PATHS, FILE_NAMES
 from WordSetAndMappings import ACTIVATION_FUNC as ACT_FUNC_SEARCH_WORDS, ARCHITECTURE_TYPE as ARC_TYPE_SEARCH_WORDS, \
     BUILDING_BLOCKS as BUILD_BL_SEARCH_WORDS, ACTIVATION_FUNC_NO_ABBREVIATION as ACT_FUNC_KYW, \
     ARCHITECTURE_TYPE_NO_ABBREVIATION as ARC_TYPE_KYW, \
     BUILDING_BLOCKS_NO_ABBREVIATION as BUILD_BLOCK_KYW, mappings
 
-fileNames = []
-pdfPathNames = {}
 paperText = ''
 insidePaper = False
 nlp_act = None
@@ -25,10 +22,11 @@ all_keywords = None
 GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arcModelEntsVector': [],
                         'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 paperCount = 0
-keywordsFile = open(r'NEWoutput\keywordVectors1.csv', mode='a', encoding='UTF-8')
-arcEntsFile = open(r'NEWoutput\arcEntsVector1.csv', mode='a', encoding='UTF-8')
-actEntsFile = open(r'NEWoutput\actEntsVector1.csv', mode='a', encoding='UTF-8')
-buildBlocksFile = open(r'NEWoutput\buildBlocksVector1.csv', mode='a', encoding='UTF-8')
+paperIDcounter = 1
+keywordsFile = open(r'Datasets\Intelligent system\keywordVectorsBiggest.csv', mode='a', encoding='UTF-8')
+arcEntsFile = open(r'Datasets\Intelligent system\arcEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
+actEntsFile = open(r'Datasets\Intelligent system\actEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
+buildBlocksFile = open(r'Datasets\Intelligent system\buildBlocksVectorBiggest.csv', mode='a', encoding='UTF-8')
 nlp = spacy.load('en_core_web_sm')
 nlp.max_length = 1100000
 """
@@ -44,41 +42,31 @@ nlp.max_length = 1100000
 
 # OVDE potrebna ni e kategorijata od sekoj fajl, zatoa mora for ciklusov, za da znaeme od koja kategorija pripagja
 def makeVectorForPDF(pdf, catIdx, fileIdx):
-    global GENERAL_PAPER_VECTOR, paperText, insidePaper, all_keywords
-
+    global GENERAL_PAPER_VECTOR, paperText, insidePaper, all_keywords, paperIDcounter
+    paperIDcounter = 1
     pdfToc = pdf.getToC()
     # getting all the ToC titles, except the word References, because it is needed for finding the end of a research paper
     tocTitlesNoReferences = [element[1].strip() for element in pdfToc if 'reference' not in element[1].strip().lower()]
     if all_keywords is not None:
         GENERAL_PAPER_VECTOR['keywords vector'] = dict.fromkeys(all_keywords, 0)
-    paperIDcounter = 1
     foundKeywords = []
     for pageNm, page in enumerate(pdf, 1):
         pageTextInLines = preprocessSinglePdfPage(page, tocTitlesNoReferences)
         #kewords ke bide prazno skoro za sekoja strana, ama ke ti treba koga ke ja gradish listata so keywords
-        keywords, paperTitle = getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx, paperIDcounter)
+        keywords, paperTitle = getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx)
 
         if all_keywords is not None:
-            tryMakeEntityVector(pageTextInLines, catIdx, fileIdx, paperIDcounter)
+            tryMakeEntityVector(pageTextInLines, catIdx, fileIdx)
 
         foundKeywords += keywords
     if paperText != '' and insidePaper:
-        populateVectors(catIdx, fileIdx, paperIDcounter)
+        populateVectors(catIdx, fileIdx)
         writeVectors(GENERAL_PAPER_VECTOR['ID'])
         reInitializeVector(all_keywords)
     paperText = ''
     insidePaper = False
     # gi vrakjam site keywords so mali bukvi, trgnati prazni mesta na pochetokot i na krajot
     return foundKeywords
-
-
-"""
-1.gleda dali pishuva "Abstract" na stranata (na pochetok na rechenica)
-2. ako ima gleda dali pishuva "Keywords" ili "Key words" na stranata ( na pochetok na rechenica)
-3. ako ima gleda dali ima zborchinja posle Zborot Keywords/key words, dali toa bilo vo ist red so zborot Keywords/key words ili posle vo naredniot red
-4 ako ima gi zema niv se dodeka ne dojde do linija kade shto pishuva 1 Introduction, deka ako ja vidime taa znachi deka sme gi zele site zborchinja koi oznachuvaat keywords.
-5 Note: zema po 2 linii keywords, deka ako zeme povishe, ima shansa da nema 1 Introduction i da zeme tekst shto ne e keywords.
-"""
 
 
 def writeVectorHeaders(keywordsSet):
@@ -97,11 +85,24 @@ def writeVectorHeaders(keywordsSet):
 
 def writeVectors(paperID):
     print(paperID)
-    keywordsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['keywords vector'].values())) + '\n')
-    arcEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['arcModelEntsVector'].values())) + '\n')
-    actEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['actModelEntsVector'].values())) + '\n')
-    buildBlocksFile.write(
-        '%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'].values())) + '\n')
+    if 1 in list(GENERAL_PAPER_VECTOR['keywords vector'].values()):
+        keywordsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['keywords vector'].values())) + '\n')
+    else:
+        print('Something wrong, found empty keywords vec')
+        with open('empty_keyword_vec_log.txt', mode='w', encoding='utf-8')as ff:
+            ff.write(f'Paper with id: {paperID} was empty, paper name:{GENERAL_PAPER_VECTOR["paper title"]}\nmozhno e da ima exception frleno i zatoa prazen da e, kaj try catch')
+    if 1 in list(GENERAL_PAPER_VECTOR['arcModelEntsVector'].values()):
+        arcEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['arcModelEntsVector'].values())) + '\n')
+    if 1 in list(GENERAL_PAPER_VECTOR['actModelEntsVector'].values()):
+        actEntsFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['actModelEntsVector'].values())) + '\n')
+    if 1 in list(GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'].values()):
+        buildBlocksFile.write('%s,' % paperID + ','.join(map(str, GENERAL_PAPER_VECTOR['buildBlockModelEntsVector'].values())) + '\n')
+
+    # keywordsFile.flush()
+    # arcEntsFile.flush()
+    # actEntsFile.flush()
+    # buildBlocksFile.flush()
+
 
 
 def extractTitle(pdf, titlePageNm):
@@ -135,10 +136,10 @@ def splitByConjunction(keywords):
     return [keyword.strip() for keyword in conjunctionSplitKeyW if keyword != '' and not keyword.isspace()]
 
 
-def getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx, paperIDcounter):
-    global insidePaper, paperText, GENERAL_PAPER_VECTOR, all_keywords
+def getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx):
+    global insidePaper, paperText, GENERAL_PAPER_VECTOR, all_keywords#, zeroKeywords
     blocks = page.getText('blocks')
-    textBlocks = [block[4].replace('-\n', '').replace('\xa0', ' ').replace('\n', ' ').strip() for block in blocks]
+    textBlocks = [block[4].replace('-\n', '').replace('\xa0', ' ').replace('\n', ' ').strip() for block in blocks if not block[4].isspace() and block[4] != '']
     foundAbstract = False
     keywords = ''
     paperTitle = 'Not found'
@@ -147,20 +148,26 @@ def getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx, paperIDcounter):
             foundAbstract = True
             break
     if foundAbstract:
-        for paragraph in textBlocks:
-            if paragraph[:8].lower() == 'keywords' or paragraph[:9].lower() == 'key words':
-                insidePaper = True
+        # checking if the word 'keywords' and the keywords are in the same text box, if they are not
+        # we take the text of the next text box because we know for sure that's where the keywords are
+        # even if they aren't
+        for idx, paragraph in enumerate(textBlocks):
+            if paragraph.lower() == 'keywords' or paragraph.lower() == 'key words':
+                paperTitle = extractTitle(pdf, pageNm)
+                keywords += textBlocks[idx+1]
+                break
+            elif paragraph[:8].lower() == 'keywords' or paragraph[:9].lower() == 'key words':
                 paperTitle = extractTitle(pdf, pageNm)
                 keywords += paragraph[9:]
+                break
 
     if keywords != '':
         if paperText != '':
             print('Previous paper\'s vectors weren\'t written but found new one, writing old ones vectors...')
             # ovde zapishuvam trud ako predhodno ne doprel kaj References
             #mozhesh da go stavish vo edna funkcija.
-            populateVectors(catIdx, fileIdx, paperIDcounter)
+            populateVectors(catIdx, fileIdx)
             writeVectors(GENERAL_PAPER_VECTOR['ID'])
-            print(GENERAL_PAPER_VECTOR['ID'])
             reInitializeVector(all_keywords)
             # the end
         keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\–\- ]', keywords)
@@ -172,6 +179,7 @@ def getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx, paperIDcounter):
                 break
             if keyword in GENERAL_PAPER_VECTOR['keywords vector']:
                 GENERAL_PAPER_VECTOR['keywords vector'][keyword] = 1
+                insidePaper = True
             else:
                 print('Keyword not found in set of keywords: %s' % keyword)
         if paperTitle == '':
@@ -202,12 +210,12 @@ def reInitializeVector(all_keywords):
                             'arcModelEntsVector': [], 'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 
 
-def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx, paperIDcounter):
+def tryMakeEntityVector(pageTextInLines, catIdx, fileIdx):
     global insidePaper, paperText, GENERAL_PAPER_VECTOR, all_keywords
     if insidePaper:
         for line in pageTextInLines:
             if line[0:10].lower() == 'references' or line[0:9].lower() == 'refrences':
-                populateVectors(catIdx, fileIdx, paperIDcounter)
+                populateVectors(catIdx, fileIdx)
                 writeVectors(GENERAL_PAPER_VECTOR['ID'])
                 reInitializeVector(all_keywords)
                 break
@@ -232,11 +240,17 @@ def getVectorFromCategory(ents, category_search_words, category_kyw):
             category_kyw_values[feature] = 1
     return category_kyw_values
 
-def populateVectors(catIdx, fileIdx, paperIDcounter):
-    global paperText, nlp_arc, nlp_act, nlp_build, insidePaper, paperCount
-    arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
-    actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
-    buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
+def populateVectors(catIdx, fileIdx):
+    global paperText, nlp_arc, nlp_act, nlp_build, insidePaper, paperCount, paperIDcounter
+    try:
+        arcModelEnts = [ent.text for ent in nlp_arc(paperText).ents]
+        actModelEnts = [ent.text for ent in nlp_act(paperText).ents]
+        buildBlockModelEnts = [ent.text for ent in nlp_build(paperText).ents]
+    except Exception as e:
+        print(e)
+        insidePaper = False
+        paperText = ''
+        return
     arcModelVec, actModelVec, buildBlockModelVec = updateCategoryVectors(arcModelEnts, actModelEnts,
                                                                          buildBlockModelEnts)
     GENERAL_PAPER_VECTOR['arcModelEntsVector'] = arcModelVec
@@ -250,25 +264,29 @@ def populateVectors(catIdx, fileIdx, paperIDcounter):
 
 
 def processCategory(cat_path, catIdx, keywordOutputPath=None):
-    global fileNames, pdfPathNames
+    # skokaj = True
     if keywordOutputPath:
         writeFile = open(keywordOutputPath, mode='a', encoding='UTF-8')
 
+        #spored noviot folder testing sega go pravam ova, izbrishi posle
     for fileIdx, file in enumerate(os.listdir(cat_path), 1):
         keyWords = set()
+
         print(file)
-        if fileIdx <65:
-            continue
+        # if skokaj:
+        #     if file != '1609.08931.pdf':
+        #         continue
+        #     else:
+        #         skokaj = False
         # Checks if file is already processed by file name file size (sometimes 2 different pdfs have same name)
         PDF_PATH = os.path.join(cat_path, file)
-        if file not in fileNames:
-            fileNames.append(file)
-            pdfPathNames[file] = PDF_PATH
-        elif Path(pdfPathNames[file]).stat().st_size == Path(PDF_PATH).stat().st_size:
-            print('Info: Found duplicate file, skipping processing it')
+        if checkAlreadyProcessedFile(PDF_PATH, file):
             continue
-        with fitz.open(PDF_PATH) as pdf:
-            keyWordsFromPdf = makeVectorForPDF(pdf, catIdx, fileIdx)
+        try:
+            with fitz.open(PDF_PATH) as pdf:
+                keyWordsFromPdf = makeVectorForPDF(pdf, catIdx, fileIdx)
+        except Exception as e:
+            continue
         if keywordOutputPath and keyWordsFromPdf:
             for keyWord in keyWordsFromPdf:
                 keyWords.add(keyWord)
@@ -278,11 +296,10 @@ def processCategory(cat_path, catIdx, keywordOutputPath=None):
 
 
 def processEveryCategory(cats_path, keywordInputDir=None, keywordOutputDir=None):
-    global fileNames, pdfPathNames, all_keywords
-    fileNames = []
-    pdfPathNames = {}
+    global all_keywords
+    PDF_PATHS.clear()
+    FILE_NAMES.clear()
     # nema potreba od pravenje vo set, deka posle vo drugata funckija pravish dict.fromKeys() i toa gi trga duplikatite, so sepak
-    keywordsSet = None
     if keywordInputDir:
         keywordsSet = set()
         for keywordFile in os.listdir(keywordInputDir):
@@ -322,14 +339,14 @@ def main(cats_path, keyword_dir, best_arc_model, best_act_model, best_build_mode
     nlp_act.max_length = 1100000
     nlp_build.max_length = 1100000
 
-    # processEveryCategory(cats_path, keywordOutputDir=keyword_dir)
+    processEveryCategory(cats_path, keywordOutputDir=keyword_dir)
     processEveryCategory(cats_path, keywordInputDir=keyword_dir)
+    keywordsFile.close()
+    arcEntsFile.close()
+    actEntsFile.close()
+    buildBlocksFile.close()
+
 
 
 if __name__ == '__main__':
-    # plac.call(main)
-    main(r'D:\Diplomska\arxiv',
-         r'arxivKeywords',
-         r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\architecture type model\\88 epochs',
-         r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\activation function model\\95 epochs',
-         r'C:\\Users\\Gjorgji Noveski\\PycharmProjects\\PDFtoDatabase\\NEWNERmodels\\specialized\\building blocks model\\93 epochs')
+    plac.call(main)
