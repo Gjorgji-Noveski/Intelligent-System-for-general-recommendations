@@ -11,7 +11,7 @@ from pathlib import Path
 from spacy.util import minibatch, compounding
 from spacy.util import decaying
 
-spacy.require_gpu()
+# spacy.require_gpu()
 
 @plac.annotations(
     model=("Model name. Defaults to blank 'en' model.", "positional"),
@@ -38,6 +38,8 @@ def main(model=None, new_model_name='new_model', n_iter=100, input_binaries_dir=
     if input_binaries_dir is None:
         print('Input directory with binary training data not specified.')
         raise SystemExit(1)
+    if not os.path.exists(output_models_dir):
+        os.makedirs(output_models_dir)
     for file in os.listdir(input_binaries_dir):
         with open(os.path.join(input_binaries_dir, file), 'rb') as f:
             TRAIN_DATA = pickle.load(f)
@@ -75,7 +77,7 @@ def trainSingleModel(model, new_model_name, output_dir, n_iter, train_data):
     # Get names of other pipes to disable them during training to train only NER
     pipe_exceptions = ["ner", "trf_wordpiecer", "trf_tok2vec"]
     other_pipes = [pipe for pipe in nlp.pipe_names if pipe not in pipe_exceptions]
-    dropout = decaying(0.6, 0.35, 0.00003)
+    dropout = decaying(0.3, 0.25, 0.00003)
 
     for itn in range(1, n_iter + 1):
         disabled = nlp.disable_pipes(*other_pipes)  # only train NER

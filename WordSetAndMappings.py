@@ -29,7 +29,7 @@ mappings = {
 }
 
 DATASET = ['number', 'subjects', 'dataset', 'patients', 'images', 'analyzed', 'downloaded', 'retrieved', 'created',
-           'corpus', 'corpora', 'files']
+           'corpus', 'annotated_corpora', 'files']
 
 ARCHITECTURE_TYPE_NO_ABBREVIATION = ['perceptron', 'feed forward', 'radial basis network', 'recurrent neural network',
                                      'long short-term memory', 'gated recurrent unit', 'autoencoder', 'markov chain',

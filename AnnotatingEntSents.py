@@ -7,7 +7,7 @@ CATEGORIES = {'architecture type model': ARCHITECTURE_TYPE, 'activation function
               'building blocks model': BUILDING_BLOCKS}
 
 """
-Annotates all the corpora and saves them in their dedicated folder (based on entity category, a.k.a model)
+Annotates all the annotated_corpora and saves them in their dedicated folder (based on entity category, a.k.a model)
 """
 
 

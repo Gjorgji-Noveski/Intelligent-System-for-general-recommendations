@@ -56,7 +56,9 @@ def main(model_path, pdfs_path, output_dir, character_limit=3000000):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     nlp = spacy.load(model_path)
-    nlp.max_length = 3000000
+    # making the maximum length of a file spacy can process to be just above the character limit so it's not equal
+    # and we encounter any errors
+    nlp.max_length = character_limit + 100
     for countFolder, folder in enumerate(os.listdir(pdfs_path), 1):
         FILE_CATEGORY_PATH = os.path.join(pdfs_path, folder)
         print(folder)

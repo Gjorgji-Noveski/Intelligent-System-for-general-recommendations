@@ -23,10 +23,10 @@ GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arc
                         'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 paperCount = 0
 paperIDcounter = 1
-keywordsFile = open(r'Datasets\Intelligent system\keywordVectorsBiggest.csv', mode='a', encoding='UTF-8')
-arcEntsFile = open(r'Datasets\Intelligent system\arcEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
-actEntsFile = open(r'Datasets\Intelligent system\actEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
-buildBlocksFile = open(r'Datasets\Intelligent system\buildBlocksVectorBiggest.csv', mode='a', encoding='UTF-8')
+keywordsFile = open(r'datasets\intelligent system\keywordVectorsBiggest.csv', mode='a', encoding='UTF-8')
+arcEntsFile = open(r'datasets\intelligent system\arcEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
+actEntsFile = open(r'datasets\intelligent system\actEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
+buildBlocksFile = open(r'datasets\intelligent system\buildBlocksVectorBiggest.csv', mode='a', encoding='UTF-8')
 nlp = spacy.load('en_core_web_sm')
 nlp.max_length = 1100000
 """
@@ -264,7 +264,6 @@ def populateVectors(catIdx, fileIdx):
 
 
 def processCategory(cat_path, catIdx, keywordOutputPath=None):
-    # skokaj = True
     if keywordOutputPath:
         writeFile = open(keywordOutputPath, mode='a', encoding='UTF-8')
 
@@ -273,11 +272,6 @@ def processCategory(cat_path, catIdx, keywordOutputPath=None):
         keyWords = set()
 
         print(file)
-        # if skokaj:
-        #     if file != '1609.08931.pdf':
-        #         continue
-        #     else:
-        #         skokaj = False
         # Checks if file is already processed by file name file size (sometimes 2 different pdfs have same name)
         PDF_PATH = os.path.join(cat_path, file)
         if checkAlreadyProcessedFile(PDF_PATH, file):

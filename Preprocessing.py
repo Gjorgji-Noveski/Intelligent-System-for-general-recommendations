@@ -15,7 +15,6 @@ def preprocessSinglePdfPage(page, tocTitles):
     pageTextInLines = pageText.split('\n')
     pageTextInLines = [line.strip() for line in pageTextInLines if
                        not line.isspace() and line != '' and line[:4] != 'Fig.' and line[:6] != 'Table ']
-
     # checking if the first 2 sentences contain the "et al." part so it can be removed
     if len(pageTextInLines) > 1:
         if 'et al' in pageTextInLines[0]:
