@@ -2,7 +2,7 @@ import re
 import plac
 import os
 
-
+# This is a convenience script. It is not used in the database creation pipeline
 def extract_entities(file_path):
     entities = list()
     with open(file_path, mode='r', encoding='UTF-8') as sentFile:
