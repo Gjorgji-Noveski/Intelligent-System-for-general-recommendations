@@ -23,10 +23,10 @@ GENERAL_PAPER_VECTOR = {'ID': [], 'paper title': [], 'keywords vector': [], 'arc
                         'actModelEntsVector': [], 'buildBlockModelEntsVector': []}
 paperCount = 0
 paperIDcounter = 1
-keywordsFile = open(r'datasets\intelligent system\keywordVectorsBiggest.csv', mode='a', encoding='UTF-8')
-arcEntsFile = open(r'datasets\intelligent system\arcEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
-actEntsFile = open(r'datasets\intelligent system\actEntsVectorBiggest.csv', mode='a', encoding='UTF-8')
-buildBlocksFile = open(r'datasets\intelligent system\buildBlocksVectorBiggest.csv', mode='a', encoding='UTF-8')
+keywordsFile = open(r'final_vectors\keywordVectors.csv', mode='a', encoding='UTF-8')
+arcEntsFile = open(r'final_vectors\arcEntsVector.csv', mode='a', encoding='UTF-8')
+actEntsFile = open(r'final_vectors\actEntsVector.csv', mode='a', encoding='UTF-8')
+buildBlocksFile = open(r'final_vectors\buildBlocksVector.csv', mode='a', encoding='UTF-8')
 nlp = spacy.load('en_core_web_sm')
 nlp.max_length = 1100000
 """

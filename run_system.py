@@ -14,6 +14,8 @@ def create_required_folders():
         os.makedirs('trained_ner_models')
     if not os.path.exists('training_and_testing_data'):
         os.makedirs('training_and_testing_data')
+    if not os.path.exists('final_vectors'):
+        os.makedirs('final_vectors')
 
 
 if __name__ == '__main__':

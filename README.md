@@ -78,27 +78,29 @@ will perform better.
   be the corresponding scientific papers for that given category. Some scientific papers are already provided
   to be used as an example.
   
-- training_and_testing_data -> Contains binary files that will be used to train and evaluate the NER models.
+- training_and_testing_data - > Contains binary files that will be used to train and evaluate the NER models.
 These binary files are created using the convertToTrainTestData.py script.
   
-- trained_ner_models -> The trained NER models are stored here for every epoch, alongside with the evaluation
+- trained_ner_models - > The trained NER models are stored here for every epoch, alongside with the evaluation
 results in a .csv format, when EvaluatingAModel.py is executed.
   
 - entity_sents - > Contains the sentences extracted using the NER models, which have named entities in them
   from each scientific paper (unannotated). The sentences may appear to not contain the named entities that
   were supplied during training since no NER model is 100% accurate.
   
-- annotated_corpora -> contains .txt files of every research paper with sentences that have named
+- annotated_corpora - > contains .txt files of every research paper with sentences that have named
   entities that are annotated for their respectful NER model and will be converted to a binary file
   in order to train the NER model.
   
-- datasets - > folder given for convenience containing each of the binary encoded vectors for each model
+- Datasets - > folder given for convenience containing each of the binary encoded vectors for each model
   after they were run on a corpus of 19,868 scientific papers.
+
+- final_vectors - > folder where the final binary encoded vectors will be stored.
   
 - keywords - > contains .txt files that contain all the found keywords from the category of scientific papers.
   The name of the .txt file will correspond to the name of the category from the research_papers folder.
   
-- temp -> used for storing an intermediate result, that is the first page of every research paper.
+- temp - > used for storing an intermediate result, that is the first page of every research paper.
 The result is used for extracting the title of the scientific paper.
 
 ## Requirements
