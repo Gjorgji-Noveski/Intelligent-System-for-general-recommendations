@@ -61,6 +61,8 @@ Building blocks vector = [        0     ,         1     ,        0     ,        
 ```
 The whole list of entities for these models can be found in the **WordSetAndMappings.py** script.
 
+For the NER models and their training we use the [Spacy](https://github.com/explosion/spaCy) library, version 2.
+
 ## The why
 The benefit of this pipeline is that by only supplying different starting sentences
 and annotations, it is able to train NER models for other problem domains instead of the
