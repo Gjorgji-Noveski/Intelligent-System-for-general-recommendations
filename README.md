@@ -14,7 +14,7 @@ intelligent system.
 
 ## The how
 The whole proccess consists of several steps, which are:
-- **Choosing optimal sentences**: This means sentences from various research papers
+- **Choosing optimal sentences**: This means sentences from various scientific papers
   are collected and annotated manually with named entities from the field of deep learning,
   ex: CNN, hyperparameters, accuracy, input data, early stopping, neurons, etc. The sentences are
   already provided here.
@@ -28,7 +28,7 @@ and from each paper sentences which contain the "general" deep learning entiteis
 be found in WordSetAndMappings.py. These annotated sentences will be used to train three
 separate NER models, called "specialized" NER models.
 - **Training "specialized" NER  models**: These three NER models are trained to capture
-the deep learning architecture types, activation functions and building blocks used in a research paper.
+the deep learning architecture types, activation functions and building blocks used in a scientific paper.
 - **Evaluating "specialized" NER models**: Just as before, each epoch of each model is evaluated
 and each corresponding best performing model is returned.
 - **Extracting keywords**: Each scientific paper is processed in order to find keywords from
@@ -40,7 +40,7 @@ corpus, and when it finds a named entity it builds a similar binary encoded vect
 the found named entities.
   
 In the end, we have 4 sets of binary encoded vectors, one representing the presence of keywords
-in the research paper(input, X), others for the architecture type, activation functions and building blocks
+in the scientific paper(input, X), others for the architecture type, activation functions and building blocks
 used in the paper(output, Y). This input and output will be used by the intelligent system
 in order to give good recommendations.
 
@@ -75,7 +75,7 @@ as much as possible in order to retain the original meaning of the sentences, so
 will perform better.
 
  ## Folder explanations
-- research_papers - > Folder containing subfolders of research paper categories. For instance, it
+- research_papers - > Folder containing subfolders of research paper (scientific paper) categories. For instance, it
   may contain 3 folders named, Medicine, Physics, Bioinformatics, and inside each of these folders will
   be the corresponding scientific papers for that given category. Some scientific papers are already provided
   to be used as an example.
@@ -90,7 +90,7 @@ results in a .csv format, when EvaluatingAModel.py is executed.
   from each scientific paper (unannotated). The sentences may appear to not contain the named entities that
   were supplied during training since no NER model is 100% accurate.
   
-- annotated_corpora - > contains .txt files of every research paper with sentences that have named
+- annotated_corpora - > contains .txt files of every scientific paper with sentences that have named
   entities that are annotated for their respectful NER model and will be converted to a binary file
   in order to train the NER model.
   
@@ -102,7 +102,7 @@ results in a .csv format, when EvaluatingAModel.py is executed.
 - keywords - > contains .txt files that contain all the found keywords from the category of scientific papers.
   The name of the .txt file will correspond to the name of the category from the research_papers folder.
   
-- temp - > used for storing an intermediate result, that is the first page of every research paper.
+- temp - > used for storing an intermediate result, that is the first page of every scientific paper.
 The result is used for extracting the title of the scientific paper.
 
 ## Requirements
@@ -110,5 +110,24 @@ To install the dependencies, please run:
 `pip install -r requirements.txt`
 After that to have the starting spacy model for fine-tuning, install it by
 `python -m spacy download en_core_web_sm`
-  
+## Running the pipeline
+The pipeline can be called with :
+
+```
+python run_system.py
+```
+
+It will create all the necessary folders and open a subprocess for each part
+of the pipeline (calling the required scripts). Standard output and Error output 
+will be displayed after each part of the pipeline finishes for debugging reasons.
+
+It is encouraged to play around with some of the parameters in TrainingNERmodel.py 
+to achieve better results on your own corpus of scientific papers or categories of
+named entities. 
+
+Also set the character limit in GettingEntitySents.py and the nlp.max_length in
+MakingOutputVectors.py according to your memory capacity, since spacy requires
+around 1GB of memory for every 100,000 characters, the default is set at 1,100,000
+which may or may not suit you.
+
 Improvements are wholeheartedly welcomed. If you think something can be improved, drop a pull request.
