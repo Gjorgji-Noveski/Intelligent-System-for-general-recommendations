@@ -10,7 +10,7 @@ import spacy
 from pathlib import Path
 from spacy.util import minibatch, compounding
 from spacy.util import decaying
-
+# correct spacy version needs to be installed and cuda[on your own]
 # spacy.require_gpu()
 
 @plac.annotations(
