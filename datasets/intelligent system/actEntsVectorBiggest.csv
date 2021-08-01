@@ -1,4 +1,0 @@
-ID,linear activation function,rectified linear unit,sigmoid,gaussian error linear unit,softmax,hyperbolic tangent function,softsign function,exponential linear unit,leaky rectified linear unit
-10011001,0,0,0,0,1,0,0,0,0
-10030001,0,1,1,0,1,0,0,0,0
-10053001,0,1,0,0,0,0,0,0,0

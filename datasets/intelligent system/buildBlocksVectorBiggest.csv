@@ -1,4 +1,0 @@
-ID,fully connected layer,recurrent layer,pooling layer,convolutional layer,deconvolutional layer,dropout layer,softmax layer,subsampling layer,gru layer
-10038001,0,0,0,1,0,0,0,0,0
-10053001,0,0,0,1,0,0,0,0,0
-10064001,0,0,0,1,0,0,0,0,0
