@@ -8,7 +8,6 @@ from Preprocessing import preprocessSinglePdfPage, checkAlreadyProcessedFile
 
 def extractEntitySents(pdf, outputDir, countFolder, countFile, file, characterLimit, nlp):
     # Getting table of content titles
-    # Mozhno podobruvanje, baraj go naslovot samo na stranata koja e navedeno
     tocTitles = [element[1] for element in pdf.getToC()]
     extractedEntSentFileName = str(countFolder) + '00' + str(countFile) + '_' + file[:5] + '_' + file[-15:-4] + '.txt'
     EXTRACTED_ENTITY_SENTS_PATH = os.path.join(outputDir, extractedEntSentFileName)
@@ -16,10 +15,7 @@ def extractEntitySents(pdf, outputDir, countFolder, countFile, file, characterLi
     for page in pdf:
         pageTextInLines = preprocessSinglePdfPage(page, tocTitles)
         wholePdfText += ' '.join(pageTextInLines) + ' '
-
-    # Poradi toa shto Imam 8GB RAM, moram da go secham dokumentot koj mu go davam na spacy
-    # inache mozhno e da imam allocation error
-    # 100,000 karakteri = 1GB za spacy, ama go zgolemiv malce pojshe
+        
     splitPdfDocument = [wholePdfText[i:i + characterLimit] for i in range(0, len(wholePdfText), characterLimit)]
     del wholePdfText
     entitySents = set()
@@ -57,7 +53,7 @@ def main(model_path, pdfs_path, output_dir, character_limit=3000000):
         os.makedirs(output_dir)
     nlp = spacy.load(model_path)
     # making the maximum length of a file spacy can process to be just above the character limit so it's not equal
-    # and we encounter any errors
+    # and we don't encounter any errors
     nlp.max_length = character_limit + 100
     for countFolder, folder in enumerate(os.listdir(pdfs_path), 1):
         FILE_CATEGORY_PATH = os.path.join(pdfs_path, folder)
