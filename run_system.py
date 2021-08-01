@@ -1,7 +1,23 @@
 import subprocess
 import sys
 
+
+def create_required_folders():
+    import os
+    if not os.path.exists('keywords'):
+        os.makedirs('keywords')
+    if not os.path.exists('entity_sents'):
+        os.makedirs('entity_sents')
+    if not os.path.exists('temp'):
+        os.makedirs('temp')
+    if not os.path.exists('trained_ner_models'):
+        os.makedirs('trained_ner_models')
+    if not os.path.exists('training_and_testing_data'):
+        os.makedirs('training_and_testing_data')
+
+
 if __name__ == '__main__':
+    create_required_folders()
     # Converting the optimal DL sentences to binary files, used in training/testing the general NER model
     print('Making binary files')
     completed_process = subprocess.run([sys.executable, 'convertToTrainTestData.py',
