@@ -75,7 +75,8 @@ will perform better.
  ## Folder explanations
 - research_papers - > Folder containing subfolders of research paper categories. For instance, it
   may contain 3 folders named, Medicine, Physics, Bioinformatics, and inside each of these folders will
-  be the corresponding scientific papers for that given category.
+  be the corresponding scientific papers for that given category. Some scientific papers are already provided
+  to be used as an example.
   
 - training_and_testing_data -> Contains binary files that will be used to train and evaluate the NER models.
 These binary files are created using the convertToTrainTestData.py script.
@@ -99,5 +100,11 @@ results in a .csv format, when EvaluatingAModel.py is executed.
   
 - temp -> used for storing an intermediate result, that is the first page of every research paper.
 The result is used for extracting the title of the scientific paper.
+
+## Requirements
+To install the dependencies, please run:
+`pip install -r requirements.txt`
+After that to have the starting spacy model for fine-tuning, install it by
+`python -m spacy download en_core_web_sm`
   
 Improvements are wholeheartedly welcomed. If you think something can be improved, drop a pull request.
