@@ -12,6 +12,8 @@ a well performing machine learning model.
 This code is only for the database creation pipeline and not the creation of the 
 intelligent system.
 
+[Link to the paper](https://ieeexplore.ieee.org/document/9597522 "Data-Driven Intelligence System")
+
 ## The how
 The whole proccess consists of several steps, which are:
 - **Choosing optimal sentences**: This means sentences from various scientific papers
