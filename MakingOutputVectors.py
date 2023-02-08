@@ -170,7 +170,7 @@ def getPageKeywords(page, pageNm, pdf, pdfToc, catIdx, fileIdx):
             writeVectors(GENERAL_PAPER_VECTOR['ID'])
             reInitializeVector(all_keywords)
             # the end
-        keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\–\- ]', keywords)
+        keywords = re.split(r'[^a-zA-Z0-9\-\.\(\)’\– ]', keywords)
         keywords = [re.sub(r'\s{2,}', ' ', keyword.strip().lower().rstrip('.')) for keyword in keywords if
                     not keyword.strip().rstrip('.').isspace() and keyword.strip().rstrip('.') != '']
         keywords = splitByConjunction(keywords)
